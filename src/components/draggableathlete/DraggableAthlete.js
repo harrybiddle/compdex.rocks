@@ -1,17 +1,17 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 
-export default class Task extends React.Component {
+export default class DraggableAthlete extends React.Component {
   render() {
     return (
-      <Draggable draggableId={this.props.task.id} index={this.props.index}>
+      <Draggable draggableId={this.props.athlete.id} index={this.props.index}>
         {provided => (
           <div
             {...provided.draggableProps}
             {...provided.dragHandleProps} // make whole div draggable
             ref={provided.innerRef}
           >
-            {this.props.task.content}
+            {this.props.athlete.content}
           </div>
         )}
       </Draggable>

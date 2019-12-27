@@ -1,5 +1,5 @@
 import React from "react";
-import Task from "../task/Task";
+import DraggableAthlete from "../draggableathlete/DraggableAthlete";
 import { Droppable } from "react-beautiful-dnd";
 
 export default class Column extends React.Component {
@@ -10,8 +10,12 @@ export default class Column extends React.Component {
         <Droppable droppableId={this.props.column.id}>
           {provided => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              {this.props.tasks.map((task, index) => (
-                <Task key={task.id} task={task} index={index} />
+              {this.props.athletes.map((athlete, index) => (
+                <DraggableAthlete
+                  key={athlete.id}
+                  athlete={athlete}
+                  index={index}
+                />
               ))}
               {provided.placeholder}
             </div>
