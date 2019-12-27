@@ -54,4 +54,71 @@ describe("possible finish orders for two athletes", () => {
       ])
     );
   });
+
+  it("should be correct at start of round two", () => {
+    expect(new Set(possibleFinishOrders(athletes, ["Eve", "Sue"]))).toEqual(
+      new Set([
+        {
+          round1: ["Eve", "Sue"],
+          round2: ["Eve", "Sue"],
+          round3: ["Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue"],
+          round2: ["Eve", "Sue"],
+          round3: ["Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue"],
+          round2: ["Sue", "Eve"],
+          round3: ["Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue"],
+          round2: ["Sue", "Eve"],
+          round3: ["Eve", "Sue"]
+        }
+      ])
+    );
+  });
+
+  it("should be correct at start of round three", () => {
+    expect(
+      new Set(possibleFinishOrders(athletes, ["Eve", "Sue"], ["Eve", "Sue"]))
+    ).toEqual(
+      new Set([
+        {
+          round1: ["Eve", "Sue"],
+          round2: ["Eve", "Sue"],
+          round3: ["Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue"],
+          round2: ["Eve", "Sue"],
+          round3: ["Eve", "Sue"]
+        }
+      ])
+    );
+  });
+
+  it("should be correct at end of competition", () => {
+    expect(
+      new Set(
+        possibleFinishOrders(
+          athletes,
+          ["Eve", "Sue"],
+          ["Eve", "Sue"],
+          ["Sue", "Eve"]
+        )
+      )
+    ).toEqual(
+      new Set([
+        {
+          round1: ["Eve", "Sue"],
+          round2: ["Eve", "Sue"],
+          round3: ["Sue", "Eve"]
+        }
+      ])
+    );
+  });
 });
