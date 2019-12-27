@@ -122,3 +122,686 @@ describe("possible finish orders for two athletes", () => {
     );
   });
 });
+
+describe("possible finish orders midway through rounds", () => {
+  const athletes = new Set(["Eve", "Sue", "Ada"]);
+
+  it("should be correct midway through third round", () => {
+    expect(
+      new Set(
+        possibleFinishOrders(
+          athletes,
+          ["Eve", "Sue", "Ada"],
+          ["Eve", "Sue", "Ada"],
+          ["Eve", "Sue"]
+        )
+      )
+    ).toEqual(
+      new Set([
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Eve", "Sue", "Ada"]
+        }
+      ])
+    );
+  });
+
+  it("should be correct midway through second round", () => {
+    expect(
+      new Set(
+        possibleFinishOrders(athletes, ["Eve", "Sue", "Ada"], ["Eve", "Sue"])
+      )
+    ).toEqual(
+      new Set([
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Eve", "Sue", "Ada"]
+        }
+      ])
+    );
+  });
+
+  it("should be correct midway through first round", () => {
+    expect(new Set(possibleFinishOrders(athletes, ["Eve", "Sue"]))).toEqual(
+      new Set([
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Ada", "Eve", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Ada", "Sue"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Sue", "Eve"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Ada", "Eve", "Sue"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Ada", "Eve"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Sue", "Eve", "Ada"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Ada", "Sue"],
+          round3: ["Eve", "Sue", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Ada", "Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Ada", "Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Sue", "Ada", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Sue", "Eve", "Ada"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Eve", "Ada", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue", "Ada"],
+          round2: ["Eve", "Sue", "Ada"],
+          round3: ["Eve", "Sue", "Ada"]
+        }
+      ])
+    );
+  });
+});
