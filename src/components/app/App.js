@@ -28,22 +28,19 @@ class App extends React.Component {
 
   onDragEnd = result => {
     const { destination, source, draggableId } = result;
-
     if (!destination) return;
 
     const sourceColumn = this.state.columns[source.droppableId];
     const sourceTaskIds = Array.from(sourceColumn.taskIds);
     sourceTaskIds.splice(source.index, 1); // remove source
-
-    const destinationColumn = this.state.columns[destination.droppableId];
-    const destinationTaskIds = Array.from(destinationColumn.taskIds);
-    destinationTaskIds.splice(destination.index, 0, draggableId); // insert destination
-
     const newSourceColumn = {
       ...sourceColumn,
       taskIds: sourceTaskIds
     };
 
+    const destinationColumn = this.state.columns[destination.droppableId];
+    const destinationTaskIds = Array.from(destinationColumn.taskIds);
+    destinationTaskIds.splice(destination.index, 0, draggableId); // insert destination
     const newDestinationColumn = {
       ...destinationColumn,
       taskIds: destinationTaskIds
@@ -53,8 +50,8 @@ class App extends React.Component {
       ...this.state,
       columns: {
         ...this.state.columns,
-        [newSourceColumn.id]: newSourceColumn,
-        [newDestinationColumn.id]: newDestinationColumn
+        [source.droppableId]: newSourceColumn,
+        [destination.droppableId]: newDestinationColumn
       }
     };
 
