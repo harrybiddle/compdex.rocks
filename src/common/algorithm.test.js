@@ -1,19 +1,57 @@
-import { possible_finish_orders } from "./algorithm";
+import { possibleFinishOrders } from "./algorithm";
+
+it("only one possible finish order for one athlete", () => {
+  expect(new Set(possibleFinishOrders(new Set(["Eve"])))).toEqual(
+    new Set([{ round1: ["Eve"], round2: ["Eve"], round3: ["Eve"] }])
+  );
+});
 
 describe("possible finish orders for two athletes", () => {
   const athletes = new Set(["Eve", "Sue"]);
-
   it("should be correct at start of competition", () => {
-    expect(possible_finish_orders(athletes)).toEqual(new Set([
-          new Set([["Sue", "Eve"], ["Eve", "Sue"], ["Sue", "Eve"]]),
-          new Set([["Sue", "Eve"], ["Eve", "Sue"], ["Eve", "Sue"]]),
-          new Set([["Sue", "Eve"], ["Sue", "Eve"], ["Sue", "Eve"]]),
-          new Set([["Sue", "Eve"], ["Sue", "Eve"], ["Eve", "Sue"]]),
-          new Set([["Eve", "Sue"], ["Eve", "Sue"], ["Sue", "Eve"]]),
-          new Set([["Eve", "Sue"], ["Eve", "Sue"], ["Eve", "Sue"]]),
-          new Set([["Eve", "Sue"], ["Sue", "Eve"], ["Sue", "Eve"]]),
-          new Set([["Eve", "Sue"], ["Sue", "Eve"], ["Eve", "Sue"]])
-        ])
+    expect(new Set(possibleFinishOrders(athletes))).toEqual(
+      new Set([
+        {
+          round1: ["Sue", "Eve"],
+          round2: ["Eve", "Sue"],
+          round3: ["Sue", "Eve"]
+        },
+        {
+          round1: ["Sue", "Eve"],
+          round2: ["Eve", "Sue"],
+          round3: ["Eve", "Sue"]
+        },
+        {
+          round1: ["Sue", "Eve"],
+          round2: ["Sue", "Eve"],
+          round3: ["Sue", "Eve"]
+        },
+        {
+          round1: ["Sue", "Eve"],
+          round2: ["Sue", "Eve"],
+          round3: ["Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue"],
+          round2: ["Eve", "Sue"],
+          round3: ["Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue"],
+          round2: ["Eve", "Sue"],
+          round3: ["Eve", "Sue"]
+        },
+        {
+          round1: ["Eve", "Sue"],
+          round2: ["Sue", "Eve"],
+          round3: ["Sue", "Eve"]
+        },
+        {
+          round1: ["Eve", "Sue"],
+          round2: ["Sue", "Eve"],
+          round3: ["Eve", "Sue"]
+        }
+      ])
     );
   });
-})
+});
