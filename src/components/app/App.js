@@ -26,35 +26,39 @@ class App extends React.Component {
     columnOrder: ["column-1", "column-2"]
   };
 
+  duplicateColumn = columnId => {
+    const column = this.state.columns[columnId];
+    const taskIds = Array.from(column.taskIds);
+    return {
+      ...column,
+      taskIds: taskIds
+    };
+  };
+
   onDragEnd = result => {
     const { destination, source, draggableId } = result;
     if (!destination) return;
 
-    const sourceColumn = this.state.columns[source.droppableId];
-    const sourceTaskIds = Array.from(sourceColumn.taskIds);
-    sourceTaskIds.splice(source.index, 1); // remove source
-    const newSourceColumn = {
-      ...sourceColumn,
-      taskIds: sourceTaskIds
-    };
+    // remove droppable from source column
+    const sourceColumn = this.duplicateColumn(source.droppableId);
+    sourceColumn.taskIds.splice(source.index, 1);
 
-    const destinationColumn = this.state.columns[destination.droppableId];
-    const destinationTaskIds = Array.from(destinationColumn.taskIds);
-    destinationTaskIds.splice(destination.index, 0, draggableId); // insert destination
-    const newDestinationColumn = {
-      ...destinationColumn,
-      taskIds: destinationTaskIds
-    };
+    // insert droppable into target column
+    const isReorder = source.droppableId === destination.droppableId;
+    const destinationColumn = isReorder
+      ? sourceColumn
+      : this.duplicateColumn(destination.droppableId);
+    destinationColumn.taskIds.splice(destination.index, 0, draggableId);
 
+    // return updated state
     const newState = {
       ...this.state,
       columns: {
         ...this.state.columns,
-        [source.droppableId]: newSourceColumn,
-        [destination.droppableId]: newDestinationColumn
+        [source.droppableId]: sourceColumn,
+        [destination.droppableId]: destinationColumn
       }
     };
-
     this.setState(newState);
   };
 
