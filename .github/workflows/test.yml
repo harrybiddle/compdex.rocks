@@ -16,9 +16,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 13.1.0
-    - name: Install, build, and test
-      run: |
-        yarn install
-        yarn build
-        yarn test
+    - run: yarn install
+    - run: yarn build
+    - run: yarn test
     
