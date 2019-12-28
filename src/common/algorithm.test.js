@@ -1,4 +1,4 @@
-import { possibleFinishOrders } from "./algorithm";
+import { computeScore, possibleFinishOrders, probabilities } from "./algorithm";
 
 it("only one possible finish order for one athlete", () => {
   expect(new Set(possibleFinishOrders(new Set(["Eve"])))).toEqual(
@@ -804,4 +804,114 @@ describe("possible finish orders midway through rounds", () => {
       ])
     );
   });
+});
+
+it("compute score is correct", () => {
+  expect(
+    computeScore(
+      "Bob",
+      ["Joe", "Bob", "Alf"],
+      ["Bob", "Alf", "Joe"],
+      ["Joe", "Alf", "Bob"]
+    )
+  ).toEqual(2 * 1 * 3);
+});
+
+describe("probabilities for two athletes", () => {
+  const athletes = new Set(["Eve", "Sue"]);
+  it("should be correct for no completed rounds", () => {
+    expect(probabilities(athletes)).toEqual({
+      Sue: [0.5, 0.5],
+      Eve: [0.5, 0.5]
+    });
+  });
+
+  it("probabilities correct when eve wins round one", () => {
+    /*
+    If Eve wins round one there is only one scenario in which Sue wins overall:
+
+        EVE wins - SUE wins - SUE wins
+
+    But there are three scenarios in which Eve wins overall:
+
+        EVE wins - EVE wins - SUE wins  : EVE wins
+        EVE wins - EVE wins - EVE wins  : EVE wins
+        EVE wins - SUE wins - EVE wins  : EVE wins
+    */
+    const knownOrderRoundOne = ["Eve", "Sue"];
+    expect(probabilities(athletes, knownOrderRoundOne)).toEqual({
+      Sue: [0.25, 0.75],
+      Eve: [0.75, 0.25]
+    });
+  });
+
+  it("probabilities correct when eve wins rounds one and two", () => {
+    /* Eve is guaranteed to win the competition */
+    const knownOrderRoundOne = ["Eve", "Sue"];
+    const knownOrderRoundTwo = ["Eve", "Sue"];
+    expect(
+      probabilities(athletes, knownOrderRoundOne, knownOrderRoundTwo)
+    ).toEqual({
+      Sue: [0.0, 1.0],
+      Eve: [1.0, 0.0]
+    });
+  });
+
+  it("probabilities correct when eve wins round one but loses round two", () => {
+    /* Its down to whoever wins the final round! */
+    const knownOrderRoundOne = ["Eve", "Sue"];
+    const knownOrderRoundTwo = ["Sue", "Eve"];
+    expect(
+      probabilities(athletes, knownOrderRoundOne, knownOrderRoundTwo)
+    ).toEqual({
+      Sue: [0.5, 0.5],
+      Eve: [0.5, 0.5]
+    });
+  });
+
+  const finishOrdersInWhichEveWinsOverall = [
+    {
+      knownOrderRoundOne: ["Sue", "Eve"],
+      knownOrderRoundTwo: ["Eve", "Sue"],
+      knownOrderRoundThree: ["Eve", "Sue"]
+    },
+    {
+      knownOrderRoundOne: ["Eve", "Sue"],
+      knownOrderRoundTwo: ["Eve", "Sue"],
+      knownOrderRoundThree: ["Sue", "Eve"]
+    },
+    {
+      knownOrderRoundOne: ["Eve", "Sue"],
+      knownOrderRoundTwo: ["Eve", "Sue"],
+      knownOrderRoundThree: ["Eve", "Sue"]
+    },
+    {
+      knownOrderRoundOne: ["Eve", "Sue"],
+      knownOrderRoundTwo: ["Sue", "Eve"],
+      knownOrderRoundThree: ["Eve", "Sue"]
+    }
+  ];
+  for (let i = 0; i < finishOrdersInWhichEveWinsOverall.length; i++) {
+    it(
+      "proabilities correct when the competition is over and eve has already won (" +
+        (i + 1) +
+        " of " +
+        finishOrdersInWhichEveWinsOverall.length +
+        ")",
+      () => {
+        const k = finishOrdersInWhichEveWinsOverall[i];
+        expect(
+          probabilities(
+            athletes,
+            k.knownOrderRoundOne,
+            k.knownOrderRoundTwo,
+            k.knownOrderRoundThree
+          )
+        ).toEqual({
+          Eve: [1.0, 0.0],
+          Sue: [0.0, 1.0]
+        });
+      }
+    );
+  }
 });
