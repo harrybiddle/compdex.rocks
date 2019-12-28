@@ -1,4 +1,8 @@
-import { computeScore, possibleFinishOrders, probabilities } from "./algorithm";
+import {
+  computeScore,
+  possibleFinishOrders,
+  probabilities
+} from "./bruteforce";
 
 it("only one possible finish order for one athlete", () => {
   expect(new Set(possibleFinishOrders(new Set(["Eve"])))).toEqual(
