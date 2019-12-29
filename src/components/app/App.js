@@ -4,6 +4,14 @@ import KnownResults from "../knownresults/KnownResults";
 import Predictions from "../predictions/Predictions";
 
 import update from "immutability-helper";
+import { probabilities } from "../../common/bruteforce";
+
+const zones = {
+  SPEED: "speed",
+  BOULDER: "boulder",
+  LEAD: "lead",
+  ISOLATION: "isolation"
+};
 
 class App extends React.Component {
   state = {
@@ -12,59 +20,80 @@ class App extends React.Component {
       athlete2: { name: "Alex Megos" },
       athlete3: { name: "Margo Hayes" }
     },
-    speedRound: ["athlete1", "athlete2"],
-    boulderRound: [],
-    leadRound: []
+    [zones.SPEED]: ["athlete1", "athlete2"],
+    [zones.BOULDER]: [],
+    [zones.LEAD]: []
   };
 
   render() {
     return (
       <div>
-        <Predictions />
+        <Predictions {...predictionsProps(this.state)} />
         <KnownResults
           onDragEnd={result =>
             this.setState(newStateOnDragEnd(this.state, result))
           }
           columns={constructColumns(this.state)}
-          columnOrder={this.state.columnOrder}
+          columnOrder={[
+            zones.SPEED,
+            zones.BOULDER,
+            zones.LEAD,
+            zones.ISOLATION
+          ]}
         />
       </div>
     );
   }
 }
 
+export function predictionsProps(state) {
+  function* headers(length) {
+    yield "1st";
+    yield "2nd";
+    yield "3rd";
+    let i = 4;
+    while (i < length) {
+      yield i + "th";
+      i++;
+    }
+  }
+  const athletes = Object.keys(state.athletes);
+  return {
+    columns: ["athlete"].concat(Array.from(headers(athletes.length))),
+    rows: Object.entries(
+      probabilities(
+        new Set(athletes),
+        state[zones.SPEED],
+        state[zones.BOULDER],
+        state[zones.LEAD]
+      )
+    ).map(a => [state.athletes[a[0]].name].concat(a[1]))
+  };
+}
+
 export function constructColumns(state) {
-  const { athletes, speedRound, boulderRound, leadRound } = state;
   const removeAll = (setA, setB) =>
     new Set([...setA].filter(x => !setB.has(x)));
 
-  const constructAthletes = (athleteIds, prefix) =>
-    athleteIds.map(id => ({
-      id: prefix + "-" + id,
-      content: athletes[id].name
+  const constructAthletes = (athleteIds, zone) =>
+    athleteIds.map(athleteId => ({
+      draggableId: zone + "-" + athleteId,
+      athleteId: athleteId,
+      content: state.athletes[athleteId].name
     }));
 
   // put athletes in the isolation zone if the round has started
-  const allAthleteIds = Object.keys(athletes);
+  const allAthleteIds = Object.keys(state.athletes);
   const isolationZoneAthletes = [];
-  for (let round of [
-    { athleteIds: speedRound, prefix: "speedRound" },
-    { athleteIds: boulderRound, prefix: "boulderRound" },
-    { athleteIds: leadRound, prefix: "leadRound" }
-  ]) {
-    const roundHasStarted = round.athleteIds.length > 0;
+  for (let round of [zones.SPEED, zones.BOULDER, zones.LEAD]) {
+    const athleteIds = state[round];
+    const roundHasStarted = round === zones.SPEED || athleteIds.length > 0;
     if (roundHasStarted) {
       // remove the athletes that have competed, leaving those waiting
-      const waitingAthleteIds = removeAll(
-        allAthleteIds,
-        new Set(round.athleteIds)
-      );
+      const waitingAthleteIds = removeAll(allAthleteIds, new Set(athleteIds));
 
       // construct draggables for athletes left
-      for (let e of constructAthletes(
-        Array.from(waitingAthleteIds),
-        round.prefix
-      )) {
+      for (let e of constructAthletes(Array.from(waitingAthleteIds), round)) {
         isolationZoneAthletes.push(e);
       }
     }
@@ -72,20 +101,24 @@ export function constructColumns(state) {
 
   // construct rounds with known results
   return {
-    speedRound: {
+    [zones.SPEED]: {
       title: "Speed Round",
-      athletes: constructAthletes(speedRound, "speedRound")
+      zone: zones.SPEED,
+      athletes: constructAthletes(state[zones.SPEED], zones.SPEED)
     },
-    boulderRound: {
+    [zones.BOULDER]: {
       title: "Boulder Round",
-      athletes: constructAthletes(boulderRound, "boulderRound")
+      zone: zones.BOULDER,
+      athletes: constructAthletes(state[zones.BOULDER], zones.BOULDER)
     },
-    leadRound: {
+    [zones.LEAD]: {
       title: "Lead Round",
-      athletes: constructAthletes(leadRound, "leadRound")
+      zone: zones.LEAD,
+      athletes: constructAthletes(state[zones.LEAD], zones.LEAD)
     },
-    isolationZone: {
+    [zones.ISOLATION]: {
       title: "Isolation Zone",
+      zone: zones.ISOLATION,
       athletes: isolationZoneAthletes
     }
   };
@@ -95,29 +128,36 @@ export function newStateOnDragEnd(oldState, result) {
   const { destination, source } = result;
   if (!destination) return oldState;
 
-  // fetch athlete
-  const athlete = oldState.columns[source.droppableId].athletes[source.index];
+  // only allow certain drags
+  const columns = constructColumns(oldState);
+  const sourceZone = columns[source.droppableId].zone;
+  const destinationZone = columns[destination.droppableId].zone;
+  const isReorder = sourceZone === destinationZone;
+  const dragAllowed =
+    isReorder ||
+    sourceZone === zones.ISOLATION ||
+    destinationZone === zones.ISOLATION;
+  if (!dragAllowed) {
+    return oldState;
+  }
 
-  // remove athlete from source column, if it is not the isolation zone
+  // remove athlete from source, if it is not the isolation zone
   let newState = oldState;
-  if (source.droppableId !== "isolationZone") {
+  if (sourceZone !== zones.ISOLATION) {
     newState = update(newState, {
-      columns: {
-        [source.droppableId]: {
-          athletes: { $splice: [[source.index, 1]] }
-        }
-      }
+      [sourceZone]: { $splice: [[source.index, 1]] }
     });
   }
 
-  // insert athlete into target column
-  newState = update(newState, {
-    columns: {
-      [destination.droppableId]: {
-        athletes: { $splice: [[destination.index, 0, athlete]] }
+  // insert athlete into target, if it is not the isolation zone
+  const athlete = columns[source.droppableId].athletes[source.index];
+  if (destinationZone !== zones.ISOLATION) {
+    newState = update(newState, {
+      [destinationZone]: {
+        $splice: [[destination.index, 0, athlete.athleteId]]
       }
-    }
-  });
+    });
+  }
 
   return newState;
 }

@@ -1,11 +1,30 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App, { constructColumns, newStateOnDragEnd } from "./App";
+import App, {
+  constructColumns,
+  newStateOnDragEnd,
+  predictionsProps
+} from "./App";
 
 it("renders without crashing", () => {
   const div = document.createElement("div");
   ReactDOM.render(<App />, div);
   ReactDOM.unmountComponentAtNode(div);
+});
+
+it("predictions props are constructed", () => {
+  const state = {
+    athletes: {
+      athlete1: { name: "Adam Ondra" },
+      athlete2: { name: "Alex Megos" },
+      athlete3: { name: "Margo Hayes" }
+    },
+    speed: ["athlete1", "athlete2", "athlete3"],
+    boulder: ["athlete3", "athlete2"],
+    lead: []
+  };
+
+  console.log(predictionsProps(state));
 });
 
 describe("dragging athletes", () => {
@@ -15,42 +34,42 @@ describe("dragging athletes", () => {
       athlete2: { name: "Alex Megos" },
       athlete3: { name: "Margo Hayes" }
     },
-    speedRound: ["athlete1", "athlete2", "athlete3"],
-    boulderRound: ["athlete3", "athlete2"],
-    leadRound: []
+    speed: ["athlete1", "athlete2", "athlete3"],
+    boulder: ["athlete3", "athlete2"],
+    lead: []
   };
 
   it("removes the athlete from the source column and adds them to the destination when the columns are different", () => {
     const result = {
       source: {
-        droppableId: "isolationZone",
+        droppableId: "isolation",
         index: 0 // athlete1 (the only one in the isolation zone)
       },
       destination: {
-        droppableId: "boulderRound",
+        droppableId: "boulder",
         index: 1
       }
     };
     expect(newStateOnDragEnd(oldState, result)).toEqual({
       ...oldState,
-      boulderRound: ["athlete3", "athlete1", "athlete2"]
+      boulder: ["athlete3", "athlete1", "athlete2"]
     });
   });
 
   it("removes the athlete from the source column and adds them to the destination when the columns are the same", () => {
     const result = {
       source: {
-        droppableId: "boulderRound",
+        droppableId: "boulder",
         index: 0
       },
       destination: {
-        droppableId: "boulderRound",
+        droppableId: "boulder",
         index: 1
       }
     };
     expect(newStateOnDragEnd(oldState, result)).toEqual({
       ...oldState,
-      boulderRound: ["athlete2", "athlete3"]
+      boulder: ["athlete2", "athlete3"]
     });
   });
 });
@@ -62,34 +81,64 @@ it("constructs props for KnownResults correctly", () => {
       athlete2: { name: "Alex Megos" },
       athlete3: { name: "Margo Hayes" }
     },
-    speedRound: ["athlete1", "athlete2", "athlete3"],
-    boulderRound: ["athlete3", "athlete2"],
-    leadRound: []
+    speed: ["athlete1", "athlete2", "athlete3"],
+    boulder: ["athlete3", "athlete2"],
+    lead: []
   };
 
   expect(constructColumns(state)).toEqual({
-    speedRound: {
+    speed: {
       title: "Speed Round",
+      zone: "speed",
       athletes: [
-        { id: "speedRound-athlete1", content: "Adam Ondra" },
-        { id: "speedRound-athlete2", content: "Alex Megos" },
-        { id: "speedRound-athlete3", content: "Margo Hayes" }
+        {
+          draggableId: "speed-athlete1",
+          athleteId: "athlete1",
+          content: "Adam Ondra"
+        },
+        {
+          draggableId: "speed-athlete2",
+          athleteId: "athlete2",
+          content: "Alex Megos"
+        },
+        {
+          draggableId: "speed-athlete3",
+          athleteId: "athlete3",
+          content: "Margo Hayes"
+        }
       ]
     },
-    boulderRound: {
+    boulder: {
       title: "Boulder Round",
+      zone: "boulder",
       athletes: [
-        { id: "boulderRound-athlete3", content: "Margo Hayes" },
-        { id: "boulderRound-athlete2", content: "Alex Megos" }
+        {
+          draggableId: "boulder-athlete3",
+          athleteId: "athlete3",
+          content: "Margo Hayes"
+        },
+        {
+          draggableId: "boulder-athlete2",
+          athleteId: "athlete2",
+          content: "Alex Megos"
+        }
       ]
     },
-    leadRound: {
+    lead: {
       title: "Lead Round",
+      zone: "lead",
       athletes: []
     },
-    isolationZone: {
+    isolation: {
       title: "Isolation Zone",
-      athletes: [{ id: "boulderRound-athlete1", content: "Adam Ondra" }]
+      zone: "isolation",
+      athletes: [
+        {
+          draggableId: "boulder-athlete1",
+          athleteId: "athlete1",
+          content: "Adam Ondra"
+        }
+      ]
     }
   });
 });
