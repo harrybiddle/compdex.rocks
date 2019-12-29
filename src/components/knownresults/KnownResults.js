@@ -4,8 +4,6 @@ import { DragDropContext } from "react-beautiful-dnd";
 import update from "immutability-helper";
 
 export function newStateOnDragEnd(oldState, result) {
-  console.log(result);
-
   const { destination, source, draggableId } = result;
   if (!destination) return oldState;
 
