@@ -2,21 +2,19 @@ import { newStateOnDragEnd } from "./KnownResults";
 
 describe("dragging athletes", () => {
   const oldState = {
-    athletes: {
-      "athlete-1": { id: "athlete-1", content: "Adam Ondra" },
-      "athlete-2": { id: "athlete-2", content: "Alex Megos" },
-      "athlete-3": { id: "athlete-3", content: "Margo Hayes" }
-    },
     columns: {
       "column-1": {
         id: "column-1",
         title: "Speed Round",
-        athleteIds: ["athlete-1", "athlete-2"]
+        athletes: [
+          { id: "athlete-1", content: "Adam Ondra" },
+          { id: "athlete-2", content: "Alex Megos" }
+        ]
       },
       "column-2": {
         id: "column-2",
         title: "Isolation Zone",
-        athleteIds: ["athlete-3"]
+        athletes: [{ id: "athlete-3", content: "Margo Hayes" }]
       }
     },
     columnOrder: ["column-1", "column-2"]
@@ -35,21 +33,18 @@ describe("dragging athletes", () => {
       }
     };
     expect(newStateOnDragEnd(oldState, result)).toEqual({
-      athletes: {
-        "athlete-1": { id: "athlete-1", content: "Adam Ondra" },
-        "athlete-2": { id: "athlete-2", content: "Alex Megos" },
-        "athlete-3": { id: "athlete-3", content: "Margo Hayes" }
-      },
       columns: {
         "column-1": {
-          id: "column-1",
           title: "Speed Round",
-          athleteIds: ["athlete-1", "athlete-3", "athlete-2"]
+          athletes: [
+            { id: "athlete-1", content: "Adam Ondra" },
+            { id: "athlete-3", content: "Margo Hayes" },
+            { id: "athlete-2", content: "Alex Megos" }
+          ]
         },
         "column-2": {
-          id: "column-2",
           title: "Isolation Zone",
-          athleteIds: []
+          athletes: []
         }
       },
       columnOrder: ["column-1", "column-2"]
@@ -69,21 +64,17 @@ describe("dragging athletes", () => {
       }
     };
     expect(newStateOnDragEnd(oldState, result)).toEqual({
-      athletes: {
-        "athlete-1": { id: "athlete-1", content: "Adam Ondra" },
-        "athlete-2": { id: "athlete-2", content: "Alex Megos" },
-        "athlete-3": { id: "athlete-3", content: "Margo Hayes" }
-      },
       columns: {
         "column-1": {
-          id: "column-1",
           title: "Speed Round",
-          athleteIds: ["athlete-2", "athlete-1"]
+          athletes: [
+            { id: "athlete-2", content: "Alex Megos" },
+            { id: "athlete-1", content: "Adam Ondra" }
+          ]
         },
         "column-2": {
-          id: "column-2",
           title: "Isolation Zone",
-          athleteIds: ["athlete-3"]
+          athletes: [{ id: "athlete-3", content: "Margo Hayes" }]
         }
       },
       columnOrder: ["column-1", "column-2"]

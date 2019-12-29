@@ -4,24 +4,27 @@ import { DragDropContext } from "react-beautiful-dnd";
 import update from "immutability-helper";
 
 export function newStateOnDragEnd(oldState, result) {
-  const { destination, source, draggableId } = result;
+  const { destination, source } = result;
   if (!destination) return oldState;
 
-  // remove droppable from source column
+  // fetch athlete
+  const athlete = oldState.columns[source.droppableId].athletes[source.index];
+
+  // remove athlete from source column
   let newState = oldState;
   newState = update(newState, {
     columns: {
       [source.droppableId]: {
-        athleteIds: { $splice: [[source.index, 1]] }
+        athletes: { $splice: [[source.index, 1]] }
       }
     }
   });
 
-  // insert droppable into target column
+  // insert athlete into target column
   newState = update(newState, {
     columns: {
       [destination.droppableId]: {
-        athleteIds: { $splice: [[destination.index, 0, draggableId]] }
+        athletes: { $splice: [[destination.index, 0, athlete]] }
       }
     }
   });
@@ -31,21 +34,17 @@ export function newStateOnDragEnd(oldState, result) {
 
 class KnownResults extends React.Component {
   state = {
-    athletes: {
-      "athlete-1": { id: "athlete-1", content: "Adam Ondra" },
-      "athlete-2": { id: "athlete-2", content: "Alex Megos" },
-      "athlete-3": { id: "athlete-3", content: "Margo Hayes" }
-    },
     columns: {
       "column-1": {
-        id: "column-1",
         title: "Speed Round",
-        athleteIds: ["athlete-1", "athlete-2"]
+        athletes: [
+          { id: "athlete-1", content: "Adam Ondra" },
+          { id: "athlete-2", content: "Alex Megos" }
+        ]
       },
       "column-2": {
-        id: "column-2",
         title: "Isolation Zone",
-        athleteIds: ["athlete-3"]
+        athletes: [{ id: "athlete-3", content: "Margo Hayes" }]
       }
     },
     columnOrder: ["column-1", "column-2"]
@@ -61,11 +60,9 @@ class KnownResults extends React.Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         {this.state.columnOrder.map(columnId => {
           const column = this.state.columns[columnId];
-          const athletes = column.athleteIds.map(
-            athleteId => this.state.athletes[athleteId]
+          return (
+            <Column key={columnId} droppableId={columnId} column={column} />
           );
-
-          return <Column key={column.id} column={column} athletes={athletes} />;
         })}
       </DragDropContext>
     );

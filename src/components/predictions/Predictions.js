@@ -13,15 +13,17 @@ class Predictions extends React.Component {
     return (
       <table>
         <thead>
-          {Object.keys(this.state.columns).map(name => (
-            <th>{name}</th>
-          ))}
+          <tr>
+            {Object.keys(this.state.columns).map((name, index) => (
+              <th key={index}>{name}</th>
+            ))}
+          </tr>
         </thead>
         <tbody>
-          {this.state.rows.map(row => (
-            <tr>
-              {row.map(column => (
-                <td>{column}</td>
+          {this.state.rows.map((row, index) => (
+            <tr key={index}>
+              {row.map((column, index_) => (
+                <td key={index_}>{column}</td>
               ))}
             </tr>
           ))}
