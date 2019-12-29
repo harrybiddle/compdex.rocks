@@ -1,6 +1,33 @@
 import React from "react";
 import Column from "../column/Column";
 import { DragDropContext } from "react-beautiful-dnd";
+import update from "immutability-helper";
+
+export function newStateOnDragEnd(oldState, result) {
+  const { destination, source, draggableId } = result;
+  if (!destination) return oldState;
+
+  // remove droppable from source column
+  let newState = oldState;
+  newState = update(newState, {
+    columns: {
+      [source.droppableId]: {
+        athleteIds: { $splice: [[source.index, 1]] }
+      }
+    }
+  });
+
+  // insert droppable into target column
+  newState = update(newState, {
+    columns: {
+      [destination.droppableId]: {
+        athleteIds: { $splice: [[destination.index, 0, draggableId]] }
+      }
+    }
+  });
+
+  return newState;
+}
 
 class KnownResults extends React.Component {
   state = {
@@ -24,39 +51,8 @@ class KnownResults extends React.Component {
     columnOrder: ["column-1", "column-2"]
   };
 
-  duplicateColumn = columnId => {
-    const column = this.state.columns[columnId];
-    const athleteIds = Array.from(column.athleteIds);
-    return {
-      ...column,
-      athleteIds: athleteIds
-    };
-  };
-
   onDragEnd = result => {
-    const { destination, source, draggableId } = result;
-    if (!destination) return;
-
-    // remove droppable from source column
-    const sourceColumn = this.duplicateColumn(source.droppableId);
-    sourceColumn.athleteIds.splice(source.index, 1);
-
-    // insert droppable into target column
-    const isReorder = source.droppableId === destination.droppableId;
-    const destinationColumn = isReorder
-      ? sourceColumn
-      : this.duplicateColumn(destination.droppableId);
-    destinationColumn.athleteIds.splice(destination.index, 0, draggableId);
-
-    // return updated state
-    const newState = {
-      ...this.state,
-      columns: {
-        ...this.state.columns,
-        [source.droppableId]: sourceColumn,
-        [destination.droppableId]: destinationColumn
-      }
-    };
+    const newState = newStateOnDragEnd(this.state, result);
     this.setState(newState);
   };
 
