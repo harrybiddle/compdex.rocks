@@ -822,9 +822,10 @@ it("compute score is correct", () => {
 });
 
 describe("probabilities for two athletes", () => {
-  const athletes = new Set(["Eve", "Sue"]);
+  const countback = ["Eve", "Sue"];
+  const athletes = new Set(countback);
   it("should be correct for no completed rounds", () => {
-    expect(probabilities(athletes)).toEqual({
+    expect(probabilities(athletes, countback)).toEqual({
       Sue: [0.5, 0.5],
       Eve: [0.5, 0.5]
     });
@@ -843,7 +844,7 @@ describe("probabilities for two athletes", () => {
         EVE wins - SUE wins - EVE wins  : EVE wins
     */
     const speedRound = ["Eve", "Sue"];
-    expect(probabilities(athletes, speedRound)).toEqual({
+    expect(probabilities(athletes, countback, speedRound)).toEqual({
       Sue: [0.25, 0.75],
       Eve: [0.75, 0.25]
     });
@@ -853,7 +854,9 @@ describe("probabilities for two athletes", () => {
     /* Eve is guaranteed to win the competition */
     const speedRound = ["Eve", "Sue"];
     const boulderRound = ["Eve", "Sue"];
-    expect(probabilities(athletes, speedRound, boulderRound)).toEqual({
+    expect(
+      probabilities(athletes, countback, speedRound, boulderRound)
+    ).toEqual({
       Sue: [0.0, 1.0],
       Eve: [1.0, 0.0]
     });
@@ -863,7 +866,9 @@ describe("probabilities for two athletes", () => {
     /* Its down to whoever wins the final round! */
     const speedRound = ["Eve", "Sue"];
     const boulderRound = ["Sue", "Eve"];
-    expect(probabilities(athletes, speedRound, boulderRound)).toEqual({
+    expect(
+      probabilities(athletes, countback, speedRound, boulderRound)
+    ).toEqual({
       Sue: [0.5, 0.5],
       Eve: [0.5, 0.5]
     });
@@ -901,7 +906,13 @@ describe("probabilities for two athletes", () => {
       () => {
         const k = finishOrdersInWhichEveWinsOverall[i];
         expect(
-          probabilities(athletes, k.speedRound, k.boulderRound, k.leadRound)
+          probabilities(
+            athletes,
+            countback,
+            k.speedRound,
+            k.boulderRound,
+            k.leadRound
+          )
         ).toEqual({
           Eve: [1.0, 0.0],
           Sue: [0.0, 1.0]
@@ -911,13 +922,22 @@ describe("probabilities for two athletes", () => {
   }
 });
 
-/*
-describe("probabilities for three athletes", () => {
-  const athletes = new Set(["Eve", "Sue", "Ada"]);
-  it("equal at start of competition", () => {
-    const probabilties = probabilities(athletes);
-    expect(probabilties.Sue).toEqual(probabilties.Eve);
-    expect(probabilties.Sue).toEqual(probabilties.Ada);
+it("in a tie scenario, the athlete with the higher countback is more likely to win", () => {
+  const countback = ["Sue", "Eve", "Ada"];
+  const athletes = new Set(["Eve", "Ada", "Sue"]);
+
+  // in this scenario, all athletes end with a score of 6
+  expect(
+    probabilities(
+      athletes,
+      countback,
+      ["Eve", "Sue", "Ada"],
+      ["Ada", "Eve", "Sue"],
+      ["Sue", "Ada", "Eve"]
+    )
+  ).toEqual({
+    Sue: [1.0, 0.0, 0.0],
+    Eve: [0.0, 1.0, 0.0],
+    Ada: [0.0, 0.0, 1.0]
   });
 });
- */

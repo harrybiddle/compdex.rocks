@@ -74,6 +74,7 @@ export function computeScore(
 
 export function probabilities(
   athletes,
+  countback,
   speedRound = [],
   boulderRound = [],
   leadRound = []
@@ -101,7 +102,17 @@ export function probabilities(
         finishOrder.round3
       )
     ]);
-    finalOrder.sort((a, b) => a[1] - b[1]);
+    console.log(finalOrder);
+    finalOrder.sort((a, b) => {
+      if (a[1] == b[1]) {
+        // athlete with lower countback wins
+        return Math.sign(countback.indexOf(a[0]) - countback.indexOf(b[0]));
+      } else {
+        // athlete with higher score wins
+        return Math.sign(a[1] - b[1]);
+      }
+    });
+    console.log(finalOrder);
 
     // record the finishing index of every athlete
     for (let finishIndex = 0; finishIndex < numberAthletes; finishIndex++) {
