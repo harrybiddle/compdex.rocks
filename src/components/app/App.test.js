@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App, { newStateOnDragEnd } from "./App";
+import App, { constructColumns, newStateOnDragEnd } from "./App";
 
 it("renders without crashing", () => {
   const div = document.createElement("div");
@@ -10,80 +10,86 @@ it("renders without crashing", () => {
 
 describe("dragging athletes", () => {
   const oldState = {
-    columns: {
-      "column-1": {
-        title: "Speed Round",
-        athletes: [
-          { id: "athlete-1", content: "Adam Ondra" },
-          { id: "athlete-2", content: "Alex Megos" }
-        ]
-      },
-      "column-2": {
-        title: "Isolation Zone",
-        athletes: [{ id: "athlete-3", content: "Margo Hayes" }]
-      }
+    athletes: {
+      athlete1: { name: "Adam Ondra" },
+      athlete2: { name: "Alex Megos" },
+      athlete3: { name: "Margo Hayes" }
     },
-    columnOrder: ["column-1", "column-2"]
+    speedRound: ["athlete1", "athlete2", "athlete3"],
+    boulderRound: ["athlete3", "athlete2"],
+    leadRound: []
   };
 
   it("removes the athlete from the source column and adds them to the destination when the columns are different", () => {
     const result = {
-      draggableId: "athlete-3",
       source: {
-        index: 0,
-        droppableId: "column-2"
+        droppableId: "isolationZone",
+        index: 0 // athlete1 (the only one in the isolation zone)
       },
       destination: {
-        droppableId: "column-1",
+        droppableId: "boulderRound",
         index: 1
       }
     };
     expect(newStateOnDragEnd(oldState, result)).toEqual({
-      columns: {
-        "column-1": {
-          title: "Speed Round",
-          athletes: [
-            { id: "athlete-1", content: "Adam Ondra" },
-            { id: "athlete-3", content: "Margo Hayes" },
-            { id: "athlete-2", content: "Alex Megos" }
-          ]
-        },
-        "column-2": {
-          title: "Isolation Zone",
-          athletes: []
-        }
-      },
-      columnOrder: ["column-1", "column-2"]
+      ...oldState,
+      boulderRound: ["athlete3", "athlete1", "athlete2"]
     });
   });
 
   it("removes the athlete from the source column and adds them to the destination when the columns are the same", () => {
     const result = {
-      draggableId: "athlete-1",
       source: {
-        index: 0,
-        droppableId: "column-1"
+        droppableId: "boulderRound",
+        index: 0
       },
       destination: {
-        droppableId: "column-1",
+        droppableId: "boulderRound",
         index: 1
       }
     };
     expect(newStateOnDragEnd(oldState, result)).toEqual({
-      columns: {
-        "column-1": {
-          title: "Speed Round",
-          athletes: [
-            { id: "athlete-2", content: "Alex Megos" },
-            { id: "athlete-1", content: "Adam Ondra" }
-          ]
-        },
-        "column-2": {
-          title: "Isolation Zone",
-          athletes: [{ id: "athlete-3", content: "Margo Hayes" }]
-        }
-      },
-      columnOrder: ["column-1", "column-2"]
+      ...oldState,
+      boulderRound: ["athlete2", "athlete3"]
     });
+  });
+});
+
+it("constructs props for KnownResults correctly", () => {
+  const state = {
+    athletes: {
+      athlete1: { name: "Adam Ondra" },
+      athlete2: { name: "Alex Megos" },
+      athlete3: { name: "Margo Hayes" }
+    },
+    speedRound: ["athlete1", "athlete2", "athlete3"],
+    boulderRound: ["athlete3", "athlete2"],
+    leadRound: []
+  };
+
+  expect(constructColumns(state)).toEqual({
+    speedRound: {
+      title: "Speed Round",
+      athletes: [
+        { id: "speedRound-athlete1", content: "Adam Ondra" },
+        { id: "speedRound-athlete2", content: "Alex Megos" },
+        { id: "speedRound-athlete3", content: "Margo Hayes" }
+      ]
+    },
+    boulderRound: {
+      title: "Boulder Round",
+      athletes: [
+        { id: "boulderRound-athlete3", content: "Margo Hayes" },
+        { id: "boulderRound-athlete2", content: "Alex Megos" }
+      ]
+    },
+    leadRound: {
+      title: "Lead Round",
+      athletes: []
+    },
+    isolationZone: {
+      title: "Isolation Zone",
+      athletes: [{ id: "boulderRound-athlete1", content: "Adam Ondra" }]
+    }
   });
 });

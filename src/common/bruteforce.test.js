@@ -842,8 +842,8 @@ describe("probabilities for two athletes", () => {
         EVE wins - EVE wins - EVE wins  : EVE wins
         EVE wins - SUE wins - EVE wins  : EVE wins
     */
-    const knownOrderRoundOne = ["Eve", "Sue"];
-    expect(probabilities(athletes, knownOrderRoundOne)).toEqual({
+    const speedRound = ["Eve", "Sue"];
+    expect(probabilities(athletes, speedRound)).toEqual({
       Sue: [0.25, 0.75],
       Eve: [0.75, 0.25]
     });
@@ -851,11 +851,9 @@ describe("probabilities for two athletes", () => {
 
   it("probabilities correct when eve wins rounds one and two", () => {
     /* Eve is guaranteed to win the competition */
-    const knownOrderRoundOne = ["Eve", "Sue"];
-    const knownOrderRoundTwo = ["Eve", "Sue"];
-    expect(
-      probabilities(athletes, knownOrderRoundOne, knownOrderRoundTwo)
-    ).toEqual({
+    const speedRound = ["Eve", "Sue"];
+    const boulderRound = ["Eve", "Sue"];
+    expect(probabilities(athletes, speedRound, boulderRound)).toEqual({
       Sue: [0.0, 1.0],
       Eve: [1.0, 0.0]
     });
@@ -863,11 +861,9 @@ describe("probabilities for two athletes", () => {
 
   it("probabilities correct when eve wins round one but loses round two", () => {
     /* Its down to whoever wins the final round! */
-    const knownOrderRoundOne = ["Eve", "Sue"];
-    const knownOrderRoundTwo = ["Sue", "Eve"];
-    expect(
-      probabilities(athletes, knownOrderRoundOne, knownOrderRoundTwo)
-    ).toEqual({
+    const speedRound = ["Eve", "Sue"];
+    const boulderRound = ["Sue", "Eve"];
+    expect(probabilities(athletes, speedRound, boulderRound)).toEqual({
       Sue: [0.5, 0.5],
       Eve: [0.5, 0.5]
     });
@@ -875,24 +871,24 @@ describe("probabilities for two athletes", () => {
 
   const finishOrdersInWhichEveWinsOverall = [
     {
-      knownOrderRoundOne: ["Sue", "Eve"],
-      knownOrderRoundTwo: ["Eve", "Sue"],
-      knownOrderRoundThree: ["Eve", "Sue"]
+      speedRound: ["Sue", "Eve"],
+      boulderRound: ["Eve", "Sue"],
+      leadRound: ["Eve", "Sue"]
     },
     {
-      knownOrderRoundOne: ["Eve", "Sue"],
-      knownOrderRoundTwo: ["Eve", "Sue"],
-      knownOrderRoundThree: ["Sue", "Eve"]
+      speedRound: ["Eve", "Sue"],
+      boulderRound: ["Eve", "Sue"],
+      leadRound: ["Sue", "Eve"]
     },
     {
-      knownOrderRoundOne: ["Eve", "Sue"],
-      knownOrderRoundTwo: ["Eve", "Sue"],
-      knownOrderRoundThree: ["Eve", "Sue"]
+      speedRound: ["Eve", "Sue"],
+      boulderRound: ["Eve", "Sue"],
+      leadRound: ["Eve", "Sue"]
     },
     {
-      knownOrderRoundOne: ["Eve", "Sue"],
-      knownOrderRoundTwo: ["Sue", "Eve"],
-      knownOrderRoundThree: ["Eve", "Sue"]
+      speedRound: ["Eve", "Sue"],
+      boulderRound: ["Sue", "Eve"],
+      leadRound: ["Eve", "Sue"]
     }
   ];
   for (let i = 0; i < finishOrdersInWhichEveWinsOverall.length; i++) {
@@ -905,12 +901,7 @@ describe("probabilities for two athletes", () => {
       () => {
         const k = finishOrdersInWhichEveWinsOverall[i];
         expect(
-          probabilities(
-            athletes,
-            k.knownOrderRoundOne,
-            k.knownOrderRoundTwo,
-            k.knownOrderRoundThree
-          )
+          probabilities(athletes, k.speedRound, k.boulderRound, k.leadRound)
         ).toEqual({
           Eve: [1.0, 0.0],
           Sue: [0.0, 1.0]

@@ -1,8 +1,8 @@
 export function* possibleFinishOrders(
   athletes,
-  knownOrderRoundOne = [],
-  knownOrderRoundTwo = [],
-  knownOrderRoundThree = []
+  speedRound = [],
+  boulderRound = [],
+  leadRound = []
 ) {
   // a function to compute permutations
   // from https://stackoverflow.com/a/20871714/1809078
@@ -35,19 +35,16 @@ export function* possibleFinishOrders(
 
   // iterate over all permutations
   for (let finishOrderRoundOne of permutationsOf(athletes)) {
-    if (
-      !knownOrderRoundOne ||
-      finishOrderIsPossible(finishOrderRoundOne, knownOrderRoundOne)
-    ) {
+    if (!speedRound || finishOrderIsPossible(finishOrderRoundOne, speedRound)) {
       for (let finishOrderRoundTwo of permutationsOf(athletes)) {
         if (
-          !knownOrderRoundTwo ||
-          finishOrderIsPossible(finishOrderRoundTwo, knownOrderRoundTwo)
+          !boulderRound ||
+          finishOrderIsPossible(finishOrderRoundTwo, boulderRound)
         ) {
           for (let finishOrderRoundThree of permutationsOf(athletes)) {
             if (
-              !knownOrderRoundThree ||
-              finishOrderIsPossible(finishOrderRoundThree, knownOrderRoundThree)
+              !leadRound ||
+              finishOrderIsPossible(finishOrderRoundThree, leadRound)
             ) {
               yield {
                 round1: finishOrderRoundOne,
@@ -77,9 +74,9 @@ export function computeScore(
 
 export function probabilities(
   athletes,
-  knownOrderRoundOne = [],
-  knownOrderRoundTwo = [],
-  knownOrderRoundThree = []
+  speedRound = [],
+  boulderRound = [],
+  leadRound = []
 ) {
   const numberAthletes = athletes.size;
   const counts = {};
@@ -90,9 +87,9 @@ export function probabilities(
   let numberScenarios = 0;
   for (let finishOrder of possibleFinishOrders(
     athletes,
-    knownOrderRoundOne,
-    knownOrderRoundTwo,
-    knownOrderRoundThree
+    speedRound,
+    boulderRound,
+    leadRound
   )) {
     // order athletes by their final score
     const finalOrder = Array.from(athletes.values()).map(athlete => [
