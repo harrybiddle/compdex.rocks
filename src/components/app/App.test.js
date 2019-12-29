@@ -1,6 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App, { newStateOnDragEnd } from "./App";
+import App, {
+  constructColumns,
+  newStateOnDragEnd,
+  predictionsProps
+} from "./App";
 
 it("renders without crashing", () => {
   const div = document.createElement("div");
@@ -8,82 +12,133 @@ it("renders without crashing", () => {
   ReactDOM.unmountComponentAtNode(div);
 });
 
+it("predictions props are constructed", () => {
+  const state = {
+    athletes: {
+      athlete1: { name: "Adam Ondra" },
+      athlete2: { name: "Alex Megos" },
+      athlete3: { name: "Margo Hayes" }
+    },
+    speed: ["athlete1", "athlete2", "athlete3"],
+    boulder: ["athlete3", "athlete2"],
+    lead: []
+  };
+
+  console.log(predictionsProps(state));
+});
+
 describe("dragging athletes", () => {
   const oldState = {
-    columns: {
-      "column-1": {
-        title: "Speed Round",
-        athletes: [
-          { id: "athlete-1", content: "Adam Ondra" },
-          { id: "athlete-2", content: "Alex Megos" }
-        ]
-      },
-      "column-2": {
-        title: "Isolation Zone",
-        athletes: [{ id: "athlete-3", content: "Margo Hayes" }]
-      }
+    athletes: {
+      athlete1: { name: "Adam Ondra" },
+      athlete2: { name: "Alex Megos" },
+      athlete3: { name: "Margo Hayes" }
     },
-    columnOrder: ["column-1", "column-2"]
+    speed: ["athlete1", "athlete2", "athlete3"],
+    boulder: ["athlete3", "athlete2"],
+    lead: []
   };
 
   it("removes the athlete from the source column and adds them to the destination when the columns are different", () => {
     const result = {
-      draggableId: "athlete-3",
       source: {
-        index: 0,
-        droppableId: "column-2"
+        droppableId: "isolation",
+        index: 0 // athlete1 (the only one in the isolation zone)
       },
       destination: {
-        droppableId: "column-1",
+        droppableId: "boulder",
         index: 1
       }
     };
     expect(newStateOnDragEnd(oldState, result)).toEqual({
-      columns: {
-        "column-1": {
-          title: "Speed Round",
-          athletes: [
-            { id: "athlete-1", content: "Adam Ondra" },
-            { id: "athlete-3", content: "Margo Hayes" },
-            { id: "athlete-2", content: "Alex Megos" }
-          ]
-        },
-        "column-2": {
-          title: "Isolation Zone",
-          athletes: []
-        }
-      },
-      columnOrder: ["column-1", "column-2"]
+      ...oldState,
+      boulder: ["athlete3", "athlete1", "athlete2"]
     });
   });
 
   it("removes the athlete from the source column and adds them to the destination when the columns are the same", () => {
     const result = {
-      draggableId: "athlete-1",
       source: {
-        index: 0,
-        droppableId: "column-1"
+        droppableId: "boulder",
+        index: 0
       },
       destination: {
-        droppableId: "column-1",
+        droppableId: "boulder",
         index: 1
       }
     };
     expect(newStateOnDragEnd(oldState, result)).toEqual({
-      columns: {
-        "column-1": {
-          title: "Speed Round",
-          athletes: [
-            { id: "athlete-2", content: "Alex Megos" },
-            { id: "athlete-1", content: "Adam Ondra" }
-          ]
-        },
-        "column-2": {
-          title: "Isolation Zone",
-          athletes: [{ id: "athlete-3", content: "Margo Hayes" }]
-        }
-      },
-      columnOrder: ["column-1", "column-2"]
+      ...oldState,
+      boulder: ["athlete2", "athlete3"]
     });
+  });
+});
+
+it("constructs props for KnownResults correctly", () => {
+  const state = {
+    athletes: {
+      athlete1: { name: "Adam Ondra" },
+      athlete2: { name: "Alex Megos" },
+      athlete3: { name: "Margo Hayes" }
+    },
+    speed: ["athlete1", "athlete2", "athlete3"],
+    boulder: ["athlete3", "athlete2"],
+    lead: []
+  };
+
+  expect(constructColumns(state)).toEqual({
+    speed: {
+      title: "Speed Round",
+      zone: "speed",
+      athletes: [
+        {
+          draggableId: "speed-athlete1",
+          athleteId: "athlete1",
+          content: "Adam Ondra"
+        },
+        {
+          draggableId: "speed-athlete2",
+          athleteId: "athlete2",
+          content: "Alex Megos"
+        },
+        {
+          draggableId: "speed-athlete3",
+          athleteId: "athlete3",
+          content: "Margo Hayes"
+        }
+      ]
+    },
+    boulder: {
+      title: "Boulder Round",
+      zone: "boulder",
+      athletes: [
+        {
+          draggableId: "boulder-athlete3",
+          athleteId: "athlete3",
+          content: "Margo Hayes"
+        },
+        {
+          draggableId: "boulder-athlete2",
+          athleteId: "athlete2",
+          content: "Alex Megos"
+        }
+      ]
+    },
+    lead: {
+      title: "Lead Round",
+      zone: "lead",
+      athletes: []
+    },
+    isolation: {
+      title: "Isolation Zone",
+      zone: "isolation",
+      athletes: [
+        {
+          draggableId: "boulder-athlete1",
+          athleteId: "athlete1",
+          content: "Adam Ondra"
+        }
+      ]
+    }
   });
 });
