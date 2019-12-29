@@ -112,7 +112,6 @@ export function probabilities(
         return Math.sign(a[1] - b[1]);
       }
     });
-    console.log(finalOrder);
 
     // record the finishing index of every athlete
     for (let finishIndex = 0; finishIndex < numberAthletes; finishIndex++) {
