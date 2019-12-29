@@ -911,6 +911,7 @@ describe("probabilities for two athletes", () => {
   }
 });
 
+/*
 describe("probabilities for three athletes", () => {
   const athletes = new Set(["Eve", "Sue", "Ada"]);
   it("equal at start of competition", () => {
@@ -919,3 +920,4 @@ describe("probabilities for three athletes", () => {
     expect(probabilties.Sue).toEqual(probabilties.Ada);
   });
 });
+ */
