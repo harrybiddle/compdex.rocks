@@ -21,8 +21,9 @@ const stageTitle = {
 };
 
 export function constructColumn(state, stage) {
-  const constructDraggable = athleteId => ({
-    draggable: true,
+  const constructItem = (athleteId, isRanked) => ({
+    isRanked: isRanked,
+    isDragDisabled: false,
     draggableId: stage + "-" + athleteId,
     athleteId: athleteId,
     content: state.athletes[athleteId].name
@@ -33,22 +34,25 @@ export function constructColumn(state, stage) {
   let column = {
     title: stageTitle[stage],
     stage: "speed",
-    athletes: rankedAthleteIds.map(constructDraggable)
+    items: rankedAthleteIds.map(athleteId => constructItem(athleteId, true))
   };
 
-  // push the dividing line
-  column.athletes.push({
-    isDividingLine: true,
-    draggable: false,
-    content: "----------------"
+  // add an empty item
+  column.items.push({
+    isRanked: false,
+    isDragDisabled: true,
+    draggableId: stage + "-divider",
+    athleteId: "divider",
+    isDivider: true,
+    content: "-----------"
   });
 
   // push all unranked athletes
   const allAthleteIds = Object.keys(state.athletes);
-  allAthleteIds.map(athleteId => {
+  allAthleteIds.forEach(athleteId => {
     const isRanked = rankedAthleteIds.includes(athleteId);
     if (!isRanked) {
-      column.athletes.push(constructDraggable(athleteId));
+      column.items.push(constructItem(athleteId, false));
     }
   });
   return column;
@@ -75,15 +79,7 @@ class App extends React.Component {
           onDragEnd={result =>
             this.setState(newStateOnDragEnd(this.state, result))
           }
-          columns={{
-            [stage.QUALIFICATION]: constructColumn(
-              this.state,
-              stage.QUALIFICATION
-            ),
-            [stage.SPEED]: constructColumn(this.state, stage.SPEED),
-            [stage.BOULDER]: constructColumn(this.state, stage.BOULDER),
-            [stage.LEAD]: constructColumn(this.state, stage.LEAD)
-          }}
+          columns={constructColumns(this.state)}
           columnOrder={[
             stage.QUALIFICATION,
             stage.SPEED,
@@ -96,6 +92,14 @@ class App extends React.Component {
   }
 }
 
+function constructColumns(state) {
+  return {
+    [stage.QUALIFICATION]: constructColumn(state, stage.QUALIFICATION),
+    [stage.SPEED]: constructColumn(state, stage.SPEED),
+    [stage.BOULDER]: constructColumn(state, stage.BOULDER),
+    [stage.LEAD]: constructColumn(state, stage.LEAD)
+  };
+}
 export function predictionsProps(state) {
   function* headers(length) {
     yield "1st";
@@ -122,46 +126,49 @@ export function predictionsProps(state) {
   };
 }
 
-export function rankingsProps(state) {
-  return;
-}
+export function newStateOnDragEnd(state, result) {
+  console.log(result);
 
-export function newStateOnDragEnd(oldState, result) {
+  // ignore drags with no destination
   const { destination, source } = result;
-  if (!destination) return oldState;
+  if (!destination) return state;
 
-  // only allow certain drags
-  const columns = rankingsProps(oldState);
-  const sourceStage = columns[source.droppableId].stage;
-  const destinationStage = columns[destination.droppableId].stage;
-  const isReorder = sourceStage === destinationStage;
-  const dragAllowed =
-    isReorder ||
-    sourceStage === stage.ISOLATION ||
-    destinationStage === stage.ISOLATION;
-  if (!dragAllowed) {
-    return oldState;
+  // ignore drags between stages
+  const columns = constructColumns(state);
+  if (source.droppableId !== destination.droppableId) {
+    return state;
   }
 
-  // remove athlete from source, if it is not the isolation stage
-  let newState = oldState;
-  if (sourceStage !== stage.ISOLATION) {
-    newState = update(newState, {
-      [sourceStage]: { $splice: [[source.index, 1]] }
+  // do not allow the dividing line to be dragged
+  const stage = source.droppableId;
+  const column = columns[stage];
+  let dividerIndex = column.items.findIndex(item => item.isDivider);
+  if (source.index === dividerIndex) return state;
+
+  // remove athlete from source, if they were already ranked
+  const wasRanked = source.index < dividerIndex;
+  if (wasRanked) {
+    state = update(state, {
+      [stage]: { $splice: [[source.index, 1]] }
     });
+    dividerIndex--;
   }
 
-  // insert athlete into target, if it is not the isolation stage
-  const athlete = columns[source.droppableId].athletes[source.index];
-  if (destinationStage !== stage.ISOLATION) {
-    newState = update(newState, {
-      [destinationStage]: {
-        $splice: [[destination.index, 0, athlete.athleteId]]
+  // insert athlete into destination, if they are now ranked
+  const athleteId = column.items[source.index].athleteId;
+  const willBeRanked = destination.index <= dividerIndex;
+  console.log("willBeRanked" + willBeRanked);
+  console.log("destination.index" + destination.index);
+  console.log("dividerIndex" + dividerIndex);
+  if (willBeRanked) {
+    state = update(state, {
+      [stage]: {
+        $splice: [[destination.index, 0, athleteId]]
       }
     });
   }
 
-  return newState;
+  return state;
 }
 
 export default App;

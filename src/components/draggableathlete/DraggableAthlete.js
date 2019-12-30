@@ -7,14 +7,21 @@ export default class DraggableAthlete extends React.Component {
       <Draggable
         draggableId={this.props.athlete.draggableId}
         index={this.props.index}
+        isDragDisabled={this.props.isDragDisabled}
       >
         {provided => (
           <div
             {...provided.draggableProps}
-            {...provided.dragHandleProps} // make whole div draggable
+            {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            {this.props.athlete.content}
+            <div
+              style={
+                this.props.isRanked ? { color: "black" } : { color: "grey" }
+              }
+            >
+              {this.props.athlete.content}
+            </div>
           </div>
         )}
       </Draggable>

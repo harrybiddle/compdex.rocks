@@ -10,9 +10,11 @@ export default class Column extends React.Component {
         <Droppable droppableId={this.props.droppableId}>
           {provided => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              {this.props.column.athletes.map((athlete, index) => (
+              {this.props.column.items.map((athlete, index) => (
                 <DraggableAthlete
                   key={athlete.draggableId}
+                  isDragDisabled={athlete.isDragDisabled}
+                  isRanked={athlete.isRanked}
                   athlete={athlete}
                   index={index}
                 />

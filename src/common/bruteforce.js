@@ -103,7 +103,7 @@ export function probabilities(
       )
     ]);
     finalOrder.sort((a, b) => {
-      if (a[1] == b[1]) {
+      if (a[1] === b[1]) {
         // athlete with lower countback wins
         return Math.sign(countback.indexOf(a[0]) - countback.indexOf(b[0]));
       } else {
