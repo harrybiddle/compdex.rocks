@@ -1,0 +1,23 @@
+name: Deploy
+
+on: 
+  push:
+    branches: [master]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 13.1.0
+    - run: yarn build
+    - name: Deploy to GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v1.2.5
+      with:
+        target_branch: master
+        build_dir: build/
