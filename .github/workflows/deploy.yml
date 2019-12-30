@@ -19,6 +19,8 @@ jobs:
     - run: yarn build
     - name: Deploy to GitHub Pages
       uses: crazy-max/ghaction-github-pages@v1.2.5
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_PAT }}      
       with:
         target_branch: master
         build_dir: build/
