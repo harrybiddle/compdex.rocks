@@ -6,21 +6,55 @@ import Predictions from "../predictions/Predictions";
 import update from "immutability-helper";
 import { probabilities } from "../../common/bruteforce";
 
-const stage = {
+const stages = {
   QUALIFICATION: "qualification",
   SPEED: "speed",
   BOULDER: "boulder",
   LEAD: "lead"
 };
 
-const stageTitle = {
-  [stage.QUALIFICATION]: "Qualification",
-  [stage.SPEED]: "Speed Stage",
-  [stage.BOULDER]: "Boulder Stage",
-  [stage.LEAD]: "Lead Stage"
-};
+class App extends React.Component {
+  state = {
+    athletes: {
+      athlete1: { name: "Adam Ondra" },
+      athlete2: { name: "Alex Megos" },
+      athlete3: { name: "Margo Hayes" }
+    },
+    [stages.QUALIFICATION]: ["athlete1", "athlete2", "athlete3"],
+    [stages.SPEED]: ["athlete1", "athlete2"],
+    [stages.BOULDER]: [],
+    [stages.LEAD]: []
+  };
 
-export function constructColumn(state, stage) {
+  render() {
+    return (
+      <div>
+        <Predictions {...predictionsProps(this.state)} />
+        <Rankings
+          onDragEnd={result =>
+            this.setState(newStateOnDragEnd(this.state, result))
+          }
+          lists={constructLists(this.state)}
+          listOrder={[
+            stages.QUALIFICATION,
+            stages.SPEED,
+            stages.BOULDER,
+            stages.LEAD
+          ]}
+        />
+      </div>
+    );
+  }
+}
+
+export function constructList(state, stage) {
+  const stageTitles = {
+    [stages.QUALIFICATION]: "Qualification",
+    [stages.SPEED]: "Speed Stage",
+    [stages.BOULDER]: "Boulder Stage",
+    [stages.LEAD]: "Lead Stage"
+  };
+
   const constructItem = (athleteId, isRanked) => ({
     isRanked: isRanked,
     isDragDisabled: false,
@@ -29,16 +63,16 @@ export function constructColumn(state, stage) {
     content: state.athletes[athleteId].name
   });
 
-  // create column with all ranked athletes
+  // create list with all ranked athletes
   const rankedAthleteIds = state[stage];
-  let column = {
-    title: stageTitle[stage],
+  let list = {
+    title: stageTitles[stage],
     stage: "speed",
     items: rankedAthleteIds.map(athleteId => constructItem(athleteId, true))
   };
 
   // add an empty item
-  column.items.push({
+  list.items.push({
     isRanked: false,
     isDragDisabled: true,
     draggableId: stage + "-divider",
@@ -52,52 +86,18 @@ export function constructColumn(state, stage) {
   allAthleteIds.forEach(athleteId => {
     const isRanked = rankedAthleteIds.includes(athleteId);
     if (!isRanked) {
-      column.items.push(constructItem(athleteId, false));
+      list.items.push(constructItem(athleteId, false));
     }
   });
-  return column;
+  return list;
 }
 
-class App extends React.Component {
-  state = {
-    athletes: {
-      athlete1: { name: "Adam Ondra" },
-      athlete2: { name: "Alex Megos" },
-      athlete3: { name: "Margo Hayes" }
-    },
-    [stage.QUALIFICATION]: ["athlete1", "athlete2", "athlete3"],
-    [stage.SPEED]: ["athlete1", "athlete2"],
-    [stage.BOULDER]: [],
-    [stage.LEAD]: []
-  };
-
-  render() {
-    return (
-      <div>
-        <Predictions {...predictionsProps(this.state)} />
-        <Rankings
-          onDragEnd={result =>
-            this.setState(newStateOnDragEnd(this.state, result))
-          }
-          columns={constructColumns(this.state)}
-          columnOrder={[
-            stage.QUALIFICATION,
-            stage.SPEED,
-            stage.BOULDER,
-            stage.LEAD
-          ]}
-        />
-      </div>
-    );
-  }
-}
-
-function constructColumns(state) {
+function constructLists(state) {
   return {
-    [stage.QUALIFICATION]: constructColumn(state, stage.QUALIFICATION),
-    [stage.SPEED]: constructColumn(state, stage.SPEED),
-    [stage.BOULDER]: constructColumn(state, stage.BOULDER),
-    [stage.LEAD]: constructColumn(state, stage.LEAD)
+    [stages.QUALIFICATION]: constructList(state, stages.QUALIFICATION),
+    [stages.SPEED]: constructList(state, stages.SPEED),
+    [stages.BOULDER]: constructList(state, stages.BOULDER),
+    [stages.LEAD]: constructList(state, stages.LEAD)
   };
 }
 export function predictionsProps(state) {
@@ -117,32 +117,30 @@ export function predictionsProps(state) {
     rows: Object.entries(
       probabilities(
         new Set(athletes),
-        state[stage.QUALIFICATION],
-        state[stage.SPEED],
-        state[stage.BOULDER],
-        state[stage.LEAD]
+        state[stages.QUALIFICATION],
+        state[stages.SPEED],
+        state[stages.BOULDER],
+        state[stages.LEAD]
       )
     ).map(a => [state.athletes[a[0]].name].concat(a[1]))
   };
 }
 
 export function newStateOnDragEnd(state, result) {
-  console.log(result);
-
   // ignore drags with no destination
   const { destination, source } = result;
   if (!destination) return state;
 
   // ignore drags between stages
-  const columns = constructColumns(state);
+  const lists = constructLists(state);
   if (source.droppableId !== destination.droppableId) {
     return state;
   }
 
   // do not allow the dividing line to be dragged
   const stage = source.droppableId;
-  const column = columns[stage];
-  let dividerIndex = column.items.findIndex(item => item.isDivider);
+  const list = lists[stage];
+  let dividerIndex = list.items.findIndex(item => item.isDivider);
   if (source.index === dividerIndex) return state;
 
   // remove athlete from source, if they were already ranked
@@ -155,11 +153,8 @@ export function newStateOnDragEnd(state, result) {
   }
 
   // insert athlete into destination, if they are now ranked
-  const athleteId = column.items[source.index].athleteId;
+  const athleteId = list.items[source.index].athleteId;
   const willBeRanked = destination.index <= dividerIndex;
-  console.log("willBeRanked" + willBeRanked);
-  console.log("destination.index" + destination.index);
-  console.log("dividerIndex" + dividerIndex);
   if (willBeRanked) {
     state = update(state, {
       [stage]: {

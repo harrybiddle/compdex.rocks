@@ -1,11 +1,11 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 
-export default class DraggableAthlete extends React.Component {
+export default class ListItem extends React.Component {
   render() {
     return (
       <Draggable
-        draggableId={this.props.athlete.draggableId}
+        draggableId={this.props.draggableId}
         index={this.props.index}
         isDragDisabled={this.props.isDragDisabled}
       >
@@ -20,7 +20,7 @@ export default class DraggableAthlete extends React.Component {
                 this.props.isRanked ? { color: "black" } : { color: "grey" }
               }
             >
-              {this.props.athlete.content}
+              {this.props.content}
             </div>
           </div>
         )}

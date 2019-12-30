@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App, {
-  constructColumn,
+  constructList,
   rankingsProps,
   newStateOnDragEnd,
   predictionsProps
@@ -42,7 +42,7 @@ describe("dragging athletes", () => {
     lead: []
   };
 
-  it("removes the athlete from the source column and adds them to the destination when the columns are different", () => {
+  it("removes the athlete from the source list and adds them to the destination when the lists are different", () => {
     const result = {
       source: {
         droppableId: "isolation",
@@ -59,7 +59,7 @@ describe("dragging athletes", () => {
     });
   });
 
-  it("removes the athlete from the source column and adds them to the destination when the columns are the same", () => {
+  it("removes the athlete from the source list and adds them to the destination when the lists are the same", () => {
     const result = {
       source: {
         droppableId: "boulder",
@@ -77,7 +77,7 @@ describe("dragging athletes", () => {
   });
 });
 
-it("constructs column correctly", () => {
+it("constructs list correctly", () => {
   const state = {
     athletes: {
       athlete1: { name: "Adam Ondra" },
@@ -87,7 +87,7 @@ it("constructs column correctly", () => {
     speed: ["athlete1", "athlete3"]
   };
 
-  expect(constructColumn(state, "speed")).toEqual({
+  expect(constructList(state, "speed")).toEqual({
     title: "Speed Stage",
     stage: "speed",
     athletes: [
