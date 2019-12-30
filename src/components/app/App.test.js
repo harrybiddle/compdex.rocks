@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App, {
-  constructColumns,
+  constructColumn,
+  rankingsProps,
   newStateOnDragEnd,
   predictionsProps
 } from "./App";
@@ -45,7 +46,7 @@ describe("dragging athletes", () => {
     const result = {
       source: {
         droppableId: "isolation",
-        index: 0 // athlete1 (the only one in the isolation zone)
+        index: 0 // athlete1 (the only one in the isolation stage)
       },
       destination: {
         droppableId: "boulder",
@@ -76,6 +77,47 @@ describe("dragging athletes", () => {
   });
 });
 
+it("constructs column correctly", () => {
+  const state = {
+    athletes: {
+      athlete1: { name: "Adam Ondra" },
+      athlete2: { name: "Alex Megos" },
+      athlete3: { name: "Margo Hayes" }
+    },
+    speed: ["athlete1", "athlete3"]
+  };
+
+  expect(constructColumn(state, "speed")).toEqual({
+    title: "Speed Stage",
+    stage: "speed",
+    athletes: [
+      {
+        draggable: true,
+        draggableId: "speed-athlete1",
+        athleteId: "athlete1",
+        content: "Adam Ondra"
+      },
+      {
+        draggable: true,
+        draggableId: "speed-athlete3",
+        athleteId: "athlete3",
+        content: "Margo Hayes"
+      },
+      {
+        draggable: false,
+        isDividingLine: true,
+        content: "----------------"
+      },
+      {
+        draggable: true,
+        draggableId: "speed-athlete2",
+        athleteId: "athlete2",
+        content: "Alex Megos"
+      }
+    ]
+  });
+});
+
 it("constructs props for Rankings correctly", () => {
   const state = {
     athletes: {
@@ -89,10 +131,10 @@ it("constructs props for Rankings correctly", () => {
     lead: []
   };
 
-  expect(constructColumns(state)).toEqual({
+  expect(rankingsProps(state)).toEqual({
     speed: {
       title: "Speed Round",
-      zone: "speed",
+      stage: "speed",
       athletes: [
         {
           draggableId: "speed-athlete1",
@@ -113,7 +155,7 @@ it("constructs props for Rankings correctly", () => {
     },
     boulder: {
       title: "Boulder Round",
-      zone: "boulder",
+      stage: "boulder",
       athletes: [
         {
           draggableId: "boulder-athlete3",
@@ -129,12 +171,12 @@ it("constructs props for Rankings correctly", () => {
     },
     lead: {
       title: "Lead Round",
-      zone: "lead",
+      stage: "lead",
       athletes: []
     },
     isolation: {
-      title: "Isolation Zone",
-      zone: "isolation",
+      title: "Isolation Stage",
+      stage: "isolation",
       athletes: [
         {
           draggableId: "boulder-athlete1",
