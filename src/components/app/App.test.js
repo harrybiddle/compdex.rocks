@@ -19,12 +19,13 @@ it("predictions props are constructed", () => {
       athlete2: { name: "Alex Megos" },
       athlete3: { name: "Margo Hayes" }
     },
+    qualification: ["athlete1", "athlete2", "athlete3"],
     speed: ["athlete1", "athlete2", "athlete3"],
     boulder: ["athlete3", "athlete2"],
     lead: []
   };
 
-  console.log(predictionsProps(state));
+  predictionsProps(state); // does not crash
 });
 
 describe("dragging athletes", () => {
@@ -34,6 +35,7 @@ describe("dragging athletes", () => {
       athlete2: { name: "Alex Megos" },
       athlete3: { name: "Margo Hayes" }
     },
+    qualification: ["athlete1", "athlete2", "athlete3"],
     speed: ["athlete1", "athlete2", "athlete3"],
     boulder: ["athlete3", "athlete2"],
     lead: []
@@ -81,6 +83,7 @@ it("constructs props for KnownResults correctly", () => {
       athlete2: { name: "Alex Megos" },
       athlete3: { name: "Margo Hayes" }
     },
+    qualification: ["athlete1", "athlete2", "athlete3"],
     speed: ["athlete1", "athlete2", "athlete3"],
     boulder: ["athlete3", "athlete2"],
     lead: []

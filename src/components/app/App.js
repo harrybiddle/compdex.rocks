@@ -7,6 +7,7 @@ import update from "immutability-helper";
 import { probabilities } from "../../common/bruteforce";
 
 const zones = {
+  QUALIFICATION: "qualification",
   SPEED: "speed",
   BOULDER: "boulder",
   LEAD: "lead",
@@ -20,6 +21,7 @@ class App extends React.Component {
       athlete2: { name: "Alex Megos" },
       athlete3: { name: "Margo Hayes" }
     },
+    [zones.QUALIFICATION]: ["athlete1", "athlete2", "athlete3"],
     [zones.SPEED]: ["athlete1", "athlete2"],
     [zones.BOULDER]: [],
     [zones.LEAD]: []
@@ -63,6 +65,7 @@ export function predictionsProps(state) {
     rows: Object.entries(
       probabilities(
         new Set(athletes),
+        state[zones.QUALIFICATION],
         state[zones.SPEED],
         state[zones.BOULDER],
         state[zones.LEAD]

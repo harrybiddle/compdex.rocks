@@ -102,7 +102,6 @@ export function probabilities(
         finishOrder.round3
       )
     ]);
-    console.log(finalOrder);
     finalOrder.sort((a, b) => {
       if (a[1] == b[1]) {
         // athlete with lower countback wins
