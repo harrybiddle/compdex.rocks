@@ -1,10 +1,9 @@
-import React from "react";
 import "./App.css";
 import Rankings from "../rankings/Rankings";
 import Predictions from "../predictions/Predictions";
-
-import update from "immutability-helper";
 import { probabilities } from "../../common/bruteforce";
+import React from "react";
+import update from "immutability-helper";
 
 const stages = {
   QUALIFICATION: "qualification",

@@ -42,23 +42,6 @@ describe("dragging athletes", () => {
     lead: []
   };
 
-  it("removes the athlete from the source list and adds them to the destination when the lists are different", () => {
-    const result = {
-      source: {
-        droppableId: "isolation",
-        index: 0 // athlete1 (the only one in the isolation stage)
-      },
-      destination: {
-        droppableId: "boulder",
-        index: 1
-      }
-    };
-    expect(newStateOnDragEnd(oldState, result)).toEqual({
-      ...oldState,
-      boulder: ["athlete3", "athlete1", "athlete2"]
-    });
-  });
-
   it("removes the athlete from the source list and adds them to the destination when the lists are the same", () => {
     const result = {
       source: {
@@ -90,100 +73,36 @@ it("constructs list correctly", () => {
   expect(constructList(state, "speed")).toEqual({
     title: "Speed Stage",
     stage: "speed",
-    athletes: [
+    items: [
       {
-        draggable: true,
+        isRanked: true,
+        isDragDisabled: false,
         draggableId: "speed-athlete1",
         athleteId: "athlete1",
         content: "Adam Ondra"
       },
       {
-        draggable: true,
+        isRanked: true,
+        isDragDisabled: false,
         draggableId: "speed-athlete3",
         athleteId: "athlete3",
         content: "Margo Hayes"
       },
       {
-        draggable: false,
-        isDividingLine: true,
-        content: "----------------"
+        isRanked: false,
+        isDragDisabled: true,
+        athleteId: "divider",
+        draggableId: "speed-divider",
+        isDivider: true,
+        content: "-----------"
       },
       {
-        draggable: true,
+        isRanked: false,
+        isDragDisabled: false,
         draggableId: "speed-athlete2",
         athleteId: "athlete2",
         content: "Alex Megos"
       }
     ]
-  });
-});
-
-it("constructs props for Rankings correctly", () => {
-  const state = {
-    athletes: {
-      athlete1: { name: "Adam Ondra" },
-      athlete2: { name: "Alex Megos" },
-      athlete3: { name: "Margo Hayes" }
-    },
-    qualification: ["athlete1", "athlete2", "athlete3"],
-    speed: ["athlete1", "athlete2", "athlete3"],
-    boulder: ["athlete3", "athlete2"],
-    lead: []
-  };
-
-  expect(rankingsProps(state)).toEqual({
-    speed: {
-      title: "Speed Round",
-      stage: "speed",
-      athletes: [
-        {
-          draggableId: "speed-athlete1",
-          athleteId: "athlete1",
-          content: "Adam Ondra"
-        },
-        {
-          draggableId: "speed-athlete2",
-          athleteId: "athlete2",
-          content: "Alex Megos"
-        },
-        {
-          draggableId: "speed-athlete3",
-          athleteId: "athlete3",
-          content: "Margo Hayes"
-        }
-      ]
-    },
-    boulder: {
-      title: "Boulder Round",
-      stage: "boulder",
-      athletes: [
-        {
-          draggableId: "boulder-athlete3",
-          athleteId: "athlete3",
-          content: "Margo Hayes"
-        },
-        {
-          draggableId: "boulder-athlete2",
-          athleteId: "athlete2",
-          content: "Alex Megos"
-        }
-      ]
-    },
-    lead: {
-      title: "Lead Round",
-      stage: "lead",
-      athletes: []
-    },
-    isolation: {
-      title: "Isolation Stage",
-      stage: "isolation",
-      athletes: [
-        {
-          draggableId: "boulder-athlete1",
-          athleteId: "athlete1",
-          content: "Adam Ondra"
-        }
-      ]
-    }
   });
 });
