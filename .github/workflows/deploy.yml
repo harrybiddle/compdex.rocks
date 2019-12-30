@@ -22,5 +22,6 @@ jobs:
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_PAT }}      
       with:
+        repo: git@github.com:harrybiddle/harrybiddle.github.io.git
         target_branch: master
         build_dir: build/
