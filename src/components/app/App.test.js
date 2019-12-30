@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App, {
-  constructColumns,
+  constructList,
+  rankingsProps,
   newStateOnDragEnd,
   predictionsProps
 } from "./App";
@@ -19,12 +20,13 @@ it("predictions props are constructed", () => {
       athlete2: { name: "Alex Megos" },
       athlete3: { name: "Margo Hayes" }
     },
+    qualification: ["athlete1", "athlete2", "athlete3"],
     speed: ["athlete1", "athlete2", "athlete3"],
     boulder: ["athlete3", "athlete2"],
     lead: []
   };
 
-  console.log(predictionsProps(state));
+  predictionsProps(state); // does not crash
 });
 
 describe("dragging athletes", () => {
@@ -34,29 +36,13 @@ describe("dragging athletes", () => {
       athlete2: { name: "Alex Megos" },
       athlete3: { name: "Margo Hayes" }
     },
+    qualification: ["athlete1", "athlete2", "athlete3"],
     speed: ["athlete1", "athlete2", "athlete3"],
     boulder: ["athlete3", "athlete2"],
     lead: []
   };
 
-  it("removes the athlete from the source column and adds them to the destination when the columns are different", () => {
-    const result = {
-      source: {
-        droppableId: "isolation",
-        index: 0 // athlete1 (the only one in the isolation zone)
-      },
-      destination: {
-        droppableId: "boulder",
-        index: 1
-      }
-    };
-    expect(newStateOnDragEnd(oldState, result)).toEqual({
-      ...oldState,
-      boulder: ["athlete3", "athlete1", "athlete2"]
-    });
-  });
-
-  it("removes the athlete from the source column and adds them to the destination when the columns are the same", () => {
+  it("removes the athlete from the source list and adds them to the destination when the lists are the same", () => {
     const result = {
       source: {
         droppableId: "boulder",
@@ -74,71 +60,49 @@ describe("dragging athletes", () => {
   });
 });
 
-it("constructs props for KnownResults correctly", () => {
+it("constructs list correctly", () => {
   const state = {
     athletes: {
       athlete1: { name: "Adam Ondra" },
       athlete2: { name: "Alex Megos" },
       athlete3: { name: "Margo Hayes" }
     },
-    speed: ["athlete1", "athlete2", "athlete3"],
-    boulder: ["athlete3", "athlete2"],
-    lead: []
+    speed: ["athlete1", "athlete3"]
   };
 
-  expect(constructColumns(state)).toEqual({
-    speed: {
-      title: "Speed Round",
-      zone: "speed",
-      athletes: [
-        {
-          draggableId: "speed-athlete1",
-          athleteId: "athlete1",
-          content: "Adam Ondra"
-        },
-        {
-          draggableId: "speed-athlete2",
-          athleteId: "athlete2",
-          content: "Alex Megos"
-        },
-        {
-          draggableId: "speed-athlete3",
-          athleteId: "athlete3",
-          content: "Margo Hayes"
-        }
-      ]
-    },
-    boulder: {
-      title: "Boulder Round",
-      zone: "boulder",
-      athletes: [
-        {
-          draggableId: "boulder-athlete3",
-          athleteId: "athlete3",
-          content: "Margo Hayes"
-        },
-        {
-          draggableId: "boulder-athlete2",
-          athleteId: "athlete2",
-          content: "Alex Megos"
-        }
-      ]
-    },
-    lead: {
-      title: "Lead Round",
-      zone: "lead",
-      athletes: []
-    },
-    isolation: {
-      title: "Isolation Zone",
-      zone: "isolation",
-      athletes: [
-        {
-          draggableId: "boulder-athlete1",
-          athleteId: "athlete1",
-          content: "Adam Ondra"
-        }
-      ]
-    }
+  expect(constructList(state, "speed")).toEqual({
+    title: "Speed Stage",
+    stage: "speed",
+    items: [
+      {
+        isRanked: true,
+        isDragDisabled: false,
+        draggableId: "speed-athlete1",
+        athleteId: "athlete1",
+        content: "Adam Ondra"
+      },
+      {
+        isRanked: true,
+        isDragDisabled: false,
+        draggableId: "speed-athlete3",
+        athleteId: "athlete3",
+        content: "Margo Hayes"
+      },
+      {
+        isRanked: false,
+        isDragDisabled: true,
+        athleteId: "divider",
+        draggableId: "speed-divider",
+        isDivider: true,
+        content: "-----------"
+      },
+      {
+        isRanked: false,
+        isDragDisabled: false,
+        draggableId: "speed-athlete2",
+        athleteId: "athlete2",
+        content: "Alex Megos"
+      }
+    ]
   });
 });
