@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import KnownResults from "../knownresults/KnownResults";
+import Rankings from "../rankings/Rankings";
 import Predictions from "../predictions/Predictions";
 
 import update from "immutability-helper";
@@ -31,7 +31,7 @@ class App extends React.Component {
     return (
       <div>
         <Predictions {...predictionsProps(this.state)} />
-        <KnownResults
+        <Rankings
           onDragEnd={result =>
             this.setState(newStateOnDragEnd(this.state, result))
           }

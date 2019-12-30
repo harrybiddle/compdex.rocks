@@ -76,7 +76,7 @@ describe("dragging athletes", () => {
   });
 });
 
-it("constructs props for KnownResults correctly", () => {
+it("constructs props for Rankings correctly", () => {
   const state = {
     athletes: {
       athlete1: { name: "Adam Ondra" },
