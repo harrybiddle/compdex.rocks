@@ -126,29 +126,23 @@ export function newStateOnDragEnd(state, result) {
 
   // ignore drags between stages
   const lists = constructLists(state);
-  if (source.droppableId !== destination.droppableId) {
+  const sourceList = lists[source.droppableId];
+  const destinationList = lists[destination.droppableId];
+  if (sourceList.stage !== destinationList.stage) {
     return state;
   }
 
-  // do not allow the dividing line to be dragged
-  const stage = source.droppableId;
-  const list = lists[stage];
-  let dividerIndex = list.items.findIndex(item => item.isDivider);
-  if (source.index === dividerIndex) return state;
-
   // remove athlete from source, if they were already ranked
-  const wasRanked = source.index < dividerIndex;
-  if (wasRanked) {
+  const stage = sourceList.stage;
+  if (sourceList.isRanked) {
     state = update(state, {
       [stage]: { $splice: [[source.index, 1]] }
     });
-    dividerIndex--;
   }
 
   // insert athlete into destination, if they are now ranked
-  const athleteId = list.items[source.index].athleteId;
-  const willBeRanked = destination.index <= dividerIndex;
-  if (willBeRanked) {
+  if (destinationList.isRanked) {
+    const athleteId = sourceList.items[source.index].athleteId;
     state = update(state, {
       [stage]: {
         $splice: [[destination.index, 0, athleteId]]
