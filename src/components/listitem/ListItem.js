@@ -7,7 +7,6 @@ export default class ListItem extends React.Component {
       <Draggable
         draggableId={this.props.draggableId}
         index={this.props.index}
-        isDragDisabled={this.props.isDragDisabled}
       >
         {provided => (
           <div
