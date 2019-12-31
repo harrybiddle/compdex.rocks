@@ -74,9 +74,7 @@ export function constructList(state, stage) {
     title: "",
     stage: stage,
     isRanked: false
-    items: allAthleteIds
-      .filter(athleteId => !rankedAthleteIds.includes(athleteId))
-      .map(constructItem)
+    items: allAthleteIds.filter(athleteId => !rankedAthleteIds.includes(athleteId)).map(constructItem)
   };
 
   return {
