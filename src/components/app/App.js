@@ -54,9 +54,7 @@ export function constructList(state, stage) {
     [stages.LEAD]: "Lead Stage"
   };
 
-  const constructItem = (athleteId, isRanked) => ({
-    isRanked: isRanked,
-    isDragDisabled: false,
+  const constructItem = athleteId => ({
     draggableId: stage + "-" + athleteId,
     athleteId: athleteId,
     content: state.athletes[athleteId].name
@@ -65,38 +63,34 @@ export function constructList(state, stage) {
   // create list with all ranked athletes
   const rankedAthleteIds = state[stage];
   let list = {
+    droppableId: stage + "ranked",
     title: stageTitles[stage],
-    stage: "speed",
-    items: rankedAthleteIds.map(athleteId => constructItem(athleteId, true))
+    stage: stage,
+    isRanked: true,
+    items: rankedAthleteIds.map(constructItem)
+  };
+  let unrankedList = {
+    droppableId: stage + "unranked",
+    title: "",
+    stage: stage,
+    isRanked: false
+    items: allAthleteIds
+      .filter(athleteId => !rankedAthleteIds.includes(athleteId))
+      .map(constructItem)
   };
 
-  // add an empty item
-  list.items.push({
-    isRanked: false,
-    isDragDisabled: true,
-    draggableId: stage + "-divider",
-    athleteId: "divider",
-    isDivider: true,
-    content: "-----------"
-  });
-
-  // push all unranked athletes
-  const allAthleteIds = Object.keys(state.athletes);
-  allAthleteIds.forEach(athleteId => {
-    const isRanked = rankedAthleteIds.includes(athleteId);
-    if (!isRanked) {
-      list.items.push(constructItem(athleteId, false));
-    }
-  });
-  return list;
+  return {
+    [list.droppableId]: list, 
+    [unrankedList.droppableId]: unrankedList
+  }
 }
 
 function constructLists(state) {
   return {
-    [stages.QUALIFICATION]: constructList(state, stages.QUALIFICATION),
-    [stages.SPEED]: constructList(state, stages.SPEED),
-    [stages.BOULDER]: constructList(state, stages.BOULDER),
-    [stages.LEAD]: constructList(state, stages.LEAD)
+    ...constructList(state, stages.QUALIFICATION),
+    ...constructList(state, stages.SPEED),
+    ...constructList(state, stages.BOULDER),
+    ...constructList(state, stages.LEAD)
   };
 }
 export function predictionsProps(state) {
