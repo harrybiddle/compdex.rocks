@@ -13,8 +13,6 @@ export default class List extends React.Component {
               {this.props.items.map((item, index) => (
                 <ListItem
                   key={item.draggableId}
-                  isDragDisabled={item.isDragDisabled}
-                  isRanked={item.isRanked}
                   draggableId={item.draggableId}
                   content={item.content}
                   index={index}

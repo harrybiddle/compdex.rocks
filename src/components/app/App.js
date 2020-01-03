@@ -35,10 +35,13 @@ class App extends React.Component {
           }
           lists={constructLists(this.state)}
           listOrder={[
-            stages.QUALIFICATION,
-            stages.SPEED,
-            stages.BOULDER,
-            stages.LEAD
+            stages.QUALIFICATION + "-ranked",
+            stages.SPEED + "-ranked",
+            stages.SPEED + "-unranked",
+            stages.BOULDER + "-ranked",
+            stages.BOULDER + "-unranked",
+            stages.LEAD + "-ranked",
+            stages.LEAD + "-unranked"
           ]}
         />
       </div>
@@ -46,7 +49,7 @@ class App extends React.Component {
   }
 }
 
-export function constructList(state, stage) {
+export function constructListsForStage(state, stage) {
   const stageTitles = {
     [stages.QUALIFICATION]: "Qualification",
     [stages.SPEED]: "Speed Stage",
@@ -54,9 +57,7 @@ export function constructList(state, stage) {
     [stages.LEAD]: "Lead Stage"
   };
 
-  const constructItem = (athleteId, isRanked) => ({
-    isRanked: isRanked,
-    isDragDisabled: false,
+  const constructItem = athleteId => ({
     draggableId: stage + "-" + athleteId,
     athleteId: athleteId,
     content: state.athletes[athleteId].name
@@ -64,39 +65,36 @@ export function constructList(state, stage) {
 
   // create list with all ranked athletes
   const rankedAthleteIds = state[stage];
-  let list = {
+  let rankedList = {
+    droppableId: stage + "-ranked",
     title: stageTitles[stage],
-    stage: "speed",
-    items: rankedAthleteIds.map(athleteId => constructItem(athleteId, true))
+    stage: stage,
+    isRanked: true,
+    items: rankedAthleteIds.map(constructItem)
+  };
+  const allAthleteIds = Object.keys(state.athletes);
+  let unrankedList = {
+    droppableId: stage + "-unranked",
+    title: "",
+    stage: stage,
+    isRanked: false,
+    items: allAthleteIds
+      .filter(athleteId => !rankedAthleteIds.includes(athleteId))
+      .map(constructItem)
   };
 
-  // add an empty item
-  list.items.push({
-    isRanked: false,
-    isDragDisabled: true,
-    draggableId: stage + "-divider",
-    athleteId: "divider",
-    isDivider: true,
-    content: "-----------"
-  });
-
-  // push all unranked athletes
-  const allAthleteIds = Object.keys(state.athletes);
-  allAthleteIds.forEach(athleteId => {
-    const isRanked = rankedAthleteIds.includes(athleteId);
-    if (!isRanked) {
-      list.items.push(constructItem(athleteId, false));
-    }
-  });
-  return list;
+  return {
+    [rankedList.droppableId]: rankedList,
+    [unrankedList.droppableId]: unrankedList
+  };
 }
 
 function constructLists(state) {
   return {
-    [stages.QUALIFICATION]: constructList(state, stages.QUALIFICATION),
-    [stages.SPEED]: constructList(state, stages.SPEED),
-    [stages.BOULDER]: constructList(state, stages.BOULDER),
-    [stages.LEAD]: constructList(state, stages.LEAD)
+    ...constructListsForStage(state, stages.QUALIFICATION),
+    ...constructListsForStage(state, stages.SPEED),
+    ...constructListsForStage(state, stages.BOULDER),
+    ...constructListsForStage(state, stages.LEAD)
   };
 }
 export function predictionsProps(state) {
@@ -132,29 +130,23 @@ export function newStateOnDragEnd(state, result) {
 
   // ignore drags between stages
   const lists = constructLists(state);
-  if (source.droppableId !== destination.droppableId) {
+  const sourceList = lists[source.droppableId];
+  const destinationList = lists[destination.droppableId];
+  if (sourceList.stage !== destinationList.stage) {
     return state;
   }
 
-  // do not allow the dividing line to be dragged
-  const stage = source.droppableId;
-  const list = lists[stage];
-  let dividerIndex = list.items.findIndex(item => item.isDivider);
-  if (source.index === dividerIndex) return state;
-
   // remove athlete from source, if they were already ranked
-  const wasRanked = source.index < dividerIndex;
-  if (wasRanked) {
+  const stage = sourceList.stage;
+  if (sourceList.isRanked) {
     state = update(state, {
       [stage]: { $splice: [[source.index, 1]] }
     });
-    dividerIndex--;
   }
 
   // insert athlete into destination, if they are now ranked
-  const athleteId = list.items[source.index].athleteId;
-  const willBeRanked = destination.index <= dividerIndex;
-  if (willBeRanked) {
+  if (destinationList.isRanked) {
+    const athleteId = sourceList.items[source.index].athleteId;
     state = update(state, {
       [stage]: {
         $splice: [[destination.index, 0, athleteId]]

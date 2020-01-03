@@ -6,15 +6,17 @@ export default class Rankings extends React.Component {
   render() {
     return (
       <DragDropContext onDragEnd={this.props.onDragEnd}>
-        {this.props.listOrder.map(listId => {
-          const list = this.props.lists[listId];
+        {this.props.listOrder.map(droppableId => {
+          const list = this.props.lists[droppableId];
           return (
-            <List
-              key={listId}
-              title={list.title}
-              items={list.items}
-              droppableId={listId}
-            />
+            <div style={list.isRanked ? { color: "black" } : { color: "grey" }}>
+              <List
+                key={droppableId}
+                title={list.title}
+                items={list.items}
+                droppableId={droppableId}
+              />
+            </div>
           );
         })}
       </DragDropContext>

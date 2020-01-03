@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App, {
-  constructList,
+  constructListsForStage,
   rankingsProps,
   newStateOnDragEnd,
   predictionsProps
@@ -45,11 +45,11 @@ describe("dragging athletes", () => {
   it("removes the athlete from the source list and adds them to the destination when the lists are the same", () => {
     const result = {
       source: {
-        droppableId: "boulder",
+        droppableId: "boulder-ranked",
         index: 0
       },
       destination: {
-        droppableId: "boulder",
+        droppableId: "boulder-ranked",
         index: 1
       }
     };
@@ -70,39 +70,37 @@ it("constructs list correctly", () => {
     speed: ["athlete1", "athlete3"]
   };
 
-  expect(constructList(state, "speed")).toEqual({
-    title: "Speed Stage",
-    stage: "speed",
-    items: [
-      {
-        isRanked: true,
-        isDragDisabled: false,
-        draggableId: "speed-athlete1",
-        athleteId: "athlete1",
-        content: "Adam Ondra"
-      },
-      {
-        isRanked: true,
-        isDragDisabled: false,
-        draggableId: "speed-athlete3",
-        athleteId: "athlete3",
-        content: "Margo Hayes"
-      },
-      {
-        isRanked: false,
-        isDragDisabled: true,
-        athleteId: "divider",
-        draggableId: "speed-divider",
-        isDivider: true,
-        content: "-----------"
-      },
-      {
-        isRanked: false,
-        isDragDisabled: false,
-        draggableId: "speed-athlete2",
-        athleteId: "athlete2",
-        content: "Alex Megos"
-      }
-    ]
+  expect(constructListsForStage(state, "speed")).toEqual({
+    "speed-ranked": {
+      title: "Speed Stage",
+      droppableId: "speed-ranked",
+      isRanked: true,
+      stage: "speed",
+      items: [
+        {
+          draggableId: "speed-athlete1",
+          athleteId: "athlete1",
+          content: "Adam Ondra"
+        },
+        {
+          draggableId: "speed-athlete3",
+          athleteId: "athlete3",
+          content: "Margo Hayes"
+        }
+      ]
+    },
+    "speed-unranked": {
+      title: "",
+      isRanked: false,
+      droppableId: "speed-unranked",
+      stage: "speed",
+      items: [
+        {
+          draggableId: "speed-athlete2",
+          athleteId: "athlete2",
+          content: "Alex Megos"
+        }
+      ]
+    }
   });
 });

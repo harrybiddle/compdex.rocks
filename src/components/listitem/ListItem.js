@@ -4,24 +4,14 @@ import { Draggable } from "react-beautiful-dnd";
 export default class ListItem extends React.Component {
   render() {
     return (
-      <Draggable
-        draggableId={this.props.draggableId}
-        index={this.props.index}
-        isDragDisabled={this.props.isDragDisabled}
-      >
+      <Draggable draggableId={this.props.draggableId} index={this.props.index}>
         {provided => (
           <div
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            <div
-              style={
-                this.props.isRanked ? { color: "black" } : { color: "grey" }
-              }
-            >
-              {this.props.content}
-            </div>
+            {this.props.content}
           </div>
         )}
       </Draggable>
