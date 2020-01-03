@@ -93,6 +93,11 @@ function constructLists(state) {
     ...constructListsForStage(state, stages.LEAD)
   };
 }
+
+export function calculateCentreOfMass(values) {
+  return values.map((value, i) => value * i).reduce((a, b) => a + b, 0);
+}
+
 export function predictionsProps(state) {
   function* headers(length) {
     yield "";
@@ -106,17 +111,22 @@ export function predictionsProps(state) {
     }
   }
   const athletes = Object.keys(state.athletes);
+  let rows = Object.entries(
+    probabilities(
+      new Set(athletes),
+      state[stages.QUALIFICATION],
+      state[stages.SPEED],
+      state[stages.BOULDER],
+      state[stages.LEAD]
+    )
+  ).map(a => [state.athletes[a[0]].name].concat(a[1]));
+  rows.sort(
+    (a, b) =>
+      calculateCentreOfMass(a.slice(1)) - calculateCentreOfMass(b.slice(1))
+  );
   return {
     columns: Array.from(headers(athletes.length)),
-    rows: Object.entries(
-      probabilities(
-        new Set(athletes),
-        state[stages.QUALIFICATION],
-        state[stages.SPEED],
-        state[stages.BOULDER],
-        state[stages.LEAD]
-      )
-    ).map(a => [state.athletes[a[0]].name].concat(a[1]))
+    rows: rows
   };
 }
 
