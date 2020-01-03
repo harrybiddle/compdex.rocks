@@ -35,10 +35,13 @@ class App extends React.Component {
           }
           lists={constructLists(this.state)}
           listOrder={[
-            stages.QUALIFICATION,
-            stages.SPEED,
-            stages.BOULDER,
-            stages.LEAD
+            stages.QUALIFICATION + "-ranked",
+            stages.SPEED + "-ranked",
+            stages.SPEED + "-unranked",
+            stages.BOULDER + "-ranked",
+            stages.BOULDER + "-unranked",
+            stages.LEAD + "-ranked",
+            stages.LEAD + "-unranked"
           ]}
         />
       </div>
@@ -46,7 +49,7 @@ class App extends React.Component {
   }
 }
 
-export function constructList(state, stage) {
+export function constructListsForStage(state, stage) {
   const stageTitles = {
     [stages.QUALIFICATION]: "Qualification",
     [stages.SPEED]: "Speed Stage",
@@ -62,33 +65,36 @@ export function constructList(state, stage) {
 
   // create list with all ranked athletes
   const rankedAthleteIds = state[stage];
-  let list = {
-    droppableId: stage + "ranked",
+  let rankedList = {
+    droppableId: stage + "-ranked",
     title: stageTitles[stage],
     stage: stage,
     isRanked: true,
     items: rankedAthleteIds.map(constructItem)
   };
+  const allAthleteIds = Object.keys(state.athletes);
   let unrankedList = {
-    droppableId: stage + "unranked",
+    droppableId: stage + "-unranked",
     title: "",
     stage: stage,
-    isRanked: false
-    items: allAthleteIds.filter(athleteId => !rankedAthleteIds.includes(athleteId)).map(constructItem)
+    isRanked: false,
+    items: allAthleteIds
+      .filter(athleteId => !rankedAthleteIds.includes(athleteId))
+      .map(constructItem)
   };
 
   return {
-    [list.droppableId]: list, 
+    [rankedList.droppableId]: rankedList,
     [unrankedList.droppableId]: unrankedList
-  }
+  };
 }
 
 function constructLists(state) {
   return {
-    ...constructList(state, stages.QUALIFICATION),
-    ...constructList(state, stages.SPEED),
-    ...constructList(state, stages.BOULDER),
-    ...constructList(state, stages.LEAD)
+    ...constructListsForStage(state, stages.QUALIFICATION),
+    ...constructListsForStage(state, stages.SPEED),
+    ...constructListsForStage(state, stages.BOULDER),
+    ...constructListsForStage(state, stages.LEAD)
   };
 }
 export function predictionsProps(state) {

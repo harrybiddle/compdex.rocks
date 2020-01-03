@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App, {
-  constructList,
+  constructListsForStage,
   rankingsProps,
   newStateOnDragEnd,
   predictionsProps
@@ -70,7 +70,7 @@ it("constructs list correctly", () => {
     speed: ["athlete1", "athlete3"]
   };
 
-  expect(constructList(state, "speed")).toEqual({
+  expect(constructListsForStage(state, "speed")).toEqual({
     title: "Speed Stage",
     stage: "speed",
     items: [
