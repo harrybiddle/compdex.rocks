@@ -95,6 +95,7 @@ function constructLists(state) {
 }
 export function predictionsProps(state) {
   function* headers(length) {
+    yield "";
     yield "1st";
     yield "2nd";
     yield "3rd";
@@ -106,7 +107,7 @@ export function predictionsProps(state) {
   }
   const athletes = Object.keys(state.athletes);
   return {
-    columns: ["athlete"].concat(Array.from(headers(athletes.length))),
+    columns: Array.from(headers(athletes.length)),
     rows: Object.entries(
       probabilities(
         new Set(athletes),
