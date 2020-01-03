@@ -37,9 +37,9 @@ class Predictions extends React.Component {
                 {row.map((value, j) => (
                   <td
                     key={"value-" + j}
-                    style={j == 0 ? {} : { backgroundColor: getColor(value) }}
+                    style={j === 0 ? {} : { backgroundColor: getColor(value) }}
                   >
-                    {j == 0 ? value : ""}
+                    {j === 0 ? value : ""}
                   </td>
                 ))}
               </tr>
