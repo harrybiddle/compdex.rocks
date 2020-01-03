@@ -7,8 +7,8 @@ class Predictions extends React.Component {
         <table>
           <thead>
             <tr>
-              {Object.keys(this.props.columns).map((name, index) => (
-                <th key={index}>{name}</th>
+              {this.props.columns.map((name, index) => (
+                <th key={"header" + index}>{name}</th>
               ))}
             </tr>
           </thead>
