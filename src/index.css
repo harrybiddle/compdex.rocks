@@ -1,13 +1,33 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+#app-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    "probabilities-area probabilities-area probabilities-area probabilities-area"
+    "stage-area-1 stage-area-2 stage-area-3 stage-area-4";
+}
+
+#probabilities-container {
+  grid-area: probabilities-area;
+}
+
+.stage-container {
+  grid-area: stage-area-1;
+}
+
+.stage-container ~ .stage-container {
+  grid-area: stage-area-2;
+}
+
+.stage-container ~ .stage-container ~ .stage-container {
+  grid-area: stage-area-3;
+}
+
+.stage-container ~ .stage-container ~ .stage-container ~ .stage-container {
+  grid-area: stage-area-4;
 }
