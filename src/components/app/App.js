@@ -1,4 +1,3 @@
-import "./App.css";
 import Rankings from "../rankings/Rankings";
 import Predictions from "../predictions/Predictions";
 import { probabilities } from "../../common/bruteforce";
@@ -27,21 +26,18 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="app-container">
         <Predictions {...predictionsProps(this.state)} />
         <Rankings
           onDragEnd={result =>
             this.setState(newStateOnDragEnd(this.state, result))
           }
           lists={constructLists(this.state)}
-          listOrder={[
-            stages.QUALIFICATION + "-ranked",
-            stages.SPEED + "-ranked",
-            stages.SPEED + "-unranked",
-            stages.BOULDER + "-ranked",
-            stages.BOULDER + "-unranked",
-            stages.LEAD + "-ranked",
-            stages.LEAD + "-unranked"
+          stageOrder={[
+            [stages.QUALIFICATION + "-ranked"],
+            [stages.SPEED + "-ranked", stages.SPEED + "-unranked"],
+            [stages.BOULDER + "-ranked", stages.BOULDER + "-unranked"],
+            [stages.LEAD + "-ranked", stages.LEAD + "-unranked"]
           ]}
         />
       </div>
