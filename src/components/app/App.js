@@ -11,23 +11,72 @@ const stages = {
   LEAD: "lead"
 };
 
+const arrayDifference = (a, b) => a.filter(x => !b.includes(x));
+
 class App extends React.Component {
   state = {
     athletes: {
       athlete1: { name: "Adam Ondra" },
-      athlete2: { name: "Alex Megos" },
-      athlete3: { name: "Margo Hayes" }
+      athlete2: { name: "Akiyo Noguchi" },
+      athlete3: { name: "Jan Hoyer" },
+      athlete4: { name: "Janja Garnabret" },
+      athlete5: { name: "William Bosi" },
+      athlete6: { name: "Jessie Pilz" },
+      athlete7: { name: "Margo Hayes" },
+      athlete8: { name: "Tomoa Narasaki" }
     },
-    [stages.QUALIFICATION]: ["athlete1", "athlete2", "athlete3"],
-    [stages.SPEED]: ["athlete1", "athlete2"],
-    [stages.BOULDER]: [],
-    [stages.LEAD]: []
+    [stages.QUALIFICATION]: [
+      "athlete1",
+      "athlete2",
+      "athlete3",
+      "athlete4",
+      "athlete5",
+      "athlete6",
+      "athlete7",
+      "athlete8"
+    ],
+    [stages.SPEED]: [
+      "athlete1",
+      "athlete2",
+      "athlete3",
+      "athlete4",
+      "athlete5",
+      "athlete6",
+      "athlete7",
+      "athlete8"
+    ],
+    [stages.BOULDER]: [
+      "athlete1",
+      "athlete2",
+      "athlete3",
+      "athlete4",
+      "athlete5",
+      "athlete6",
+      "athlete7",
+      "athlete8"
+    ],
+    [stages.LEAD]: ["athlete1"]
   };
+
+  computationCanProceed() {
+    const allAthleteIds = Object.keys(this.state.athletes);
+    const numberMissingAthletes = stage =>
+      arrayDifference(allAthleteIds, this.state[stage]).length;
+    return (
+      numberMissingAthletes(stages.QUALIFICATION) === 0 &&
+      numberMissingAthletes(stages.SPEED) === 0 &&
+      numberMissingAthletes(stages.BOULDER) < 2
+    );
+  }
 
   render() {
     return (
       <div id="app-container">
-        <Predictions {...predictionsProps(this.state)} />
+        {this.computationCanProceed() ? (
+          <Predictions {...predictionsProps(this.state)} />
+        ) : (
+          <div>Finish some stages first</div>
+        )}
         <Rankings
           onDragEnd={result =>
             this.setState(newStateOnDragEnd(this.state, result))
@@ -125,7 +174,7 @@ export function predictionsProps(state) {
       calculateCentreOfMass(a.slice(1)) - calculateCentreOfMass(b.slice(1))
   );
   return {
-    columns: Array.from(headers(athletes.length)),
+    columns: Array.from(headers(athletes.length + 1)),
     rows: rows
   };
 }
