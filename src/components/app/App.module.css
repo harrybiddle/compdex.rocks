@@ -1,6 +1,5 @@
 /* make header section dark */
-.header,
-.hiddenOnDesktop {
+.header {
   background-color: black;
   color: white;
 }

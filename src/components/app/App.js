@@ -58,13 +58,14 @@ class App extends React.Component {
 
   render() {
     return (
-      <div id="app-container" className={styles.appContainer}>
+      <div className={styles.appContainer}>
         {/* -- Header ---------------------------------------------------------------------------------------------- */}
         <div className={styles.header}>Compdex.rocks</div>
 
         {/* -- Tab Labels ------------------------------------------------------------------------------------------ */}
         <div
           className={[
+            styles.header,
             styles.hiddenOnDesktop,
             this.state.activeTab === 0 ? styles.activeTabLabel : ""
           ].join(" ")}
@@ -74,6 +75,7 @@ class App extends React.Component {
         </div>
         <div
           className={[
+            styles.header,
             styles.hiddenOnDesktop,
             this.state.activeTab === 1 ? styles.activeTabLabel : ""
           ].join(" ")}
