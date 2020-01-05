@@ -2,35 +2,7 @@
 
 body {
   font-family: "Open Sans", sans-serif;
+  margin: 0px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-#app-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas:
-    "probabilities-area probabilities-area probabilities-area probabilities-area"
-    "stage-area-1 stage-area-2 stage-area-3 stage-area-4";
-}
-
-#probabilities-container {
-  grid-area: probabilities-area;
-}
-
-.stage-container {
-  grid-area: stage-area-1;
-}
-
-.stage-container ~ .stage-container {
-  grid-area: stage-area-2;
-}
-
-.stage-container ~ .stage-container ~ .stage-container {
-  grid-area: stage-area-3;
-}
-
-.stage-container ~ .stage-container ~ .stage-container ~ .stage-container {
-  grid-area: stage-area-4;
 }
