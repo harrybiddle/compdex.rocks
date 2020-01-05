@@ -1,4 +1,4 @@
-import { colorBuckets, getColor } from "./Predictions";
+import { colorBuckets, getColor } from "./Heatmap";
 
 describe("color buckets", () => {
   it("for p=-1.00", () => expect(getColor(-1.0)).toEqual(colorBuckets[0]));

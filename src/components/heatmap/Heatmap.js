@@ -19,7 +19,7 @@ export function getColor(probability) {
   return colorBuckets[j];
 }
 
-class Predictions extends React.Component {
+class Heatmap extends React.Component {
   render() {
     return (
       <div id="probabilities-container">
@@ -51,4 +51,4 @@ class Predictions extends React.Component {
   }
 }
 
-export default Predictions;
+export default Heatmap;

@@ -1,5 +1,5 @@
 import Rankings from "../rankings/Rankings";
-import Predictions from "../predictions/Predictions";
+import Heatmap from "../heatmap/Heatmap";
 import { probabilities } from "../../common/bruteforce";
 import styles from "./App.module.css";
 import React from "react";
@@ -110,7 +110,7 @@ class App extends React.Component {
           ].join(" ")}
         >
           {this.computationCanProceed() ? (
-            <Predictions {...predictionsProps(this.state)} />
+            <Heatmap {...heatmapProps(this.state)} />
           ) : (
             <div>Finish some stages first</div>
           )}
@@ -194,7 +194,7 @@ export function calculateCentreOfMass(values) {
   return values.map((value, i) => value * i).reduce((a, b) => a + b, 0);
 }
 
-export function predictionsProps(state) {
+export function heatmapProps(state) {
   function* headers(length) {
     yield "";
     yield "1st";

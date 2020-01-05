@@ -4,7 +4,7 @@ import App, {
   calculateCentreOfMass,
   constructListsForStage,
   newStateOnDragEnd,
-  predictionsProps
+  heatmapProps
 } from "./App";
 
 it("renders without crashing", () => {
@@ -19,7 +19,7 @@ it("centre of mass", () => {
   );
 });
 
-describe("predictions props", () => {
+describe("heatmap props", () => {
   it("order athletes by centre of mass", () => {
     const state = {
       athletes: {
@@ -33,7 +33,7 @@ describe("predictions props", () => {
       lead: []
     };
 
-    const props = predictionsProps(state);
+    const props = heatmapProps(state);
     expect(props.rows.map(row => row[0])).toEqual([
       "Margo Hayes",
       "Adam Ondra",
