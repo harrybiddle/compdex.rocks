@@ -1,6 +1,7 @@
 import Rankings from "../rankings/Rankings";
 import Predictions from "../predictions/Predictions";
 import { probabilities } from "../../common/bruteforce";
+import styles from "./App.module.css";
 import React from "react";
 import update from "immutability-helper";
 
@@ -55,7 +56,8 @@ class App extends React.Component {
       "athlete7",
       "athlete8"
     ],
-    [stages.LEAD]: ["athlete1"]
+    [stages.LEAD]: ["athlete1"],
+    activeTab: 0
   };
 
   computationCanProceed() {
@@ -69,26 +71,71 @@ class App extends React.Component {
     );
   }
 
+  setActiveTab(value) {
+    const newState = update(this.state, { activeTab: { $set: value } });
+    this.setState(newState);
+  }
+
   render() {
     return (
-      <div id="app-container">
-        {this.computationCanProceed() ? (
-          <Predictions {...predictionsProps(this.state)} />
-        ) : (
-          <div>Finish some stages first</div>
-        )}
-        <Rankings
-          onDragEnd={result =>
-            this.setState(newStateOnDragEnd(this.state, result))
-          }
-          lists={constructLists(this.state)}
-          stageOrder={[
-            [stages.QUALIFICATION + "-ranked"],
-            [stages.SPEED + "-ranked", stages.SPEED + "-unranked"],
-            [stages.BOULDER + "-ranked", stages.BOULDER + "-unranked"],
-            [stages.LEAD + "-ranked", stages.LEAD + "-unranked"]
-          ]}
-        />
+      <div id="app-container" className={styles.appContainer}>
+        {/* -- Header ---------------------------------------------------------------------------------------------- */}
+        <div className={styles.header}>Compdex.rocks</div>
+
+        {/* -- Tab Labels ------------------------------------------------------------------------------------------ */}
+        <div
+          className={[
+            styles.tabLabel,
+            this.state.activeTab === 0 ? styles.activeTabLabel : ""
+          ].join(" ")}
+          onClick={() => this.setActiveTab(0)}
+        >
+          Predictions
+        </div>
+        <div
+          className={[
+            styles.tabLabel,
+            this.state.activeTab === 1 ? styles.activeTabLabel : ""
+          ].join(" ")}
+          onClick={() => this.setActiveTab(1)}
+        >
+          Configuration
+        </div>
+
+        {/* -- Predictions ----------------------------------------------------------------------------------------- */}
+        <div
+          className={[
+            this.state.activeTab === 0 ? "" : styles.inactiveTab,
+            styles.predictions
+          ].join(" ")}
+        >
+          {this.computationCanProceed() ? (
+            <Predictions {...predictionsProps(this.state)} />
+          ) : (
+            <div>Finish some stages first</div>
+          )}
+        </div>
+
+        {/* -- Configuration --------------------------------------------------------------------------------------- */}
+        <div
+          className={[
+            this.state.activeTab === 1 ? "" : styles.inactiveTab,
+            styles.stages
+          ].join(" ")}
+        >
+          <Rankings
+            onDragEnd={result =>
+              this.setState(newStateOnDragEnd(this.state, result))
+            }
+            lists={constructLists(this.state)}
+            stageOrder={[
+              [stages.QUALIFICATION + "-ranked"],
+              [stages.SPEED + "-ranked", stages.SPEED + "-unranked"],
+              [stages.BOULDER + "-ranked", stages.BOULDER + "-unranked"],
+              [stages.LEAD + "-ranked", stages.LEAD + "-unranked"]
+            ]}
+          />
+        </div>
       </div>
     );
   }
