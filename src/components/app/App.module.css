@@ -18,32 +18,6 @@
   .hiddenWhenTabInactive {
     display: none;
   }
-
-  .appContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: "header-area header-area" "tab1-area tab2-area" "content-area content-area";
-  }
-
-  .header {
-    grid-area: header-area;
-  }
-
-  .hiddenOnDesktop {
-    grid-area: tab1-area;
-  }
-
-  .hiddenOnDesktop ~ .hiddenOnDesktop {
-    grid-area: tab2-area;
-  }
-
-  .predictions {
-    grid-area: content-area;
-  }
-
-  .stages {
-    grid-area: content-area;
-  }
 }
 
 /***** desktop *****/

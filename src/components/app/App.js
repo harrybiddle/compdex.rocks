@@ -64,24 +64,27 @@ class App extends React.Component {
 
         {/* -- Tab Labels ------------------------------------------------------------------------------------------ */}
         <div
-          className={[
-            styles.header,
-            styles.hiddenOnDesktop,
-            this.state.activeTab === 0 ? styles.activeTabLabel : ""
-          ].join(" ")}
-          onClick={() => this.setActiveTab(0)}
+          className={`${styles.header} ${styles.hiddenOnDesktop}`}
+          style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
         >
-          Predictions
-        </div>
-        <div
-          className={[
-            styles.header,
-            styles.hiddenOnDesktop,
-            this.state.activeTab === 1 ? styles.activeTabLabel : ""
-          ].join(" ")}
-          onClick={() => this.setActiveTab(1)}
-        >
-          Configuration
+          <div
+            className={[
+              styles.hiddenOnDesktop,
+              this.state.activeTab === 0 ? styles.activeTabLabel : ""
+            ].join(" ")}
+            onClick={() => this.setActiveTab(0)}
+          >
+            Predictions
+          </div>
+          <div
+            className={[
+              styles.hiddenOnDesktop,
+              this.state.activeTab === 1 ? styles.activeTabLabel : ""
+            ].join(" ")}
+            onClick={() => this.setActiveTab(1)}
+          >
+            Configuration
+          </div>
         </div>
 
         {/* -- Predictions ----------------------------------------------------------------------------------------- */}
