@@ -1,18 +1,33 @@
 import React from "react";
+import { headerStyle } from "../common.module.css";
 
 export default class TabLabel extends React.Component {
   render() {
     return (
-      <div
+      <button
         onClick={this.props.onClick}
+        className={headerStyle}
         style={{
+          // border
+          borderWidth: "0px",
+          borderBottomWidth: this.props.isActive ? "2px" : "0px",
+          borderBottomColor: "red",
+          // size and padding
+          padding: "6px 12px",
+          minHeight: "48px",
+          // cursor
           cursor: "pointer",
+          // text
+          fontWeight: "500",
+          lineHeight: "1.43",
+          letterSpacing: "0.01071em",
           textAlign: "center",
-          ...(this.props.isActive ? { textDecoration: "underline" } : {})
+          verticalAlign: "middle",
+          textTransform: "uppercase"
         }}
       >
         {this.props.children}
-      </div>
+      </button>
     );
   }
 }

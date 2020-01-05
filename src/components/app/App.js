@@ -5,6 +5,7 @@ import update from "immutability-helper";
 import Predictions from "../predictions/Predictions";
 import { stages } from "../constants";
 import TabLabel from "../tablabel/TabLabel";
+import { headerStyle } from "../common.module.css";
 
 export default class App extends React.Component {
   state = {
@@ -58,19 +59,17 @@ export default class App extends React.Component {
   }
 
   render() {
-    const headerStyle = { backgroundColor: "black", color: "white" };
     return (
       <div>
         {/* -- Header ---------------------------------------------------------------------------------------------- */}
-        <div style={headerStyle}>Compdex.rocks</div>
+        <div className={headerStyle}>Compdex.rocks</div>
 
         {/* -- Tab Labels ------------------------------------------------------------------------------------------ */}
         <div
           className={styles.hiddenOnDesktop}
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            ...headerStyle
+            gridTemplateColumns: "1fr 1fr"
           }}
         >
           <TabLabel
