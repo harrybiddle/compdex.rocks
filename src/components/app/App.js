@@ -57,31 +57,42 @@ class App extends React.Component {
   }
 
   render() {
+    const headerStyle = { backgroundColor: "black", color: "white" };
     return (
-      <div className={styles.appContainer}>
+      <div>
         {/* -- Header ---------------------------------------------------------------------------------------------- */}
-        <div className={styles.header}>Compdex.rocks</div>
+        <div style={headerStyle}>Compdex.rocks</div>
 
         {/* -- Tab Labels ------------------------------------------------------------------------------------------ */}
         <div
-          className={`${styles.header} ${styles.hiddenOnDesktop}`}
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
+          className={styles.hiddenOnDesktop}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            ...headerStyle
+          }}
         >
           <div
-            className={[
-              styles.hiddenOnDesktop,
-              this.state.activeTab === 0 ? styles.activeTabLabel : ""
-            ].join(" ")}
             onClick={() => this.setActiveTab(0)}
+            style={{
+              cursor: "pointer",
+              textAlign: "center",
+              ...(this.state.activeTab === 0
+                ? { textDecoration: "underline" }
+                : {})
+            }}
           >
             Predictions
           </div>
           <div
-            className={[
-              styles.hiddenOnDesktop,
-              this.state.activeTab === 1 ? styles.activeTabLabel : ""
-            ].join(" ")}
             onClick={() => this.setActiveTab(1)}
+            style={{
+              cursor: "pointer",
+              textAlign: "center",
+              ...(this.state.activeTab === 1
+                ? { textDecoration: "underline" }
+                : {})
+            }}
           >
             Configuration
           </div>
