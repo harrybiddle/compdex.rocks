@@ -1,12 +1,12 @@
 /* make header section dark */
 .header,
-.tabLabel {
+.hiddenOnDesktop {
   background-color: black;
   color: white;
 }
 
 /* styling for tab labels */
-.tabLabel {
+.hiddenOnDesktop {
   text-align: center;
   cursor: pointer;
 }
@@ -16,7 +16,7 @@
 
 /***** mobile phones *****/
 @media (max-width: 768px) {
-  .inactiveTab {
+  .hiddenWhenTabInactive {
     display: none;
   }
 
@@ -30,11 +30,11 @@
     grid-area: header-area;
   }
 
-  .tabLabel {
+  .hiddenOnDesktop {
     grid-area: tab1-area;
   }
 
-  .tabLabel ~ .tabLabel {
+  .hiddenOnDesktop ~ .hiddenOnDesktop {
     grid-area: tab2-area;
   }
 
@@ -49,7 +49,7 @@
 
 /***** desktop *****/
 @media only screen and (min-width: 768px) {
-  .tabLabel {
+  .hiddenOnDesktop {
     display: none;
   }
 }

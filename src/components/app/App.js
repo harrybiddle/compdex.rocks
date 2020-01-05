@@ -65,7 +65,7 @@ class App extends React.Component {
         {/* -- Tab Labels ------------------------------------------------------------------------------------------ */}
         <div
           className={[
-            styles.tabLabel,
+            styles.hiddenOnDesktop,
             this.state.activeTab === 0 ? styles.activeTabLabel : ""
           ].join(" ")}
           onClick={() => this.setActiveTab(0)}
@@ -74,7 +74,7 @@ class App extends React.Component {
         </div>
         <div
           className={[
-            styles.tabLabel,
+            styles.hiddenOnDesktop,
             this.state.activeTab === 1 ? styles.activeTabLabel : ""
           ].join(" ")}
           onClick={() => this.setActiveTab(1)}
@@ -85,7 +85,7 @@ class App extends React.Component {
         {/* -- Predictions ----------------------------------------------------------------------------------------- */}
         <div
           className={[
-            this.state.activeTab === 0 ? "" : styles.inactiveTab,
+            this.state.activeTab === 0 ? "" : styles.hiddenWhenTabInactive,
             styles.predictions
           ].join(" ")}
         >
@@ -103,7 +103,7 @@ class App extends React.Component {
         {/* -- Configuration --------------------------------------------------------------------------------------- */}
         <div
           className={[
-            this.state.activeTab === 1 ? "" : styles.inactiveTab,
+            this.state.activeTab === 1 ? "" : styles.hiddenWhenTabInactive,
             styles.stages
           ].join(" ")}
         >
