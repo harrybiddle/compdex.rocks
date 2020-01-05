@@ -1,54 +1,63 @@
 import React from "react";
+import Heatmap from "../heatmap/Heatmap";
+import { arrayDifference } from "../../common/utils";
+import { stages } from "../constants";
+import { probabilities } from "../../common/bruteforce";
+import { calculateCentreOfMass } from "../app/App";
+import { isEqual } from "lodash";
 
-export const colorBuckets = [
-  "#ffffff", // #0: -inf -> 0.09
-  "#f7fbff", // #1:  0.1 -> 0.19
-  "#deebf7", // #2:  0.2 -> 0.29
-  "#c6dbef", // #3:  0.3 -> 0.39
-  "#9ecae1", // #4:  0.4 -> 0.49
-  "#6baed6", // #5:  0.5 -> 0.59
-  "#4292c6", // #6:  0.6 -> 0.69
-  "#2171b5", // #7:  0.7 -> 0.79
-  "#08519c", // #8:  0.8 -> 0.89
-  "#08306b" //  #9:  0.9 -> inf
-];
-export function getColor(probability) {
-  const clamp = (num, min, max) => (num <= min ? min : num >= max ? max : num);
-  const i = Math.floor(probability * colorBuckets.length);
-  const j = clamp(i, 0, colorBuckets.length - 1);
-  return colorBuckets[j];
+export function heatmapProps(predictionsProps) {
+  function* headers(length) {
+    yield "";
+    yield "1st";
+    yield "2nd";
+    yield "3rd";
+    let i = 4;
+    while (i < length) {
+      yield i + "th";
+      i++;
+    }
+  }
+
+  const athletes = Object.keys(predictionsProps.athletes);
+  let rows = Object.entries(
+    probabilities(
+      new Set(athletes),
+      predictionsProps.stages[stages.QUALIFICATION],
+      predictionsProps.stages[stages.SPEED],
+      predictionsProps.stages[stages.BOULDER],
+      predictionsProps.stages[stages.LEAD]
+    )
+  ).map(a => [predictionsProps.athletes[a[0]].name].concat(a[1]));
+  rows.sort(
+    (a, b) =>
+      calculateCentreOfMass(a.slice(1)) - calculateCentreOfMass(b.slice(1))
+  );
+  return {
+    columns: Array.from(headers(athletes.length + 1)),
+    rows: rows
+  };
 }
 
-class Predictions extends React.Component {
-  render() {
+export default class Predictions extends React.Component {
+  computationShouldProceed() {
+    const allAthleteIds = Object.keys(this.props.athletes);
+    const numberMissingAthletes = stage =>
+      arrayDifference(allAthleteIds, this.props.stages[stage]).length;
     return (
-      <div id="probabilities-container">
-        <table>
-          <thead>
-            <tr>
-              {this.props.columns.map((name, i) => (
-                <th key={"header" + i}>{name}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.rows.map((row, i) => (
-              <tr key={"row-" + i}>
-                {row.map((value, j) => (
-                  <td
-                    key={"value-" + j}
-                    style={j === 0 ? {} : { backgroundColor: getColor(value) }}
-                  >
-                    {j === 0 ? value : ""}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      numberMissingAthletes(stages.QUALIFICATION) === 0 &&
+      numberMissingAthletes(stages.SPEED) === 0 &&
+      numberMissingAthletes(stages.BOULDER) < 2
     );
   }
-}
 
-export default Predictions;
+  shouldComponentUpdate = nextProps => !isEqual(this.props, nextProps);
+
+  render() {
+    if (this.computationShouldProceed()) {
+      return <Heatmap {...heatmapProps(this.props)} />;
+    } else {
+      return <div>Finish some stages first</div>;
+    }
+  }
+}

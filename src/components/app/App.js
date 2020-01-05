@@ -1,18 +1,9 @@
 import Rankings from "../rankings/Rankings";
-import Predictions from "../predictions/Predictions";
-import { probabilities } from "../../common/bruteforce";
 import styles from "./App.module.css";
 import React from "react";
 import update from "immutability-helper";
-
-const stages = {
-  QUALIFICATION: "qualification",
-  SPEED: "speed",
-  BOULDER: "boulder",
-  LEAD: "lead"
-};
-
-const arrayDifference = (a, b) => a.filter(x => !b.includes(x));
+import Predictions from "../predictions/Predictions";
+import { stages } from "../constants";
 
 class App extends React.Component {
   state = {
@@ -60,17 +51,6 @@ class App extends React.Component {
     activeTab: 0
   };
 
-  computationCanProceed() {
-    const allAthleteIds = Object.keys(this.state.athletes);
-    const numberMissingAthletes = stage =>
-      arrayDifference(allAthleteIds, this.state[stage]).length;
-    return (
-      numberMissingAthletes(stages.QUALIFICATION) === 0 &&
-      numberMissingAthletes(stages.SPEED) === 0 &&
-      numberMissingAthletes(stages.BOULDER) < 2
-    );
-  }
-
   setActiveTab(value) {
     const newState = update(this.state, { activeTab: { $set: value } });
     this.setState(newState);
@@ -109,11 +89,15 @@ class App extends React.Component {
             styles.predictions
           ].join(" ")}
         >
-          {this.computationCanProceed() ? (
-            <Predictions {...predictionsProps(this.state)} />
-          ) : (
-            <div>Finish some stages first</div>
-          )}
+          <Predictions
+            athletes={this.state.athletes}
+            stages={{
+              [stages.QUALIFICATION]: this.state[stages.QUALIFICATION],
+              [stages.SPEED]: this.state[stages.SPEED],
+              [stages.BOULDER]: this.state[stages.BOULDER],
+              [stages.LEAD]: this.state[stages.LEAD]
+            }}
+          />
         </div>
 
         {/* -- Configuration --------------------------------------------------------------------------------------- */}
@@ -192,38 +176,6 @@ function constructLists(state) {
 
 export function calculateCentreOfMass(values) {
   return values.map((value, i) => value * i).reduce((a, b) => a + b, 0);
-}
-
-export function predictionsProps(state) {
-  function* headers(length) {
-    yield "";
-    yield "1st";
-    yield "2nd";
-    yield "3rd";
-    let i = 4;
-    while (i < length) {
-      yield i + "th";
-      i++;
-    }
-  }
-  const athletes = Object.keys(state.athletes);
-  let rows = Object.entries(
-    probabilities(
-      new Set(athletes),
-      state[stages.QUALIFICATION],
-      state[stages.SPEED],
-      state[stages.BOULDER],
-      state[stages.LEAD]
-    )
-  ).map(a => [state.athletes[a[0]].name].concat(a[1]));
-  rows.sort(
-    (a, b) =>
-      calculateCentreOfMass(a.slice(1)) - calculateCentreOfMass(b.slice(1))
-  );
-  return {
-    columns: Array.from(headers(athletes.length + 1)),
-    rows: rows
-  };
 }
 
 export function newStateOnDragEnd(state, result) {
