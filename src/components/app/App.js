@@ -4,8 +4,9 @@ import React from "react";
 import update from "immutability-helper";
 import Predictions from "../predictions/Predictions";
 import { stages } from "../constants";
+import TabLabel from "../tablabel/TabLabel";
 
-class App extends React.Component {
+export default class App extends React.Component {
   state = {
     athletes: {
       athlete1: { name: "Adam Ondra" },
@@ -72,30 +73,18 @@ class App extends React.Component {
             ...headerStyle
           }}
         >
-          <div
+          <TabLabel
             onClick={() => this.setActiveTab(0)}
-            style={{
-              cursor: "pointer",
-              textAlign: "center",
-              ...(this.state.activeTab === 0
-                ? { textDecoration: "underline" }
-                : {})
-            }}
+            isActive={this.state.activeTab === 0}
           >
             Predictions
-          </div>
-          <div
+          </TabLabel>
+          <TabLabel
             onClick={() => this.setActiveTab(1)}
-            style={{
-              cursor: "pointer",
-              textAlign: "center",
-              ...(this.state.activeTab === 1
-                ? { textDecoration: "underline" }
-                : {})
-            }}
+            isActive={this.state.activeTab === 1}
           >
             Configuration
-          </div>
+          </TabLabel>
         </div>
 
         {/* -- Predictions ----------------------------------------------------------------------------------------- */}
@@ -227,5 +216,3 @@ export function newStateOnDragEnd(state, result) {
 
   return state;
 }
-
-export default App;
