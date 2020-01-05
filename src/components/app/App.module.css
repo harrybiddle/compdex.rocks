@@ -1,55 +1,13 @@
-/* make header section dark */
-.header,
-.tabLabel {
-  background-color: black;
-  color: white;
-}
-
-/* styling for tab labels */
-.tabLabel {
-  text-align: center;
-  cursor: pointer;
-}
-.activeTabLabel {
-  text-decoration: underline;
-}
-
 /***** mobile phones *****/
 @media (max-width: 768px) {
-  .inactiveTab {
-    display: none;
-  }
-
-  .appContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: "header-area header-area" "tab1-area tab2-area" "content-area content-area";
-  }
-
-  .header {
-    grid-area: header-area;
-  }
-
-  .tabLabel {
-    grid-area: tab1-area;
-  }
-
-  .tabLabel ~ .tabLabel {
-    grid-area: tab2-area;
-  }
-
-  .predictions {
-    grid-area: content-area;
-  }
-
-  .stages {
-    grid-area: content-area;
+  .hiddenWhenTabInactive {
+    display: none !important;
   }
 }
 
 /***** desktop *****/
 @media only screen and (min-width: 768px) {
-  .tabLabel {
-    display: none;
+  .hiddenOnDesktop {
+    display: none !important;
   }
 }

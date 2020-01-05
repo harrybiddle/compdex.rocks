@@ -4,8 +4,10 @@ import React from "react";
 import update from "immutability-helper";
 import Predictions from "../predictions/Predictions";
 import { stages } from "../constants";
+import TabLabel from "../tablabel/TabLabel";
+import { headerStyle } from "../common.module.css";
 
-class App extends React.Component {
+export default class App extends React.Component {
   state = {
     athletes: {
       athlete1: { name: "Adam Ondra" },
@@ -58,34 +60,36 @@ class App extends React.Component {
 
   render() {
     return (
-      <div id="app-container" className={styles.appContainer}>
+      <div>
         {/* -- Header ---------------------------------------------------------------------------------------------- */}
-        <div className={styles.header}>Compdex.rocks</div>
+        <div className={headerStyle}>Compdex.rocks</div>
 
         {/* -- Tab Labels ------------------------------------------------------------------------------------------ */}
         <div
-          className={[
-            styles.tabLabel,
-            this.state.activeTab === 0 ? styles.activeTabLabel : ""
-          ].join(" ")}
-          onClick={() => this.setActiveTab(0)}
+          className={styles.hiddenOnDesktop}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr"
+          }}
         >
-          Predictions
-        </div>
-        <div
-          className={[
-            styles.tabLabel,
-            this.state.activeTab === 1 ? styles.activeTabLabel : ""
-          ].join(" ")}
-          onClick={() => this.setActiveTab(1)}
-        >
-          Configuration
+          <TabLabel
+            onClick={() => this.setActiveTab(0)}
+            isActive={this.state.activeTab === 0}
+          >
+            Predictions
+          </TabLabel>
+          <TabLabel
+            onClick={() => this.setActiveTab(1)}
+            isActive={this.state.activeTab === 1}
+          >
+            Configuration
+          </TabLabel>
         </div>
 
         {/* -- Predictions ----------------------------------------------------------------------------------------- */}
         <div
           className={[
-            this.state.activeTab === 0 ? "" : styles.inactiveTab,
+            this.state.activeTab === 0 ? "" : styles.hiddenWhenTabInactive,
             styles.predictions
           ].join(" ")}
         >
@@ -103,7 +107,7 @@ class App extends React.Component {
         {/* -- Configuration --------------------------------------------------------------------------------------- */}
         <div
           className={[
-            this.state.activeTab === 1 ? "" : styles.inactiveTab,
+            this.state.activeTab === 1 ? "" : styles.hiddenWhenTabInactive,
             styles.stages
           ].join(" ")}
         >
@@ -211,5 +215,3 @@ export function newStateOnDragEnd(state, result) {
 
   return state;
 }
-
-export default App;
