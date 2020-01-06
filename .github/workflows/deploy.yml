@@ -14,7 +14,7 @@ jobs:
     - name: Node
       uses: actions/setup-node@v1
       with:
-        node-version: 13.1.0   
+        node-version: 13.1.0
     - run: yarn install
     - run: yarn build
     - name: Deploy to GitHub Pages
