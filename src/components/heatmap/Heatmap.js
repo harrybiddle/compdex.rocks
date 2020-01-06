@@ -53,7 +53,7 @@ class Heatmap extends React.Component {
 
     return (
       <div id="probabilities-container">
-        <table style={{ padding: "0px" }}>
+        <table style={{ padding: "0px", borderSpacing: "0px" }}>
           <thead>
             <tr style={rowStyle}>
               {Array.from(headers(this.props.columns.length)).map(x => (

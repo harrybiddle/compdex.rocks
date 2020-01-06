@@ -6,7 +6,7 @@ export default class ListItem extends React.Component {
   render() {
     return (
       <Draggable draggableId={this.props.draggableId} index={this.props.index}>
-        {provided => (
+        {(provided, snapshot) => (
           <div
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -22,7 +22,9 @@ export default class ListItem extends React.Component {
                 display: "flex",
                 alignItems: "center",
                 // ensure that drag handle appears at end
-                justifyContent: "space-between"
+                justifyContent: "space-between",
+                // add border when dragging
+                border: snapshot.isDragging ? "1px solid red" : "0px"
               }}
             >
               {this.props.content}

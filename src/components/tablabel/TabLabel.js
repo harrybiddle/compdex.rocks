@@ -12,6 +12,7 @@ export default class TabLabel extends React.Component {
           borderWidth: "0px",
           borderBottomWidth: this.props.isActive ? "2px" : "0px",
           borderBottomColor: "red",
+          borderRadius: "0px",
           // size and padding
           flexGrow: 1,
           padding: "6px 12px",
