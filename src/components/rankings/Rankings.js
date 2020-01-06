@@ -25,7 +25,7 @@ export default class Rankings extends React.Component {
               style={{
                 backgroundColor: "white",
                 flex: "0 0 calc(100% - 40px)",
-                maxWidth: "500px",
+                maxWidth: "250px",
                 marginLeft: i === 0 ? "24px" : "0px",
                 marginRight: "24px",
                 borderRadius: "4px",
