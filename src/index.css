@@ -8,6 +8,7 @@ body {
 body {
   font-family: "Open Sans", sans-serif;
   margin: 0px;
+  background-color: #e5e5e5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -5,12 +5,12 @@ import update from "immutability-helper";
 import Predictions from "../predictions/Predictions";
 import { stages } from "../constants";
 import TabLabel from "../tablabel/TabLabel";
-import { headerStyle } from "../common.module.css";
 
 const tabContentStyle = {
   overflow: "scroll",
-  paddingLeft: "10px",
-  paddingRight: "10px"
+  paddingLeft: "24px",
+  paddingRight: "24px",
+  paddingTop: "24px"
 };
 
 export default class App extends React.Component {
@@ -56,7 +56,7 @@ export default class App extends React.Component {
       "athlete8"
     ],
     [stages.LEAD]: ["athlete1"],
-    activeTab: 1
+    activeTab: 0
   };
 
   setActiveTab(value) {
@@ -68,7 +68,7 @@ export default class App extends React.Component {
     return (
       <div style={{ height: "100%" }}>
         {/* -- Header ---------------------------------------------------------------------------------------------- */}
-        <div className={headerStyle}>Compdex.rocks</div>
+        {/*<div className={headerStyle}>Compdex.rocks</div>*/}
 
         {/* -- Tab Labels ------------------------------------------------------------------------------------------ */}
         <div
@@ -90,7 +90,6 @@ export default class App extends React.Component {
             Configuration
           </TabLabel>
         </div>
-
         {/* -- Predictions ----------------------------------------------------------------------------------------- */}
         <div
           className={[
@@ -115,7 +114,6 @@ export default class App extends React.Component {
             />
           </div>
         </div>
-
         {/* -- Configuration --------------------------------------------------------------------------------------- */}
         <div
           className={[
@@ -133,11 +131,26 @@ export default class App extends React.Component {
               this.setState(newStateOnDragEnd(this.state, result))
             }
             lists={constructLists(this.state)}
-            stageOrder={[
-              [stages.QUALIFICATION + "-ranked"],
-              [stages.SPEED + "-ranked", stages.SPEED + "-unranked"],
-              [stages.BOULDER + "-ranked", stages.BOULDER + "-unranked"],
-              [stages.LEAD + "-ranked", stages.LEAD + "-unranked"]
+            groups={[
+              {
+                title: "Qualification",
+                listIds: [stages.QUALIFICATION + "-ranked"]
+              },
+              {
+                title: "Speed",
+                listIds: [stages.SPEED + "-ranked", stages.SPEED + "-unranked"]
+              },
+              {
+                title: "Boulder",
+                listIds: [
+                  stages.BOULDER + "-ranked",
+                  stages.BOULDER + "-unranked"
+                ]
+              },
+              {
+                title: "Lead",
+                listIds: [stages.LEAD + "-ranked", stages.LEAD + "-unranked"]
+              }
             ]}
           />
         </div>
@@ -147,13 +160,6 @@ export default class App extends React.Component {
 }
 
 export function constructListsForStage(state, stage) {
-  const stageTitles = {
-    [stages.QUALIFICATION]: "Qualification",
-    [stages.SPEED]: "Speed",
-    [stages.BOULDER]: "Boulder",
-    [stages.LEAD]: "Lead"
-  };
-
   const constructItem = athleteId => ({
     draggableId: stage + "-" + athleteId,
     athleteId: athleteId,
@@ -164,7 +170,6 @@ export function constructListsForStage(state, stage) {
   const rankedAthleteIds = state[stage];
   let rankedList = {
     droppableId: stage + "-ranked",
-    title: stageTitles[stage],
     stage: stage,
     isRanked: true,
     items: rankedAthleteIds.map(constructItem)
@@ -172,7 +177,6 @@ export function constructListsForStage(state, stage) {
   const allAthleteIds = Object.keys(state.athletes);
   let unrankedList = {
     droppableId: stage + "-unranked",
-    title: "",
     stage: stage,
     isRanked: false,
     items: allAthleteIds
