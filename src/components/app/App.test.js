@@ -61,7 +61,7 @@ it("constructs list correctly", () => {
 
   expect(constructListsForStage(state, "speed")).toEqual({
     "speed-ranked": {
-      title: "Speed Stage",
+      title: "Speed",
       droppableId: "speed-ranked",
       isRanked: true,
       stage: "speed",
