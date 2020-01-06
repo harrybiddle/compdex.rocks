@@ -21,23 +21,63 @@ export function getColor(probability) {
 
 class Heatmap extends React.Component {
   render() {
+    const rowStyle = { height: "1em" };
+    const firstColumnCellStyle = {
+      padding: "0px",
+      // maximum width of first column
+      maxWidth: "130px",
+      // hide overflow text behind ellipses
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+      overflow: "hidden"
+    };
+    const valueCellStyle = {
+      padding: "0px",
+      minWidth: "1.5em",
+      maxWidth: "1.5em",
+      minHeight: "1.5em",
+      maxHeight: "1.5em",
+      height: "1.5em"
+    };
+    function* headers(length) {
+      yield ["", ""];
+      yield ["1", "st"];
+      yield ["2", "nd"];
+      yield ["3", "rd"];
+      let i = 4;
+      while (i < length) {
+        yield [i, "th"];
+        i++;
+      }
+    }
+
     return (
       <div id="probabilities-container">
-        <table>
+        <table style={{ padding: "0px" }}>
           <thead>
-            <tr>
-              {this.props.columns.map((name, i) => (
-                <th key={"header" + i}>{name}</th>
+            <tr style={rowStyle}>
+              {Array.from(headers(this.props.columns.length)).map(x => (
+                <th key={"header" + x[0]} style={valueCellStyle}>
+                  {x[0]}
+                  <sup style={{ fontSize: "x-small" }}>{x[1]}</sup>
+                </th>
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{ padding: "0px" }}>
             {this.props.rows.map((row, i) => (
-              <tr key={"row-" + i}>
+              <tr key={"row-" + i} style={rowStyle}>
                 {row.map((value, j) => (
                   <td
                     key={"value-" + j}
-                    style={j === 0 ? {} : { backgroundColor: getColor(value) }}
+                    style={
+                      j === 0
+                        ? firstColumnCellStyle
+                        : {
+                            ...valueCellStyle,
+                            backgroundColor: getColor(value)
+                          }
+                    }
                   >
                     {j === 0 ? value : ""}
                   </td>
