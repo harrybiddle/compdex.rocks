@@ -8,7 +8,15 @@ export default class Rankings extends React.Component {
       <DragDropContext onDragEnd={this.props.onDragEnd}>
         {this.props.stageOrder.map((droppableIds, stageIndex) => {
           return (
-            <div key={"stage-" + stageIndex} className="stage-container">
+            <div
+              key={"stage-" + stageIndex}
+              className="stage-container"
+              style={{
+                minWidth: "300px",
+                marginLeft: "auto",
+                marginRight: "auto"
+              }}
+            >
               {droppableIds.map(droppableId => {
                 const list = this.props.lists[droppableId];
                 return (

@@ -7,6 +7,12 @@ import { stages } from "../constants";
 import TabLabel from "../tablabel/TabLabel";
 import { headerStyle } from "../common.module.css";
 
+const tabContentStyle = {
+  overflow: "scroll",
+  paddingLeft: "10px",
+  paddingRight: "10px"
+};
+
 export default class App extends React.Component {
   state = {
     athletes: {
@@ -50,7 +56,7 @@ export default class App extends React.Component {
       "athlete8"
     ],
     [stages.LEAD]: ["athlete1"],
-    activeTab: 0
+    activeTab: 1
   };
 
   setActiveTab(value) {
@@ -60,7 +66,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{ height: "100%" }}>
         {/* -- Header ---------------------------------------------------------------------------------------------- */}
         <div className={headerStyle}>Compdex.rocks</div>
 
@@ -68,8 +74,7 @@ export default class App extends React.Component {
         <div
           className={styles.hiddenOnDesktop}
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr"
+            display: "flex"
           }}
         >
           <TabLabel
@@ -89,27 +94,39 @@ export default class App extends React.Component {
         {/* -- Predictions ----------------------------------------------------------------------------------------- */}
         <div
           className={[
+            styles.tabContent,
             this.state.activeTab === 0 ? "" : styles.hiddenWhenTabInactive,
             styles.predictions
           ].join(" ")}
+          style={{
+            ...tabContentStyle,
+            display: "flex"
+          }}
         >
-          <Predictions
-            athletes={this.state.athletes}
-            stages={{
-              [stages.QUALIFICATION]: this.state[stages.QUALIFICATION],
-              [stages.SPEED]: this.state[stages.SPEED],
-              [stages.BOULDER]: this.state[stages.BOULDER],
-              [stages.LEAD]: this.state[stages.LEAD]
-            }}
-          />
+          <div style={{ marginLeft: "auto", marginRight: "auto" }}>
+            <Predictions
+              athletes={this.state.athletes}
+              stages={{
+                [stages.QUALIFICATION]: this.state[stages.QUALIFICATION],
+                [stages.SPEED]: this.state[stages.SPEED],
+                [stages.BOULDER]: this.state[stages.BOULDER],
+                [stages.LEAD]: this.state[stages.LEAD]
+              }}
+            />
+          </div>
         </div>
 
         {/* -- Configuration --------------------------------------------------------------------------------------- */}
         <div
           className={[
+            styles.tabContent,
             this.state.activeTab === 1 ? "" : styles.hiddenWhenTabInactive,
             styles.stages
           ].join(" ")}
+          style={{
+            ...tabContentStyle,
+            display: "flex"
+          }}
         >
           <Rankings
             onDragEnd={result =>
@@ -132,9 +149,9 @@ export default class App extends React.Component {
 export function constructListsForStage(state, stage) {
   const stageTitles = {
     [stages.QUALIFICATION]: "Qualification",
-    [stages.SPEED]: "Speed Stage",
-    [stages.BOULDER]: "Boulder Stage",
-    [stages.LEAD]: "Lead Stage"
+    [stages.SPEED]: "Speed",
+    [stages.BOULDER]: "Boulder",
+    [stages.LEAD]: "Lead"
   };
 
   const constructItem = athleteId => ({
