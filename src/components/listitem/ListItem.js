@@ -21,9 +21,17 @@ export default class ListItem extends React.Component {
                 // vertically center text
                 display: "flex",
                 alignItems: "center",
-                // add border when dragging
-                border: snapshot.isDragging ? "1px solid red" : "0px",
-                color: this.props.isRanked ? "black" : "#999"
+                // ranked/unranked style
+                color: this.props.isRanked ? "black" : "#999",
+                // dragging style
+                ...(snapshot.isDragging
+                  ? {
+                      border: "1px solid #eee",
+                      backgroundColor: "#F5F5F5",
+                      boxShadow:
+                        "0px 2px 1px -1px rgba(0, 0, 0, 0.2),0px 1px 1px 0px rgba(0, 0, 0, 0.14),0px 1px 3px 0px rgba(0,0,0,.12)"
+                    }
+                  : {})
               }}
             >
               <span style={{ width: "2.5ex" }}>{this.props.prefix}</span>

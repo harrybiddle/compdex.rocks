@@ -40,8 +40,7 @@ export default class Rankings extends React.Component {
                 <div
                   style={{
                     visibility: "visible",
-                    boxSizing: "border-box",
-                    padding: "0px 16px 0px 16px"
+                    boxSizing: "border-box"
                   }}
                 >
                   <span
@@ -71,7 +70,11 @@ export default class Rankings extends React.Component {
                               }}
                             />
                             <span
-                              style={{ fontSize: "smaller", color: "#999" }}
+                              style={{
+                                fontSize: "smaller",
+                                paddingLeft: "16px",
+                                color: "#999"
+                              }}
                             >
                               Isolation Zone
                             </span>
