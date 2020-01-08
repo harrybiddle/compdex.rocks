@@ -49,8 +49,8 @@ export default class App extends React.Component {
       "athlete8"
     ],
     [stages.LEAD]: ["athlete1"],
-    activeTab: 1,
-    activeSubTab: 1
+    activeTab: 0,
+    activeSubTab: 3
   };
 
   setActiveTab(value) {
