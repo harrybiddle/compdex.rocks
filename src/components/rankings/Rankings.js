@@ -33,6 +33,9 @@ export default class Rankings extends React.Component {
                 className={
                   this.props.activeTab === i ? "" : styles.hiddenWhenTabInactive
                 }
+                style={{
+                  flexGrow: 1
+                }}
               >
                 <div
                   style={{
@@ -42,6 +45,7 @@ export default class Rankings extends React.Component {
                   }}
                 >
                   <span
+                    className={styles.hiddenOnMobile}
                     style={{
                       boxSizing: "border-box",
                       fontSize: "1.25rem",

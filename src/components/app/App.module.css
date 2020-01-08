@@ -6,6 +6,9 @@
   .tabContent {
     height: 100%;
   }
+  .hiddenOnMobile {
+    display: none !important;
+  }
 }
 
 /***** desktop *****/
