@@ -6,13 +6,6 @@ import Predictions from "../predictions/Predictions";
 import { stages } from "../constants";
 import TabLabel from "../tablabel/TabLabel";
 
-const tabContentStyle = {
-  overflow: "scroll",
-  paddingLeft: "24px",
-  paddingRight: "24px",
-  paddingTop: "24px"
-};
-
 export default class App extends React.Component {
   state = {
     athletes: {
@@ -56,11 +49,17 @@ export default class App extends React.Component {
       "athlete8"
     ],
     [stages.LEAD]: ["athlete1"],
-    activeTab: 0
+    activeTab: 1,
+    activeSubTab: 1
   };
 
   setActiveTab(value) {
     const newState = update(this.state, { activeTab: { $set: value } });
+    this.setState(newState);
+  }
+
+  setActiveSubTab(value) {
+    const newState = update(this.state, { activeSubTab: { $set: value } });
     this.setState(newState);
   }
 
@@ -98,7 +97,6 @@ export default class App extends React.Component {
             styles.predictions
           ].join(" ")}
           style={{
-            ...tabContentStyle,
             display: "flex"
           }}
         >
@@ -121,15 +119,13 @@ export default class App extends React.Component {
             this.state.activeTab === 1 ? "" : styles.hiddenWhenTabInactive,
             styles.stages
           ].join(" ")}
-          style={{
-            ...tabContentStyle,
-            display: "flex"
-          }}
         >
           <Rankings
             onDragEnd={result =>
               this.setState(newStateOnDragEnd(this.state, result))
             }
+            activeTab={this.state.activeSubTab}
+            onTabClick={value => this.setActiveSubTab(value)}
             lists={constructLists(this.state)}
             groups={[
               {
