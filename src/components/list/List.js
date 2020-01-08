@@ -13,6 +13,7 @@ export default class List extends React.Component {
                 <ListItem
                   key={item.draggableId}
                   draggableId={item.draggableId}
+                  prefix={this.props.isNumbered ? index + 1 + "." : null}
                   content={item.content}
                   index={index}
                 />

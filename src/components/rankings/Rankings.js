@@ -65,7 +65,11 @@ export default class Rankings extends React.Component {
                         }
                         key={listId + "-container"}
                       >
-                        <List items={list.items} droppableId={listId} />
+                        <List
+                          items={list.items}
+                          droppableId={listId}
+                          isNumbered={list.isRanked}
+                        />
                       </div>
                     );
                   })}

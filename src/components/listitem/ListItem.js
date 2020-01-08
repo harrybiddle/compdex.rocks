@@ -21,14 +21,18 @@ export default class ListItem extends React.Component {
                 // vertically center text
                 display: "flex",
                 alignItems: "center",
-                // ensure that drag handle appears at end
-                justifyContent: "space-between",
                 // add border when dragging
                 border: snapshot.isDragging ? "1px solid red" : "0px"
               }}
             >
+              <span style={{ width: "2.5ex" }}>{this.props.prefix}</span>
+
               {this.props.content}
-              <img src={dragHandleIcon} alt="Drag handle icon" />
+              <img
+                src={dragHandleIcon}
+                alt="Drag handle icon"
+                style={{ marginLeft: "auto" }}
+              />
             </div>
           </div>
         )}
