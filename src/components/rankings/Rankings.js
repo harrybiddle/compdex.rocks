@@ -41,7 +41,7 @@ export default class Rankings extends React.Component {
                   style={{
                     visibility: "visible",
                     boxSizing: "border-box",
-                    padding: "16px 16px 16px 16px"
+                    padding: "0px 16px 0px 16px"
                   }}
                 >
                   <span
@@ -59,16 +59,31 @@ export default class Rankings extends React.Component {
                   {group.listIds.map(listId => {
                     const list = this.props.lists[listId];
                     return (
-                      <div
-                        style={
-                          list.isRanked ? { color: "black" } : { color: "grey" }
-                        }
-                        key={listId + "-container"}
-                      >
+                      <div key={listId + "-parentcontainer"}>
+                        {/* if list is unranked, draw a divider above it */}
+                        {list.isRanked ? null : (
+                          <div key={listId + "divider"}>
+                            <hr
+                              style={{
+                                border: "none",
+                                borderBottom: "1px solid #ccc",
+                                marginBottom: "0px"
+                              }}
+                            />
+                            <span
+                              style={{ fontSize: "smaller", color: "#999" }}
+                            >
+                              Isolation Zone
+                            </span>
+                          </div>
+                        )}
+
+                        {/* draw the list */}
                         <List
                           items={list.items}
                           droppableId={listId}
                           isNumbered={list.isRanked}
+                          isRanked={list.isRanked}
                         />
                       </div>
                     );

@@ -22,7 +22,8 @@ export default class ListItem extends React.Component {
                 display: "flex",
                 alignItems: "center",
                 // add border when dragging
-                border: snapshot.isDragging ? "1px solid red" : "0px"
+                border: snapshot.isDragging ? "1px solid red" : "0px",
+                color: this.props.isRanked ? "black" : "#999"
               }}
             >
               <span style={{ width: "2.5ex" }}>{this.props.prefix}</span>

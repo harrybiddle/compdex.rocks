@@ -11,6 +11,7 @@ export default class List extends React.Component {
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {this.props.items.map((item, index) => (
                 <ListItem
+                  isRanked={this.props.isRanked}
                   key={item.draggableId}
                   draggableId={item.draggableId}
                   prefix={this.props.isNumbered ? index + 1 + "." : null}
