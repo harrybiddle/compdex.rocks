@@ -19,7 +19,7 @@ export function getColor(probability) {
   return colorBuckets[j];
 }
 
-class Heatmap extends React.Component {
+class RidgelinePlot extends React.Component {
   render() {
     const rowStyle = { height: "1em" };
     const firstColumnCellStyle = {
@@ -91,4 +91,4 @@ class Heatmap extends React.Component {
   }
 }
 
-export default Heatmap;
+export default RidgelinePlot;

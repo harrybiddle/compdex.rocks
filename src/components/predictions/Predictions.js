@@ -1,5 +1,5 @@
 import React from "react";
-import Heatmap from "../heatmap/Heatmap";
+import RidgelinePlot from "../ridgelineplot/RidgelinePlot";
 import { arrayDifference } from "../../common/utils";
 import { stages } from "../constants";
 import { probabilities } from "../../common/bruteforce";
@@ -55,7 +55,7 @@ export default class Predictions extends React.Component {
 
   render() {
     if (this.computationShouldProceed()) {
-      return <Heatmap {...heatmapProps(this.props)} />;
+      return <RidgelinePlot {...heatmapProps(this.props)} />;
     } else {
       return <div>Finish some stages first</div>;
     }

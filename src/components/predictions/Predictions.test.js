@@ -1,6 +1,6 @@
 import { heatmapProps } from "./Predictions";
 
-describe("heatmap props", () => {
+describe("ridgelineplot props", () => {
   it("order athletes by centre of mass", () => {
     const predictionsProps = {
       athletes: {
