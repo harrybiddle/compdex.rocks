@@ -20,17 +20,12 @@ export function getColor(probability) {
 }
 
 class RidgelinePlot extends React.Component {
+  range() {
+    return Array.from(Array(this.props.athletes.length).keys());
+  }
+
   render() {
     const rowStyle = { height: "1em" };
-    const firstColumnCellStyle = {
-      padding: "0px",
-      // maximum width of first column
-      maxWidth: "130px",
-      // hide overflow text behind ellipses
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      overflow: "hidden"
-    };
     const valueCellStyle = {
       padding: "0px",
       minWidth: "1.5em",
@@ -56,7 +51,7 @@ class RidgelinePlot extends React.Component {
         <table style={{ padding: "0px", borderSpacing: "0px" }}>
           <thead>
             <tr style={rowStyle}>
-              {Array.from(headers(this.props.columns.length)).map(x => (
+              {Array.from(headers(this.props.athletes.length)).map(x => (
                 <th key={"header" + x[0]} style={valueCellStyle}>
                   {x[0]}
                   <sup style={{ fontSize: "x-small" }}>{x[1]}</sup>
@@ -65,23 +60,58 @@ class RidgelinePlot extends React.Component {
             </tr>
           </thead>
           <tbody style={{ padding: "0px" }}>
-            {this.props.rows.map((row, i) => (
+            {this.props.athletes.map((athleteName, i) => (
               <tr key={"row-" + i} style={rowStyle}>
-                {row.map((value, j) => (
-                  <td
-                    key={"value-" + j}
-                    style={
-                      j === 0
-                        ? firstColumnCellStyle
-                        : {
-                            ...valueCellStyle,
-                            backgroundColor: getColor(value)
-                          }
-                    }
-                  >
-                    {j === 0 ? value : ""}
-                  </td>
-                ))}
+                {/* First cell is the athlete's name */}
+                <td
+                  style={{
+                    padding: "0px",
+                    // maximum width of first column
+                    maxWidth: "130px",
+                    // hide overflow text behind ellipses
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden"
+                  }}
+                >
+                  {athleteName}
+                </td>
+
+                {/* Subsequent cells are the visualised probabilities */}
+                {this.range().map(j => {
+                  const value = this.props.probabilities[athleteName][j];
+                  const borderStyle = value > 0 ? "1px solid red" : "0px";
+                  return (
+                    <td
+                      key={"valueContainer-" + athleteName + j}
+                      style={{
+                        ...valueCellStyle
+                      }}
+                    >
+                      <div
+                        key={"valueC-" + athleteName + j}
+                        style={{
+                          position: "relative",
+                          marginLeft: "1px",
+                          height: "100%"
+                        }}
+                      >
+                        <div
+                          key={"value-" + athleteName + j}
+                          style={{
+                            backgroundColor: "orange",
+                            border: borderStyle,
+                            height: value * 100 + "%",
+                            width: "100%",
+
+                            position: "absolute",
+                            bottom: "0px"
+                          }}
+                        ></div>
+                      </div>
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>

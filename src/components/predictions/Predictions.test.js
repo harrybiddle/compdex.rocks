@@ -1,7 +1,7 @@
-import { heatmapProps } from "./Predictions";
+import { ridgelinePlotProps } from "./Predictions";
 
-describe("ridgelineplot props", () => {
-  it("order athletes by centre of mass", () => {
+describe("RidgelinePlot props", () => {
+  it("contents are correct and ordered by centre of mass", () => {
     const predictionsProps = {
       athletes: {
         athlete1: { name: "Adam Ondra" },
@@ -16,11 +16,14 @@ describe("ridgelineplot props", () => {
       }
     };
 
-    const props = heatmapProps(predictionsProps);
-    expect(props.rows.map(row => row[0])).toEqual([
-      "Margo Hayes",
-      "Adam Ondra",
-      "Alex Megos"
-    ]);
+    const props = ridgelinePlotProps(predictionsProps);
+    expect(props).toEqual({
+      athletes: ["Margo Hayes", "Adam Ondra", "Alex Megos"],
+      probabilities: {
+        "Margo Hayes": [2.0 / 3.0, 0.25, 1.0 / 12.0],
+        "Adam Ondra": [2.0 / 9.0, 0.5, 0.2 + 7 / 90],
+        "Alex Megos": [1.0 / 9.0, 0.25, 63 / 100 + 8 / 900]
+      }
+    });
   });
 });
