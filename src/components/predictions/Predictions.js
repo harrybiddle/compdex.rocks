@@ -1,24 +1,12 @@
 import React from "react";
-import Heatmap from "../heatmap/Heatmap";
+import RidgelinePlot from "../ridgelineplot/RidgelinePlot";
 import { arrayDifference } from "../../common/utils";
 import { stages } from "../constants";
 import { probabilities } from "../../common/bruteforce";
 import { calculateCentreOfMass } from "../app/App";
 import { isEqual } from "lodash";
 
-export function heatmapProps(predictionsProps) {
-  function* headers(length) {
-    yield "";
-    yield "1st";
-    yield "2nd";
-    yield "3rd";
-    let i = 4;
-    while (i < length) {
-      yield i + "th";
-      i++;
-    }
-  }
-
+export function ridgelinePlotProps(predictionsProps) {
   const athletes = Object.keys(predictionsProps.athletes);
   let rows = Object.entries(
     probabilities(
@@ -28,14 +16,16 @@ export function heatmapProps(predictionsProps) {
       predictionsProps.stages[stages.BOULDER],
       predictionsProps.stages[stages.LEAD]
     )
-  ).map(a => [predictionsProps.athletes[a[0]].name].concat(a[1]));
+  ).map(a => [predictionsProps.athletes[a[0]].name, a[1]]);
   rows.sort(
-    (a, b) =>
-      calculateCentreOfMass(a.slice(1)) - calculateCentreOfMass(b.slice(1))
+    (a, b) => calculateCentreOfMass(a[1]) - calculateCentreOfMass(b[1])
   );
   return {
-    columns: Array.from(headers(athletes.length + 1)),
-    rows: rows
+    athletes: rows.map(r => r[0]),
+    probabilities: rows.reduce((acc, value) => {
+      acc[value[0]] = value[1];
+      return acc;
+    }, {})
   };
 }
 
@@ -55,7 +45,7 @@ export default class Predictions extends React.Component {
 
   render() {
     if (this.computationShouldProceed()) {
-      return <Heatmap {...heatmapProps(this.props)} />;
+      return <RidgelinePlot {...ridgelinePlotProps(this.props)} />;
     } else {
       return <div>Finish some stages first</div>;
     }
