@@ -100,7 +100,13 @@ export default class App extends React.Component {
             display: "flex"
           }}
         >
-          <div style={{ marginLeft: "auto", marginRight: "auto" }}>
+          <div
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              overflow: "scroll"
+            }}
+          >
             <Predictions
               athletes={this.state.athletes}
               stages={{
