@@ -28,8 +28,8 @@ class RidgelinePlot extends React.Component {
     const rowStyle = { height: "1em" };
     const valueCellStyle = {
       padding: "0px",
-      minWidth: "1.5em",
-      maxWidth: "1.5em",
+      minWidth: "50px",
+      maxWidth: "50px",
       minHeight: "1.5em",
       maxHeight: "1.5em",
       height: "1.5em"
@@ -47,11 +47,11 @@ class RidgelinePlot extends React.Component {
     }
 
     return (
-      <div id="probabilities-container">
+      <div id="probabilities-container" style={{ marginTop: "30px" }}>
         <table style={{ padding: "0px", borderSpacing: "0px" }}>
           <thead>
             <tr style={rowStyle}>
-              {Array.from(headers(this.props.athletes.length)).map(x => (
+              {Array.from(headers(this.props.athletes.length + 1)).map(x => (
                 <th key={"header" + x[0]} style={valueCellStyle}>
                   {x[0]}
                   <sup style={{ fontSize: "x-small" }}>{x[1]}</sup>
@@ -65,13 +65,20 @@ class RidgelinePlot extends React.Component {
                 {/* First cell is the athlete's name */}
                 <td
                   style={{
-                    padding: "0px",
                     // maximum width of first column
                     maxWidth: "130px",
                     // hide overflow text behind ellipses
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
-                    overflow: "hidden"
+                    overflow: "hidden",
+                    //
+                    fontSize: "14px",
+                    height: "32px",
+                    lineHeight: "1.43",
+                    padding: "8px 16px 8px 16px",
+                    // vertically center text
+                    display: "flex",
+                    alignItems: "center"
                   }}
                 >
                   {athleteName}
