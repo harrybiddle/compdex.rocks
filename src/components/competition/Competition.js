@@ -1,5 +1,5 @@
 import Rankings from "../rankings/Rankings";
-import styles from "./Competition.module.css";
+import styles from "../common.module.css";
 import React from "react";
 import update from "immutability-helper";
 import Predictions from "../predictions/Predictions";

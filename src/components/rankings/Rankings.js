@@ -2,7 +2,7 @@ import React from "react";
 import List from "../list/List";
 import { DragDropContext } from "react-beautiful-dnd";
 import TabLabel from "../tablabel/TabLabel";
-import styles from "../app/App.module.css";
+import styles from "../common.module.css";
 
 export default class Rankings extends React.Component {
   render() {
