@@ -3,7 +3,7 @@ import RidgelinePlot from "../ridgelineplot/RidgelinePlot";
 import { arrayDifference } from "../../common/utils";
 import { stages } from "../constants";
 import { probabilities } from "../../common/bruteforce";
-import { calculateCentreOfMass } from "../app/App";
+import { calculateCentreOfMass } from "../competition/Competition";
 import { isEqual } from "lodash";
 
 export function ridgelinePlotProps(predictionsProps) {

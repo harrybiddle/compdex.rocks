@@ -1,0 +1,19 @@
+/***** mobile phones *****/
+@media (max-width: 768px) {
+  .hiddenWhenTabInactive {
+    display: none !important;
+  }
+  .tabContent {
+    height: 100%;
+  }
+  .hiddenOnMobile {
+    display: none !important;
+  }
+}
+
+/***** desktop *****/
+@media only screen and (min-width: 768px) {
+  .hiddenOnDesktop {
+    display: none !important;
+  }
+}
