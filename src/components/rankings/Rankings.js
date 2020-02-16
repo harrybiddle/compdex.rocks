@@ -9,11 +9,7 @@ export default class Rankings extends React.Component {
     return (
       <DragDropContext onDragEnd={this.props.onDragEnd}>
         {/* titles */}
-        <div
-          key="subtabs"
-          style={{ display: "flex" }}
-          className={styles.hiddenOnDesktop}
-        >
+        <div key="subtabs" style={{ display: "flex" }}>
           {this.props.groups.map((group, i) => {
             return (
               <TabLabel
@@ -43,18 +39,6 @@ export default class Rankings extends React.Component {
                     boxSizing: "border-box"
                   }}
                 >
-                  <span
-                    className={styles.hiddenOnMobile}
-                    style={{
-                      boxSizing: "border-box",
-                      fontSize: "1.25rem",
-                      lineHeight: "2rem",
-                      fontWeight: "600",
-                      letterSpacing: ".0125em"
-                    }}
-                  >
-                    {group.title}
-                  </span>
                   {group.listIds.map(listId => {
                     const list = this.props.lists[listId];
                     return (

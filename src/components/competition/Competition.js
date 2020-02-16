@@ -71,7 +71,6 @@ export default class Competition extends React.Component {
 
         {/* -- Tab Labels ------------------------------------------------------------------------------------------ */}
         <div
-          className={styles.hiddenOnDesktop}
           style={{
             display: "flex"
           }}
