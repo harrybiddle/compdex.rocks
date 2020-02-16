@@ -7,21 +7,18 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
-import update from "immutability-helper";
 
-export default class App extends React.Component {
-  state = {
-    splashScreen: true
-  };
-
-  clearSplash() {
-    const newState = { splashScreen: { $set: false } };
-    this.setState(update(this.state, newState));
-  }
-
-  render() {
-    return (
-      <Router>
+export default function App() {
+  return (
+    <Router>
+      <div
+        style={{
+          maxWidth: "768px",
+          height: "100%",
+          marginLeft: "auto",
+          marginRight: "auto"
+        }}
+      >
         <Switch>
           <Route path="/comp">
             <Competition />
@@ -31,7 +28,7 @@ export default class App extends React.Component {
             <Splash to="/comp" />
           </Route>
         </Switch>
-      </Router>
-    );
-  }
+      </div>
+    </Router>
+  );
 }
