@@ -1,4 +1,5 @@
 import React from "react";
+import LinkButton from "../linkbutton/LinkButton";
 
 export default class Splash extends React.Component {
   render() {
@@ -39,9 +40,8 @@ export default class Splash extends React.Component {
             }}
           >
             <h4 style={{ fontStyle: "italic" }}>Choose a competition</h4>
-            <button onClick={this.props.onClick}>
-              Open random competition
-            </button>
+
+            <LinkButton to={this.props.to}>Open random competition</LinkButton>
           </div>
         </div>
       </div>
