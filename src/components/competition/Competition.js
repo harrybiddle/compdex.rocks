@@ -6,6 +6,10 @@ import Predictions from "../predictions/Predictions";
 import { stages } from "../constants";
 import TabLabel from "../tablabel/TabLabel";
 
+const tabStyle = {
+  height: "100%"
+};
+
 export default class Competition extends React.Component {
   state = {
     athletes: {
@@ -91,12 +95,12 @@ export default class Competition extends React.Component {
         {/* -- Predictions ----------------------------------------------------------------------------------------- */}
         <div
           className={[
-            styles.tabContent,
             this.state.activeTab === 0 ? "" : styles.hiddenWhenTabInactive,
             styles.predictions
           ].join(" ")}
           style={{
-            display: "flex"
+            display: "flex",
+            ...tabStyle
           }}
         >
           <div
@@ -120,10 +124,10 @@ export default class Competition extends React.Component {
         {/* -- Configuration --------------------------------------------------------------------------------------- */}
         <div
           className={[
-            styles.tabContent,
             this.state.activeTab === 1 ? "" : styles.hiddenWhenTabInactive,
             styles.stages
           ].join(" ")}
+          style={tabStyle}
         >
           <Rankings
             onDragEnd={result =>

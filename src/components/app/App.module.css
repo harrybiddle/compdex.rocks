@@ -1,6 +1,3 @@
 .hiddenWhenTabInactive {
   display: none !important;
 }
-.tabContent {
-  height: 100%;
-}
