@@ -11,15 +11,24 @@ import {
 export default function App() {
   return (
     <Router>
-      <Switch>
-        <Route path="/comp">
-          <Competition />
-        </Route>
-        <Route path="/">
-          <Redirect to="/" />
-          <Splash to="/comp" />
-        </Route>
-      </Switch>
+      <div
+        style={{
+          maxWidth: "768px",
+          height: "100%",
+          marginLeft: "auto",
+          marginRight: "auto"
+        }}
+      >
+        <Switch>
+          <Route path="/comp">
+            <Competition />
+          </Route>
+          <Route path="/">
+            <Redirect to="/" />
+            <Splash to="/comp" />
+          </Route>
+        </Switch>
+      </div>
     </Router>
   );
 }
