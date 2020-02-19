@@ -29,25 +29,18 @@ export function ridgelinePlotProps(predictionsProps) {
   };
 }
 
-export default class Predictions extends React.Component {
-  computationShouldProceed() {
-    const allAthleteIds = Object.keys(this.props.athletes);
-    const numberMissingAthletes = stage =>
-      arrayDifference(allAthleteIds, this.props.stages[stage]).length;
-    return (
-      numberMissingAthletes(stages.QUALIFICATION) === 0 &&
-      numberMissingAthletes(stages.SPEED) === 0 &&
-      numberMissingAthletes(stages.BOULDER) < 2
-    );
-  }
-
-  shouldComponentUpdate = nextProps => !isEqual(this.props, nextProps);
-
-  render() {
-    if (this.computationShouldProceed()) {
-      return <RidgelinePlot {...ridgelinePlotProps(this.props)} />;
-    } else {
-      return <div>Finish some stages first</div>;
-    }
-  }
+export default function Predictions(props) {
+  // computationShouldProceed() {
+  //   const allAthleteIds = Object.keys(this.props.athletes);
+  //   const numberMissingAthletes = stage =>
+  //     arrayDifference(allAthleteIds, this.props.stages[stage]).length;
+  //   return (
+  //     numberMissingAthletes(stages.QUALIFICATION) === 0 &&
+  //     numberMissingAthletes(stages.SPEED) === 0 &&
+  //     numberMissingAthletes(stages.BOULDER) < 2
+  //   );
+  // }
+  //
+  // shouldComponentUpdate = nextProps => !isEqual(this.props, nextProps);
+  return <RidgelinePlot {...ridgelinePlotProps(props)} />;
 }
