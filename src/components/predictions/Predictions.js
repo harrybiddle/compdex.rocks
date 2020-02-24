@@ -4,7 +4,8 @@ import { arrayDifference } from "../../common/utils";
 import { stages } from "../constants";
 import { probabilities } from "../../common/bruteforce";
 import { calculateCentreOfMass } from "../competition/Competition";
-import { useAsync } from "react-async";
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import worker from "workerize-loader!../../predictions.worker";
 
 export function ridgelinePlotProps(predictionsProps) {
   const athletes = Object.keys(predictionsProps.athletes);
@@ -44,35 +45,41 @@ export function ridgelinePlotProps(predictionsProps) {
 //   // shouldComponentUpdate = nextProps => !isEqual(this.props, nextProps);
 //   return <RidgelinePlot {...ridgelinePlotProps(props)} />;
 // }
-
-// You can use async/await or any function that returns a Promise
-const loadPlayer = async ({ playerId }, { signal }) => {
-  return playerId;
-};
-
-function promiseFn({ props }) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      console.log("start promise");
-      resolve(ridgelinePlotProps(props));
-      console.log("finish promise");
-    }, 1000);
-  });
-}
+//
+// // You can use async/await or any function that returns a Promise
+// const loadPlayer = async ({ playerId }, { signal }) => {
+//   return playerId;
+// };
+//
+// function promiseFn({ props }) {
+//   return new Promise(resolve => {
+//     setTimeout(() => {
+//       console.log("start promise");
+//       resolve(ridgelinePlotProps(props));
+//       console.log("finish promise");
+//     }, 1000);
+//   });
+// }
 
 export default function MyComponent(props) {
-  const { data, error, isPending } = useAsync({
-    promiseFn: promiseFn,
-    props: props,
-    watch: JSON.stringify(props) // stringify due to shallow compare
+  let inst = worker();
+  inst.burnCpu(1000).then(count => {
+    console.log(`Ran ${count} loops`);
   });
-  console.log("render");
-
-  return (
-    <div>
-      {isPending && "Loading..."}
-      {error && `Something went wrong: ${error.message}`}
-      {data && <RidgelinePlot {...data} />}
-    </div>
-  );
+  return <RidgelinePlot {...ridgelinePlotProps(props)} />;
+  //
+  // const { data, error, isPending } = useAsync({
+  //   promiseFn: promiseFn,
+  //   props: props,
+  //   watch: JSON.stringify(props) // stringify due to shallow compare
+  // });
+  // console.log("render");
+  //
+  // return (
+  //   <div>
+  //     {isPending && "Loading..."}
+  //     {error && `Something went wrong: ${error.message}`}
+  //     {data && <RidgelinePlot {...data} />}
+  //   </div>
+  // );
 }
