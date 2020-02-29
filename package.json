@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "gh-pages": "^2.1.1",
-    "worker-plugin": "^3.2.0",
     "workerize-loader": "^1.1.0"
   }
 }
