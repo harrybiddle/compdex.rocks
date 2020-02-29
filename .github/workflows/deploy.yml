@@ -23,5 +23,6 @@ jobs:
         GITHUB_PAT: ${{ secrets.GITHUB_PAT }}      
       with:
         repo: harrybiddle/harrybiddle.github.io
+        fqdn: compdex.rocks
         target_branch: master
         build_dir: build/
