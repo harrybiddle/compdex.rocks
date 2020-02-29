@@ -1,4 +1,4 @@
-import { ridgelinePlotProps } from "../../predictions.worker";
+import { ridgelinePlotProps } from "./predictions.worker";
 
 describe("RidgelinePlot props", () => {
   it("contents are correct and ordered by centre of mass", () => {

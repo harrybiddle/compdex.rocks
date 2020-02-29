@@ -2,9 +2,9 @@ import Rankings from "../rankings/Rankings";
 import styles from "../common.module.css";
 import React from "react";
 import update from "immutability-helper";
-import Predictions from "../predictions/Predictions";
 import { stages } from "../constants";
 import TabLabel from "../tablabel/TabLabel";
+import SafePredictions from "../safepredictions/SafePredictions";
 
 const tabStyle = {
   height: "100%"
@@ -110,7 +110,7 @@ export default class Competition extends React.Component {
               overflow: "scroll"
             }}
           >
-            <Predictions
+            <SafePredictions
               athletes={this.state.athletes}
               stages={{
                 [stages.QUALIFICATION]: this.state[stages.QUALIFICATION],
