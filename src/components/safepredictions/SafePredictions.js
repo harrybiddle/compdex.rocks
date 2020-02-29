@@ -1,5 +1,6 @@
 import React from "react";
 import Predictions from "../predictions/Predictions";
+import { allowedDegreesOfFreedom } from "../constants";
 
 export function degreesOfFreedom(props) {
   const numAthletes = Object.keys(props.athletes).length;
@@ -10,9 +11,13 @@ export function degreesOfFreedom(props) {
 }
 
 export default function SafePredictions(props) {
-  if (degreesOfFreedom(props) < 8) {
+  if (degreesOfFreedom(props) < allowedDegreesOfFreedom) {
     return <Predictions {...props} />;
   } else {
-    return <div>Fill out more</div>;
+    return (
+      <div>
+        You must place some more athletes before you can see the predictions!
+      </div>
+    );
   }
 }
