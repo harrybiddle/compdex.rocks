@@ -3,29 +3,39 @@ const update = require("immutability-helper");
 module.exports = {
   jest: {
     configure: (jestConfig, { env, paths, resolve, rootDir }) => {
-      console.log(jestConfig);
-
-      const firstTransformKey = Object.keys(jestConfig.transform)[0];
-      const firstTransformValue = jestConfig.transform[firstTransformKey];
-      const expectedKey = "^.+\\.(js|jsx|ts|tsx)$";
+      // we are expecting the jest config to take this form:
+      //
+      //   "jest": {
+      //     "transform": {
+      //        "^.+\\.(js|jsx|ts|tsx)$": "...babelTransform.js",
+      //        ...
+      //     }
+      //     ...
+      //   }
+      //
+      // error if this is not the case
+      const expectedJavascriptTransformPattern = "^.+\\.(js|jsx|ts|tsx)$";
+      const javascriptTransformValue =
+        jestConfig.transform[expectedJavascriptTransformPattern];
 
       if (
-        !firstTransformKey == expectedKey ||
-        !firstTransformValue.endsWith("babelTransform.js")
+        !javascriptTransformValue ||
+        !javascriptTransformValue.endsWith("babelTransform.js")
       ) {
         throw Error(
           "Expecting first key to be a babel transform on Javascript files, got '" +
-            firstTransformKey +
+            expectedJavascriptTransformPattern +
             "': '" +
-            firstTransformValue +
+            javascriptTransformValue +
             "'"
         );
       }
 
+      // inject in our new transform
       const pathToJestTransform = rootDir + "/src/jestTransform.js";
       return update(jestConfig, {
         transform: {
-          "^.+\\.(js|jsx|ts|tsx)$": {
+          [expectedJavascriptTransformPattern]: {
             $set: pathToJestTransform
           }
         }
