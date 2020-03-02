@@ -4,3 +4,4 @@ export const stages = {
   BOULDER: "boulder",
   LEAD: "lead"
 };
+export const allowedDegreesOfFreedom = 11;
