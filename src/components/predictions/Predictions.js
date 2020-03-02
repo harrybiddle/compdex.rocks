@@ -3,6 +3,7 @@ import RidgelinePlot from "../ridgelineplot/RidgelinePlot";
 import { useAsync } from "react-async";
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import worker from "workerize-loader!./predictions.worker";
+//const worker = () => require("./predictions.worker");
 
 function asyncRidgelinePlotProps({ props }) {
   let inst = worker();
@@ -18,7 +19,7 @@ export default function MyComponent(props) {
   return (
     <div>
       {isPending && "Loading..."}
-      {error && `Something went wrong: ${error.message}`}
+      {error && `Somethsing went wrong: ${error.message}`}
       {isPending || <RidgelinePlot {...data} />}
     </div>
   );
