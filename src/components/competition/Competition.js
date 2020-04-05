@@ -1,14 +1,9 @@
 import Rankings from "../rankings/Rankings";
-import styles from "../common.module.css";
 import React from "react";
 import update from "immutability-helper";
 import { stages } from "../constants";
-import TabLabel from "../tablabel/TabLabel";
+import { Tabs, Tab } from "react-bootstrap";
 import SafePredictions from "../safepredictions/SafePredictions";
-
-const tabStyle = {
-  height: "100%"
-};
 
 export default class Competition extends React.Component {
   state = {
@@ -52,113 +47,71 @@ export default class Competition extends React.Component {
       "athlete7",
       "athlete8"
     ],
-    [stages.LEAD]: ["athlete1"],
-    activeTab: 0,
-    activeSubTab: 3
+    [stages.LEAD]: ["athlete1"]
   };
-
-  setActiveTab(value) {
-    const newState = update(this.state, { activeTab: { $set: value } });
-    this.setState(newState);
-  }
-
-  setActiveSubTab(value) {
-    const newState = update(this.state, { activeSubTab: { $set: value } });
-    this.setState(newState);
-  }
 
   render() {
     return (
       <div style={{ height: "100%" }}>
-        {/* -- Header ---------------------------------------------------------------------------------------------- */}
-        {/*<div className={headerStyle}>Compdex.rocks</div>*/}
-
-        {/* -- Tab Labels ------------------------------------------------------------------------------------------ */}
-        <div
-          style={{
-            display: "flex"
-          }}
-        >
-          <TabLabel
-            onClick={() => this.setActiveTab(0)}
-            isActive={this.state.activeTab === 0}
-          >
-            Predictions
-          </TabLabel>
-          <TabLabel
-            onClick={() => this.setActiveTab(1)}
-            isActive={this.state.activeTab === 1}
-          >
-            Configuration
-          </TabLabel>
-        </div>
+        {/*/!* -- Header ---------------------------------------------------------------------------------------------- *!/*/}
+        {/*<div className={styles.headerStyle}>Compdex.rocks</div>*/}
         {/* -- Predictions ----------------------------------------------------------------------------------------- */}
-        <div
-          className={[
-            this.state.activeTab === 0 ? "" : styles.hiddenWhenTabInactive,
-            styles.predictions
-          ].join(" ")}
-          style={{
-            display: "flex",
-            ...tabStyle
-          }}
-        >
-          <div
-            style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              overflow: "scroll"
-            }}
-          >
-            <SafePredictions
-              athletes={this.state.athletes}
-              stages={{
-                [stages.QUALIFICATION]: this.state[stages.QUALIFICATION],
-                [stages.SPEED]: this.state[stages.SPEED],
-                [stages.BOULDER]: this.state[stages.BOULDER],
-                [stages.LEAD]: this.state[stages.LEAD]
+        <Tabs defaultActiveKey="predictions" id="main-tab">
+          <Tab eventKey="predictions" title="Predictions">
+            <div
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                overflow: "scroll"
               }}
-            />
-          </div>
-        </div>
-        {/* -- Configuration --------------------------------------------------------------------------------------- */}
-        <div
-          className={[
-            this.state.activeTab === 1 ? "" : styles.hiddenWhenTabInactive,
-            styles.stages
-          ].join(" ")}
-          style={tabStyle}
-        >
-          <Rankings
-            onDragEnd={result =>
-              this.setState(newStateOnDragEnd(this.state, result))
-            }
-            activeTab={this.state.activeSubTab}
-            onTabClick={value => this.setActiveSubTab(value)}
-            lists={constructLists(this.state)}
-            groups={[
-              {
-                title: "Qualification",
-                listIds: [stages.QUALIFICATION + "-ranked"]
-              },
-              {
-                title: "Speed",
-                listIds: [stages.SPEED + "-ranked", stages.SPEED + "-unranked"]
-              },
-              {
-                title: "Boulder",
-                listIds: [
-                  stages.BOULDER + "-ranked",
-                  stages.BOULDER + "-unranked"
-                ]
-              },
-              {
-                title: "Lead",
-                listIds: [stages.LEAD + "-ranked", stages.LEAD + "-unranked"]
+            >
+              <SafePredictions
+                athletes={this.state.athletes}
+                stages={{
+                  [stages.QUALIFICATION]: this.state[stages.QUALIFICATION],
+                  [stages.SPEED]: this.state[stages.SPEED],
+                  [stages.BOULDER]: this.state[stages.BOULDER],
+                  [stages.LEAD]: this.state[stages.LEAD]
+                }}
+              />
+            </div>
+          </Tab>
+          {/* -- Configuration --------------------------------------------------------------------------------------- */}
+          <Tab eventKey="configuration" title="Configuration">
+            <Rankings
+              onDragEnd={result =>
+                this.setState(newStateOnDragEnd(this.state, result))
               }
-            ]}
-          />
-        </div>
+              activeTab={this.state.activeSubTab}
+              onTabClick={value => this.setActiveSubTab(value)}
+              lists={constructLists(this.state)}
+              groups={[
+                {
+                  title: "Qualification",
+                  listIds: [stages.QUALIFICATION + "-ranked"]
+                },
+                {
+                  title: "Speed",
+                  listIds: [
+                    stages.SPEED + "-ranked",
+                    stages.SPEED + "-unranked"
+                  ]
+                },
+                {
+                  title: "Boulder",
+                  listIds: [
+                    stages.BOULDER + "-ranked",
+                    stages.BOULDER + "-unranked"
+                  ]
+                },
+                {
+                  title: "Lead",
+                  listIds: [stages.LEAD + "-ranked", stages.LEAD + "-unranked"]
+                }
+              ]}
+            />
+          </Tab>
+        </Tabs>
       </div>
     );
   }

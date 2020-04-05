@@ -1,38 +1,16 @@
 import React from "react";
 import List from "../list/List";
 import { DragDropContext } from "react-beautiful-dnd";
-import TabLabel from "../tablabel/TabLabel";
-import styles from "../common.module.css";
+import { Tabs, Tab } from "react-bootstrap";
 
 export default class Rankings extends React.Component {
   render() {
     return (
       <DragDropContext onDragEnd={this.props.onDragEnd}>
-        {/* titles */}
-        <div key="subtabs" style={{ display: "flex" }}>
+        <Tabs defaultActiveKey="stage-0" id="sub-tab">
           {this.props.groups.map((group, i) => {
             return (
-              <TabLabel
-                onClick={() => this.props.onTabClick(i)}
-                isActive={this.props.activeTab === i}
-              >
-                {group.title}
-              </TabLabel>
-            );
-          })}
-        </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          {this.props.groups.map((group, i) => {
-            return (
-              <div
-                key={"stage-" + i}
-                className={
-                  this.props.activeTab === i ? "" : styles.hiddenWhenTabInactive
-                }
-                style={{
-                  flexGrow: 1
-                }}
-              >
+              <Tab eventKey={"stage-" + i} title={group.title}>
                 <div
                   style={{
                     visibility: "visible",
@@ -76,10 +54,10 @@ export default class Rankings extends React.Component {
                     );
                   })}
                 </div>
-              </div>
+              </Tab>
             );
           })}
-        </div>
+        </Tabs>
       </DragDropContext>
     );
   }
