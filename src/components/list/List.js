@@ -1,6 +1,7 @@
 import React from "react";
 import ListItem from "../listitem/ListItem";
 import { Droppable } from "react-beautiful-dnd";
+import { ListGroup } from "react-bootstrap";
 
 export default class List extends React.Component {
   render() {
@@ -8,7 +9,11 @@ export default class List extends React.Component {
       <div>
         <Droppable droppableId={this.props.droppableId}>
           {provided => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
+            <ListGroup
+              variant="flush"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
               {this.props.items.map((item, index) => (
                 <ListItem
                   isRanked={this.props.isRanked}
@@ -20,7 +25,7 @@ export default class List extends React.Component {
                 />
               ))}
               {provided.placeholder}
-            </div>
+            </ListGroup>
           )}
         </Droppable>
       </div>
