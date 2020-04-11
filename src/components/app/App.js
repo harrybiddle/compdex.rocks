@@ -1,34 +1,24 @@
-import React from "react";
-import Competition from "../competition/Competition";
-import Splash from "../splash/Splash";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect
-} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+const USER_SERVICE_URL = process.env.PUBLIC_URL + "/state.json";
 
-export default function App() {
-  return (
-    <Router>
-      <div
-        style={{
-          maxWidth: "768px",
-          height: "100%",
-          marginLeft: "auto",
-          marginRight: "auto"
-        }}
-      >
-        <Switch>
-          <Route path="/comp">
-            <Competition />
-          </Route>
-          <Route path="/">
-            <Redirect to="/" />
-            <Splash to="/comp" />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
-  );
+function App() {
+  const [data, setData] = useState({ users: [], isFetching: false });
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setData({ users: data.users, isFetching: true });
+        const response = await axios.get(USER_SERVICE_URL);
+        setData({ users: response.data, isFetching: false });
+      } catch (e) {
+        console.log(e);
+        setData({ users: data.users, isFetching: false });
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  return <div>{data.users.toString()}</div>;
 }
+export default App;
