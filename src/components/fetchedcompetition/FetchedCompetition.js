@@ -29,7 +29,6 @@ export default function FetchedCompetition() {
   } else if (data.hasErrored) {
     return <div>Errored :(</div>;
   } else {
-    console.log(JSON.stringify(data));
     return <Competition {...data.state} />;
   }
 }

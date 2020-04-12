@@ -9,8 +9,9 @@ export default class Rankings extends React.Component {
       <DragDropContext onDragEnd={this.props.onDragEnd}>
         <Tabs defaultActiveKey="stage-0" id="sub-tab">
           {this.props.groups.map((group, i) => {
+            const key = "stage-" + i;
             return (
-              <Tab eventKey={"stage-" + i} title={group.title}>
+              <Tab key={key} eventKey={key} title={group.title}>
                 <div
                   style={{
                     visibility: "visible",
