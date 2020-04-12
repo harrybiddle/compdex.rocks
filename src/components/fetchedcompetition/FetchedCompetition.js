@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import Competition from "../competition/Competition";
 import axios from "axios";
 const USER_SERVICE_URL = process.env.PUBLIC_URL + "/state.json";
 
-function App() {
+export default function FetchedCompetition() {
   const [data, setData] = useState({
     state: [],
-    isFetching: false,
+    isFetching: true,
     hasErrored: false
   });
 
@@ -16,7 +17,7 @@ function App() {
         const response = await axios.get(USER_SERVICE_URL);
         setData({ state: response.data, isFetching: false, hasErrored: false });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         setData({ state: [], isFetching: false, hasErrored: true });
       }
     };
@@ -28,7 +29,7 @@ function App() {
   } else if (data.hasErrored) {
     return <div>Errored :(</div>;
   } else {
-    return <div>{data.state.toString()}</div>;
+    console.log(JSON.stringify(data));
+    return <Competition {...data.state} />;
   }
 }
-export default App;
