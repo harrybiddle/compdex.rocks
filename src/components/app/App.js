@@ -1,5 +1,5 @@
 import React from "react";
-import Competition from "../competition/Competition";
+import FetchedCompetition from "../fetchedcompetition/FetchedCompetition";
 import Splash from "../splash/Splash";
 import {
   BrowserRouter as Router,
@@ -21,7 +21,7 @@ export default function App() {
       >
         <Switch>
           <Route path="/comp">
-            <Competition />
+            <FetchedCompetition />
           </Route>
           <Route path="/">
             <Redirect to="/" />

@@ -5,10 +5,11 @@ import Competition, {
   constructListsForStage,
   newStateOnDragEnd
 } from "./Competition";
+const props = require("./../../../public/state.json");
 
 it("renders without crashing", () => {
   const div = document.createElement("div");
-  ReactDOM.render(<Competition />, div);
+  ReactDOM.render(<Competition {...props} />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
 

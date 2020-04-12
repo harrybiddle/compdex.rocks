@@ -6,49 +6,10 @@ import { Tabs, Tab } from "react-bootstrap";
 import SafePredictions from "../safepredictions/SafePredictions";
 
 export default class Competition extends React.Component {
-  state = {
-    athletes: {
-      athlete1: { name: "Adam Ondra" },
-      athlete2: { name: "Akiyo Noguchi" },
-      athlete3: { name: "Jan Hoyer" },
-      athlete4: { name: "Janja Garnabret" },
-      athlete5: { name: "William Bosi" },
-      athlete6: { name: "Jessie Pilz" },
-      athlete7: { name: "Margo Hayes" },
-      athlete8: { name: "Tomoa Narasaki" }
-    },
-    [stages.QUALIFICATION]: [
-      "athlete1",
-      "athlete2",
-      "athlete3",
-      "athlete4",
-      "athlete5",
-      "athlete6",
-      "athlete7",
-      "athlete8"
-    ],
-    [stages.SPEED]: [
-      "athlete1",
-      "athlete2",
-      "athlete3",
-      "athlete4",
-      "athlete5",
-      "athlete6",
-      "athlete7",
-      "athlete8"
-    ],
-    [stages.BOULDER]: [
-      "athlete1",
-      "athlete2",
-      "athlete3",
-      "athlete4",
-      "athlete5",
-      "athlete6",
-      "athlete7",
-      "athlete8"
-    ],
-    [stages.LEAD]: ["athlete1"]
-  };
+  constructor(props) {
+    super(props);
+    this.state = JSON.parse(JSON.stringify(props));
+  }
 
   render() {
     return (
