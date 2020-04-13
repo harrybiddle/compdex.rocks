@@ -25,7 +25,7 @@ export default function App() {
           </Route>
           <Route path="/">
             <Redirect to="/" />
-            <Splash to="/comp" />
+            <Splash to="/comp?q=state" />
           </Route>
         </Switch>
       </div>

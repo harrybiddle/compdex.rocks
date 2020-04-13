@@ -4,7 +4,23 @@ import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import Card from "react-bootstrap/Card";
 
-const USER_SERVICE_URL = process.env.PUBLIC_URL + "/state.json";
+const DEFAULT_STATE_FILENAME = "state";
+const VALID_FILENAME_REGEX = /^\w+\.json$/;
+
+export function getStateFilenameFromUrl(location) {
+  /*
+   * Extracts "foo.json" from "https://compdex.rocks/comp?q=foo". Any additional query parameters are ignored.
+   *  If the filename is missing or invalid, a default of "state.json" will be returned
+   */
+  const searchParams = new URLSearchParams(location.search);
+  const stateFilename = (searchParams.get("q") || "state") + ".json";
+  if (VALID_FILENAME_REGEX.test(stateFilename)) {
+    return stateFilename;
+  } else {
+    // TODO error
+    return DEFAULT_STATE_FILENAME + ".json";
+  }
+}
 
 const CENTERING_CSS_STYLE = {
   display: "flex",
@@ -23,7 +39,11 @@ export default function FetchedCompetition() {
     const fetchUsers = async () => {
       try {
         setData({ state: [], isFetching: true, hasErrored: false });
-        const response = await axios.get(USER_SERVICE_URL);
+        const url =
+          process.env.PUBLIC_URL +
+          "/" +
+          getStateFilenameFromUrl(window.location);
+        const response = await axios.get(url);
         setData({ state: response.data, isFetching: false, hasErrored: false });
       } catch (e) {
         console.error(e);
