@@ -1,8 +1,4 @@
-import {
-  computeScore,
-  possibleFinishOrders,
-  probabilities
-} from "./bruteforce";
+import { computeScore, possibleFinishOrders, scenarios } from "./bruteforce";
 
 it("only one possible finish order for one athlete", () => {
   expect(new Set(possibleFinishOrders(new Set(["Eve"])))).toEqual(
@@ -821,17 +817,17 @@ it("compute score is correct", () => {
   ).toEqual(2 * 1 * 3);
 });
 
-describe("probabilities for two athletes", () => {
+describe("scenarios for two athletes", () => {
   const countback = ["Eve", "Sue"];
   const athletes = new Set(countback);
   it("should be correct for no completed rounds", () => {
-    expect(probabilities(athletes, countback)).toEqual({
-      Sue: [0.5, 0.5],
-      Eve: [0.5, 0.5]
+    expect(scenarios(athletes, countback)).toEqual({
+      Sue: [4, 4],
+      Eve: [4, 4]
     });
   });
 
-  it("probabilities correct when eve wins round one", () => {
+  it("scenarios correct when eve wins round one", () => {
     /*
     If Eve wins round one there is only one scenario in which Sue wins overall:
 
@@ -844,33 +840,29 @@ describe("probabilities for two athletes", () => {
         EVE wins - SUE wins - EVE wins  : EVE wins
     */
     const speedRound = ["Eve", "Sue"];
-    expect(probabilities(athletes, countback, speedRound)).toEqual({
-      Sue: [0.25, 0.75],
-      Eve: [0.75, 0.25]
+    expect(scenarios(athletes, countback, speedRound)).toEqual({
+      Sue: [1, 3],
+      Eve: [3, 1]
     });
   });
 
-  it("probabilities correct when eve wins rounds one and two", () => {
+  it("scenarios correct when eve wins rounds one and two", () => {
     /* Eve is guaranteed to win the competition */
     const speedRound = ["Eve", "Sue"];
     const boulderRound = ["Eve", "Sue"];
-    expect(
-      probabilities(athletes, countback, speedRound, boulderRound)
-    ).toEqual({
-      Sue: [0.0, 1.0],
-      Eve: [1.0, 0.0]
+    expect(scenarios(athletes, countback, speedRound, boulderRound)).toEqual({
+      Sue: [0, 2],
+      Eve: [2, 0]
     });
   });
 
-  it("probabilities correct when eve wins round one but loses round two", () => {
+  it("scenarios correct when eve wins round one but loses round two", () => {
     /* Its down to whoever wins the final round! */
     const speedRound = ["Eve", "Sue"];
     const boulderRound = ["Sue", "Eve"];
-    expect(
-      probabilities(athletes, countback, speedRound, boulderRound)
-    ).toEqual({
-      Sue: [0.5, 0.5],
-      Eve: [0.5, 0.5]
+    expect(scenarios(athletes, countback, speedRound, boulderRound)).toEqual({
+      Sue: [1, 1],
+      Eve: [1, 1]
     });
   });
 
@@ -906,7 +898,7 @@ describe("probabilities for two athletes", () => {
       () => {
         const k = finishOrdersInWhichEveWinsOverall[i];
         expect(
-          probabilities(
+          scenarios(
             athletes,
             countback,
             k.speedRound,
@@ -914,8 +906,8 @@ describe("probabilities for two athletes", () => {
             k.leadRound
           )
         ).toEqual({
-          Eve: [1.0, 0.0],
-          Sue: [0.0, 1.0]
+          Eve: [1, 0],
+          Sue: [0, 1]
         });
       }
     );
@@ -928,7 +920,7 @@ it("in a tie scenario, the athlete with the higher countback is more likely to w
 
   // in this scenario, all athletes end with a score of 6
   expect(
-    probabilities(
+    scenarios(
       athletes,
       countback,
       ["Eve", "Sue", "Ada"],
