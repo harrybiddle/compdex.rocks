@@ -72,7 +72,7 @@ export function computeScore(
   );
 }
 
-export function probabilities(
+export function scenarios(
   athletes,
   countback,
   speedRound = [],
@@ -122,15 +122,15 @@ export function probabilities(
     numberScenarios++;
   }
 
-  // compute probabilities
-  let probabilities = {};
+  // count up scenarios
+  let scenarios = {};
   for (let athlete of athletes.values()) {
     let p = [];
     for (let finishIndex = 0; finishIndex < numberAthletes; finishIndex++) {
-      p.push(counts[athlete][finishIndex] / numberScenarios);
+      p.push(counts[athlete][finishIndex]);
     }
-    probabilities[athlete] = p;
+    scenarios[athlete] = p;
   }
 
-  return probabilities;
+  return scenarios;
 }

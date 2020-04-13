@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Competition from "../competition/Competition";
 import axios from "axios";
-import Spinner from "react-bootstrap/Spinner";
-import Card from "react-bootstrap/Card";
+import { Spinner, Card } from "react-bootstrap";
 
 const DEFAULT_STATE_FILENAME = "state";
 const VALID_FILENAME_REGEX = /^\w+\.json$/;

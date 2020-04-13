@@ -1,12 +1,12 @@
-import { ridgelinePlotProps } from "./predictions.worker";
+import { generateScenarios } from "./predictions.worker";
 
-describe("RidgelinePlot props", () => {
-  it("contents are correct and ordered by centre of mass", () => {
+describe("generateScenarios", () => {
+  it("return value", () => {
     const predictionsProps = {
       athletes: {
-        athlete1: { name: "Adam Ondra" },
-        athlete2: { name: "Alex Megos" },
-        athlete3: { name: "Margo Hayes" }
+        athlete1: { name: "Adam Ondra", foo: "bar" },
+        athlete2: { name: "Alex Megos", foo: "baz" },
+        athlete3: { name: "Margo Hayes", foo: "bong" }
       },
       stages: {
         qualification: ["athlete3", "athlete1", "athlete2"],
@@ -16,14 +16,11 @@ describe("RidgelinePlot props", () => {
       }
     };
 
-    const props = ridgelinePlotProps(predictionsProps);
-    expect(props).toEqual({
-      athletes: ["Margo Hayes", "Adam Ondra", "Alex Megos"],
-      probabilities: {
-        "Margo Hayes": [2.0 / 3.0, 0.25, 1.0 / 12.0],
-        "Adam Ondra": [2.0 / 9.0, 0.5, 0.2 + 7 / 90],
-        "Alex Megos": [1.0 / 9.0, 0.25, 63 / 100 + 8 / 900]
-      }
-    });
+    const props = generateScenarios(predictionsProps);
+    expect(props).toEqual([
+      { name: "Adam Ondra", foo: "bar", scenarios: [8, 18, 10] },
+      { name: "Alex Megos", foo: "baz", scenarios: [4, 9, 23] },
+      { name: "Margo Hayes", foo: "bong", scenarios: [24, 9, 3] }
+    ]);
   });
 });

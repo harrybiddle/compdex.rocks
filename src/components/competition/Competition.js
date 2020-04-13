@@ -2,7 +2,7 @@ import Rankings from "../rankings/Rankings";
 import React from "react";
 import update from "immutability-helper";
 import { stages } from "../constants";
-import { Tabs, Tab } from "react-bootstrap";
+import { Tab, Card, Nav } from "react-bootstrap";
 import SafePredictions from "../safepredictions/SafePredictions";
 
 export default class Competition extends React.Component {
@@ -13,67 +13,76 @@ export default class Competition extends React.Component {
 
   render() {
     return (
-      <div style={{ height: "100%" }}>
-        {/*/!* -- Header ---------------------------------------------------------------------------------------------- *!/*/}
-        {/*<div className={styles.headerStyle}>Compdex.rocks</div>*/}
-        {/* -- Predictions ----------------------------------------------------------------------------------------- */}
-        <Tabs defaultActiveKey="predictions" id="main-tab">
-          <Tab eventKey="predictions" title="Predictions">
-            <div
-              style={{
-                marginLeft: "auto",
-                marginRight: "auto",
-                overflow: "scroll"
-              }}
-            >
-              <SafePredictions
-                athletes={this.state.athletes}
-                stages={{
-                  [stages.QUALIFICATION]: this.state[stages.QUALIFICATION],
-                  [stages.SPEED]: this.state[stages.SPEED],
-                  [stages.BOULDER]: this.state[stages.BOULDER],
-                  [stages.LEAD]: this.state[stages.LEAD]
-                }}
-              />
-            </div>
-          </Tab>
-          {/* -- Configuration --------------------------------------------------------------------------------------- */}
-          <Tab eventKey="configuration" title="Configuration">
-            <Rankings
-              onDragEnd={result =>
-                this.setState(newStateOnDragEnd(this.state, result))
-              }
-              activeTab={this.state.activeSubTab}
-              onTabClick={value => this.setActiveSubTab(value)}
-              lists={constructLists(this.state)}
-              groups={[
-                {
-                  title: "Qualification",
-                  listIds: [stages.QUALIFICATION + "-ranked"]
-                },
-                {
-                  title: "Speed",
-                  listIds: [
-                    stages.SPEED + "-ranked",
-                    stages.SPEED + "-unranked"
-                  ]
-                },
-                {
-                  title: "Boulder",
-                  listIds: [
-                    stages.BOULDER + "-ranked",
-                    stages.BOULDER + "-unranked"
-                  ]
-                },
-                {
-                  title: "Lead",
-                  listIds: [stages.LEAD + "-ranked", stages.LEAD + "-unranked"]
-                }
-              ]}
-            />
-          </Tab>
-        </Tabs>
-      </div>
+      <Card style={{ height: "100%" }}>
+        <Tab.Container defaultActiveKey="predictions">
+          {/* == Navigational Tabs ================================================================================= */}
+          <Card.Header>
+            <Nav variant="tabs">
+              <Nav.Item>
+                <Nav.Link eventKey="predictions">Predictions</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="configuration">Configuration</Nav.Link>
+              </Nav.Item>
+            </Nav>
+          </Card.Header>
+          {/* == Tab Panes ========================================================================================= */}
+          <Card.Body>
+            {/* -- Predictions ------------------------------------------------------------------------------------- */}
+            <Tab.Content>
+              <Tab.Pane eventKey="predictions">
+                <SafePredictions
+                  athletes={this.state.athletes}
+                  stages={{
+                    [stages.QUALIFICATION]: this.state[stages.QUALIFICATION],
+                    [stages.SPEED]: this.state[stages.SPEED],
+                    [stages.BOULDER]: this.state[stages.BOULDER],
+                    [stages.LEAD]: this.state[stages.LEAD]
+                  }}
+                />
+              </Tab.Pane>
+              {/* -- Configuration---------------------------------------------------------------------------------- */}
+              <Tab.Pane eventKey="configuration">
+                <Rankings
+                  onDragEnd={result =>
+                    this.setState(newStateOnDragEnd(this.state, result))
+                  }
+                  activeTab={this.state.activeSubTab}
+                  onTabClick={value => this.setActiveSubTab(value)}
+                  lists={constructLists(this.state)}
+                  groups={[
+                    {
+                      title: "Qualification",
+                      listIds: [stages.QUALIFICATION + "-ranked"]
+                    },
+                    {
+                      title: "Speed",
+                      listIds: [
+                        stages.SPEED + "-ranked",
+                        stages.SPEED + "-unranked"
+                      ]
+                    },
+                    {
+                      title: "Boulder",
+                      listIds: [
+                        stages.BOULDER + "-ranked",
+                        stages.BOULDER + "-unranked"
+                      ]
+                    },
+                    {
+                      title: "Lead",
+                      listIds: [
+                        stages.LEAD + "-ranked",
+                        stages.LEAD + "-unranked"
+                      ]
+                    }
+                  ]}
+                />
+              </Tab.Pane>
+            </Tab.Content>
+          </Card.Body>
+        </Tab.Container>
+      </Card>
     );
   }
 }
