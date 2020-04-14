@@ -4,7 +4,7 @@ import LinkButton from "../linkbutton/LinkButton";
 export default class Splash extends React.Component {
   render() {
     return (
-      <div style={{ height: "100%" }}>
+      <div>
         <div
           style={{
             height: "100%",
