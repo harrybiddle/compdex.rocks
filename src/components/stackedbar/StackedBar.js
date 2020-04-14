@@ -42,7 +42,7 @@ export function rasterizeSizes(sizes) {
 
 export default function StackedBar(props) {
   // convert props to array and sort in descending order
-  const array = Object.values(props).sort((a, b) => b.width - a.width);
+  const array = Object.values(props); //.sort((a, b) => b.width - a.width);
 
   // rasterize onto a "grid" of 100 pixels
   const widthPercentages = rasterizeSizes(array.map(d => d.width));
@@ -55,7 +55,7 @@ export default function StackedBar(props) {
             width: widthPercentages[i].toString() + "%",
             color: d.textColor,
             backgroundColor: d.backgroundColor,
-            borderColor: d.backgroundColor,
+            borderRight: "1px solid white",
             overflow: "hidden",
             // center the text
             display: "flex",

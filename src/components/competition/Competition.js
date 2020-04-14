@@ -13,7 +13,7 @@ export default class Competition extends React.Component {
 
   render() {
     return (
-      <Card style={{ height: "100%" }}>
+      <Card>
         <Tab.Container defaultActiveKey="predictions">
           {/* == Navigational Tabs ================================================================================= */}
           <Card.Header>
@@ -125,10 +125,6 @@ function constructLists(state) {
     ...constructListsForStage(state, stages.BOULDER),
     ...constructListsForStage(state, stages.LEAD)
   };
-}
-
-export function calculateCentreOfMass(values) {
-  return values.map((value, i) => value * i).reduce((a, b) => a + b, 0);
 }
 
 export function newStateOnDragEnd(state, result) {
