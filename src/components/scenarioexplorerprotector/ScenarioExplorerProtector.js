@@ -1,5 +1,5 @@
 import React from "react";
-import Predictions from "../predictions/Predictions";
+import ScenarioExplorerLoader from "../scenarioexplorerloader/ScenarioExplorerLoader";
 import { allowedDegreesOfFreedom } from "../constants";
 
 export function degreesOfFreedom(props) {
@@ -10,9 +10,9 @@ export function degreesOfFreedom(props) {
   );
 }
 
-export default function SafePredictions(props) {
+export default function ScenarioExplorerProtector(props) {
   if (degreesOfFreedom(props) < allowedDegreesOfFreedom) {
-    return <Predictions {...props} />;
+    return <ScenarioExplorerLoader {...props} />;
   } else {
     return (
       <div>

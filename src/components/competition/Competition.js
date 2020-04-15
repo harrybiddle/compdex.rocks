@@ -3,7 +3,7 @@ import React from "react";
 import update from "immutability-helper";
 import { stages } from "../constants";
 import { Tab, Card, Nav } from "react-bootstrap";
-import SafePredictions from "../safepredictions/SafePredictions";
+import ScenarioExplorerProtector from "../scenarioexplorerprotector/ScenarioExplorerProtector";
 
 export default class Competition extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ export default class Competition extends React.Component {
             {/* -- Predictions ------------------------------------------------------------------------------------- */}
             <Tab.Content>
               <Tab.Pane eventKey="predictions">
-                <SafePredictions
+                <ScenarioExplorerProtector
                   athletes={this.state.athletes}
                   stages={{
                     [stages.QUALIFICATION]: this.state[stages.QUALIFICATION],

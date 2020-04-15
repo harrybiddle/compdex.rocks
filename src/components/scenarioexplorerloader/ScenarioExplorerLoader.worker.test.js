@@ -1,4 +1,4 @@
-import { generateScenarios } from "./predictions.worker";
+import { generateScenarios } from "./ScenarioExplorerLoader.worker";
 
 describe("generateScenarios", () => {
   it("return value", () => {

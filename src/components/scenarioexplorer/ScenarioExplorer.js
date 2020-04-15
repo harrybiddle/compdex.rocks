@@ -12,7 +12,7 @@ export function calculateCentreOfMass(values) {
   return values.map((value, i) => value * i).reduce((a, b) => a + b, 0);
 }
 
-export default function MedalScenarios(props) {
+export default function ScenarioExplorer(props) {
   const [open, setOpen] = useState(false);
   const [filteredAthlete, setfilteredAthlete] = useState(null);
 

@@ -21,11 +21,11 @@ let babelJestTransformer = babelJest.createTransformer({
 function process(fileContent, ...rest) {
   // replace a line like
   //
-  //    import worker from "workerize-loader!./predictions.worker";
+  //    import worker from "workerize-loader!./scenarioexplorerloader.worker";
   //
   // with
   //
-  //    const worker = () => require("./predictions.worker");
+  //    const worker = () => require("./scenarioexplorerloader.worker");
   const transformedFileContent = fileContent.replace(
     new RegExp('import (.+?) from "workerize-loader!(.+?)"'),
     'const $1 = () => require("$2");'
