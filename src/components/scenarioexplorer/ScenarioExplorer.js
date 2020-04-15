@@ -16,6 +16,10 @@ export default function ScenarioExplorer(props) {
   const [open, setOpen] = useState(false);
   const [filteredAthlete, setfilteredAthlete] = useState(null);
 
+  function firstName(name) {
+    return name.split(" ")[0];
+  }
+
   function filterToAthlete(i) {
     setfilteredAthlete(filteredAthlete === i ? null : i);
   }
@@ -59,7 +63,7 @@ export default function ScenarioExplorer(props) {
                 }}
                 onClick={() => filterToAthlete(i)}
               >
-                {s.name}
+                {firstName(s.name)}
               </Button>
             ))}
           </div>
