@@ -1,4 +1,4 @@
-import { degreesOfFreedom } from "./SafePredictions";
+import { degreesOfFreedom } from "./ScenarioExplorerProtector";
 import { stages } from "../constants";
 
 describe("degrees of freedom", () => {

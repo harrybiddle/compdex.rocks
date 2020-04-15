@@ -1,4 +1,6 @@
-.headerStyle {
-  background-color: black;
-  color: white;
+.centering {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }

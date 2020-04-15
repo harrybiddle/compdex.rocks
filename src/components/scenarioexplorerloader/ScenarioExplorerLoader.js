@@ -1,9 +1,9 @@
 import React from "react";
-import MedalScenarios from "../medalscenarios/MedalScenarios";
+import ScenarioExplorer from "../scenarioexplorer/ScenarioExplorer";
 import { useAsync } from "react-async";
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import worker from "workerize-loader!./predictions.worker";
-//const worker = () => require("./predictions.worker");
+import worker from "workerize-loader!./ScenarioExplorerLoader.worker";
+//const worker = () => require("./scenarioexplorerloader.worker");
 import Container from "react-bootstrap/Container";
 
 function generateScenariosAsync({ props }) {
@@ -11,7 +11,7 @@ function generateScenariosAsync({ props }) {
   return inst.generateScenarios(props);
 }
 
-export default function Predictions(props) {
+export default function ScenarioExplorerLoader(props) {
   const { data: scenarios, error, isPending } = useAsync({
     promiseFn: generateScenariosAsync,
     props: props,
@@ -21,7 +21,7 @@ export default function Predictions(props) {
     <Container>
       {isPending && "Loading..."}
       {error && `Something went wrong: ${error.message}`}
-      {isPending || <MedalScenarios {...scenarios} />}
+      {isPending || <ScenarioExplorer {...scenarios} />}
     </Container>
   );
 }
