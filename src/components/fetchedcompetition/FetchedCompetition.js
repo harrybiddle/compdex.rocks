@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Competition from "../competition/Competition";
 import axios from "axios";
 import { Spinner, Card } from "react-bootstrap";
+import styles from "../common.module.css";
 
 const DEFAULT_STATE_FILENAME = "state";
 const VALID_FILENAME_REGEX = /^\w+\.json$/;
@@ -21,12 +22,6 @@ export function getStateFilenameFromUrl(location) {
   }
 }
 
-const CENTERING_CSS_STYLE = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100%"
-};
 export default function FetchedCompetition() {
   const [data, setData] = useState({
     state: [],
@@ -54,13 +49,13 @@ export default function FetchedCompetition() {
 
   if (data.isFetching) {
     return (
-      <div style={CENTERING_CSS_STYLE}>
+      <div className={styles.centering}>
         <Spinner animation="border" />
       </div>
     );
   } else if (data.hasErrored) {
     return (
-      <div style={CENTERING_CSS_STYLE}>
+      <div className={styles.centering}>
         <Card bg="danger" text="white" style={{ width: "18rem" }}>
           <Card.Header>Something went wrong!</Card.Header>
           <Card.Body>

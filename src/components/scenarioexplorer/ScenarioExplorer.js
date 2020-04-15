@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import StackedBar from "../stackedbar/StackedBar";
 import { Row, Col, Collapse, Button } from "react-bootstrap";
-
-const CENTERING_STYLE = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center"
-};
+import styles from "../common.module.css";
 
 export function calculateCentreOfMass(values) {
   return values.map((value, i) => value * i).reduce((a, b) => a + b, 0);
@@ -75,7 +70,7 @@ export default function ScenarioExplorer(props) {
       {/* -- Medal Positions --------------------------------------------------------------------------------------*/}
 
       <Row className={["mt-3"]}>
-        <Col xs={1} style={CENTERING_STYLE}>
+        <Col xs={1} className={styles.centering}>
           <svg
             class="bi bi-trophy"
             width="2em"
@@ -100,7 +95,7 @@ export default function ScenarioExplorer(props) {
       </Row>
 
       <Row className={["mt-3"]}>
-        <Col xs={1} style={CENTERING_STYLE}>
+        <Col xs={1} className={styles.centering}>
           <svg
             class="bi bi-award-fill"
             width="2em"
@@ -119,7 +114,7 @@ export default function ScenarioExplorer(props) {
       </Row>
 
       <Row className={["mt-3"]}>
-        <Col xs={1} style={CENTERING_STYLE}>
+        <Col xs={1} className={styles.centering}>
           <svg
             class="bi bi-award"
             width="2em"
@@ -158,7 +153,7 @@ export default function ScenarioExplorer(props) {
         <div>
           {new Array(scenarios.length - 3).fill().map((_, i) => (
             <Row className={["mt-3"]}>
-              <Col xs={1} style={CENTERING_STYLE}>
+              <Col xs={1} className={styles.centering}>
                 {i + 4}
               </Col>
               <Col>
