@@ -9,8 +9,6 @@ import {
   Link,
   Redirect
 } from "react-router-dom";
-import styles from "../common.module.css";
-import lodash from "lodash";
 
 export default function App() {
   return (
