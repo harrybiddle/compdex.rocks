@@ -15,7 +15,7 @@ jobs:
     - name: Node
       uses: actions/setup-node@v1
       with:
-        node-version: 13.1.0
+        node-version: 15.4.0
     - name: cache dependencies
       uses: actions/cache@v1.0.3
       with:
@@ -23,4 +23,4 @@ jobs:
         key: v1-${{ hashFiles('yarn.lock') }}
     - run: yarn install
     - run: yarn test
-    
+

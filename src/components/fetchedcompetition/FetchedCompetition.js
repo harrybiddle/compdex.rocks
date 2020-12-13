@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Competition from "../competition/Competition";
+import ScenarioExplorer from "../scenarioexplorer/ScenarioExplorer";
 import axios from "axios";
 import { Spinner, Card } from "react-bootstrap";
 import styles from "../common.module.css";
@@ -60,13 +60,13 @@ export default function FetchedCompetition() {
           <Card.Header>Something went wrong!</Card.Header>
           <Card.Body>
             <Card.Text>
-              The app could not be loaded, and we have no idea why. Sorry.
+              The competition data could not be fetched. Sorry.
             </Card.Text>
           </Card.Body>
         </Card>
       </div>
     );
   } else {
-    return <Competition {...data.state} />;
+    return <ScenarioExplorer {...data.state} />;
   }
 }

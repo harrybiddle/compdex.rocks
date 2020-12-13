@@ -91,7 +91,7 @@ export default function ScenarioExplorer(props) {
           </svg>
         </Col>
         <Col>
-          <StackedBar {...scenariosForPlace(0)} />
+          <StackedBar widths={scenariosForPlace(0)} ukey={0} />
         </Col>
       </Row>
 
@@ -110,7 +110,7 @@ export default function ScenarioExplorer(props) {
           </svg>
         </Col>
         <Col>
-          <StackedBar {...scenariosForPlace(1)} />
+          <StackedBar widths={scenariosForPlace(1)} ukey={1} />
         </Col>
       </Row>
 
@@ -133,7 +133,7 @@ export default function ScenarioExplorer(props) {
           </svg>
         </Col>
         <Col>
-          <StackedBar {...scenariosForPlace(2)} />
+          <StackedBar widths={scenariosForPlace(2)} ukey={2} />
         </Col>
       </Row>
 
@@ -158,7 +158,7 @@ export default function ScenarioExplorer(props) {
                 {i + 4}
               </Col>
               <Col>
-                <StackedBar {...scenariosForPlace(i + 3)} />
+                <StackedBar widths={scenariosForPlace(i + 3)} ukey={i + 3} />
               </Col>
             </Row>
           ))}
