@@ -14,7 +14,7 @@ jobs:
     - name: Node
       uses: actions/setup-node@v1
       with:
-        node-version: 15.0.4
+        node-version: 15.4.0
     - run: yarn install
     - run: yarn build
     - name: Deploy to GitHub Pages
