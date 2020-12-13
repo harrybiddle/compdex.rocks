@@ -12,15 +12,16 @@ export default class Competition extends React.Component {
   render() {
     return (
       <Card>
-        <ScenarioExplorerProtector
-          athletes={this.state.athletes}
-          stages={{
-            [stages.QUALIFICATION]: this.state[stages.QUALIFICATION],
-            [stages.SPEED]: this.state[stages.SPEED],
-            [stages.BOULDER]: this.state[stages.BOULDER],
-            [stages.LEAD]: this.state[stages.LEAD]
-          }}
-        />
+          <div>Hello, world</div>
+//        <ScenarioExplorerProtector
+//          athletes={this.state.athletes}
+//          stages={{
+//            [stages.QUALIFICATION]: this.state[stages.QUALIFICATION],
+//            [stages.SPEED]: this.state[stages.SPEED],
+//            [stages.BOULDER]: this.state[stages.BOULDER],
+//            [stages.LEAD]: this.state[stages.LEAD]
+//          }}
+//        />
       </Card>
     );
   }
