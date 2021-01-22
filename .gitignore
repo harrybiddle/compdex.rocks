@@ -2,5 +2,5 @@
 .idea/
 /__sapper__/
 /src/node_modules/@sapper/
-node_modules/
+/node_modules/
 yarn-error.log
