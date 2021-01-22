@@ -1,6 +1,6 @@
 name: Deploy
 
-on: 
+on:
   push:
     branches: [master]
 
@@ -18,7 +18,7 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: crazy-max/ghaction-github-pages@v1.2.5
       env:
-        GITHUB_PAT: ${{ secrets.GITHUB_PAT }}      
+        GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
       with:
         repo: harrybiddle/harrybiddle.github.io
         fqdn: compdex.rocks
