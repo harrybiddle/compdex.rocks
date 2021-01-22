@@ -6,17 +6,15 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: Node
       uses: actions/setup-node@v1
       with:
-        node-version: 13.1.0
+        node-version: 15.4.0
     - run: yarn install
-    - run: yarn build
+    - run: yarn export
     - name: Deploy to GitHub Pages
       uses: crazy-max/ghaction-github-pages@v1.2.5
       env:
@@ -25,4 +23,4 @@ jobs:
         repo: harrybiddle/harrybiddle.github.io
         fqdn: compdex.rocks
         target_branch: master
-        build_dir: build/
+        build_dir: __sapper__/export/

@@ -2,25 +2,23 @@ name: Test
 
 on:
   pull_request:
-    branches:
-    - master
+    branches: [master]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      CI: true
+    env: { CI: true }
     steps:
     - uses: actions/checkout@v1
     - name: Node
       uses: actions/setup-node@v1
       with:
-        node-version: 13.1.0
+        node-version: 15.4.0
     - name: cache dependencies
       uses: actions/cache@v1.0.3
       with:
         path: node_modules/
         key: v1-${{ hashFiles('yarn.lock') }}
     - run: yarn install
-    - run: yarn test
+    - run: yarn export
     
